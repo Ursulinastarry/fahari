@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 import SalonsPage from "./client/SalonsPage";
-import SlotsPage from "./client/SlotsPage";
 import AppointmentsPage from "./client/AppointmentsPage";
 
 const ClientDashboard: React.FC = () => {
@@ -30,7 +29,7 @@ const ClientDashboard: React.FC = () => {
               : "text-gray-500 hover:text-indigo-600"
           }`}
         >
-          Slots
+          {/* Slots
         </button>
         <button
           onClick={() => setActiveTab("appointments")}
@@ -39,7 +38,7 @@ const ClientDashboard: React.FC = () => {
               ? "border-b-2 border-indigo-600 text-indigo-600"
               : "text-gray-500 hover:text-indigo-600"
           }`}
-        >
+        > */}
           My Appointments
         </button>
       </div>
@@ -47,7 +46,6 @@ const ClientDashboard: React.FC = () => {
       {/* Content */}
       <div>
         {activeTab === "salons" && <SalonsPage />}
-        {activeTab === "slots" && <SlotsPage />}
         {activeTab === "appointments" && <AppointmentsPage />}
       </div>
     </DashboardLayout>

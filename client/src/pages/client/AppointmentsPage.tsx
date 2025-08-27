@@ -1,12 +1,12 @@
-// src/pages/client/AppointmentsPage.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { DateTime } from "luxon";
 
 interface Appointment {
   id: string;
-  date: string;
-  startTime: string;
-  endTime: string;
+  date: string;        // UTC date
+  startTime: string;   // UTC datetime
+  endTime: string;     // UTC datetime
   salon: { name: string };
   service: { name: string };
   status: string;
@@ -34,6 +34,12 @@ const AppointmentsPage: React.FC = () => {
     setAppointments(appointments.map(a => a.id === id ? { ...a, status: "CANCELLED" } : a));
   };
 
+  const formatEAT = (utcDate: string) => {
+    return DateTime.fromISO(utcDate, { zone: "utc" })
+      .setZone("Africa/Nairobi")
+      .toFormat("dd LLL yyyy, HH:mm");
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">My Appointments</h2>
@@ -46,7 +52,7 @@ const AppointmentsPage: React.FC = () => {
               <div>
                 <p className="font-semibold">{a.salon.name} – {a.service.name}</p>
                 <p className="text-gray-500">
-                  {new Date(a.date).toLocaleDateString()} {a.startTime} - {a.endTime}
+                  {formatEAT(a.startTime)} - {formatEAT(a.endTime)}
                 </p>
                 <p className={`font-medium ${a.status === "CANCELLED" ? "text-red-500" : "text-green-600"}`}>
                   {a.status}

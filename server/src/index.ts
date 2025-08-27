@@ -56,16 +56,16 @@ export async function connectClient(): Promise<void> {
 connectClient();
 
 // ✅ GLOBAL LOGGER MIDDLEWARE
-app.use((req, res, next) => {
-  const start = Date.now();
-  res.on("finish", () => {
-    const duration = Date.now() - start;
-    console.log(
-      `📌 ${req.method} ${req.originalUrl} [${res.statusCode}] - ${duration}ms`
-    );
-  });
-  next();
-});
+// app.use((req, res, next) => {
+//   const start = Date.now();
+//   res.on("finish", () => {
+//     const duration = Date.now() - start;
+//     console.log(
+//       `📌 ${req.method} ${req.originalUrl} [${res.statusCode}] - ${duration}ms`
+//     );
+//   });
+//   next();
+// });
 
 // Routes
 app.use('/api/salons', salonRoutes);

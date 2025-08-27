@@ -113,7 +113,7 @@ export const loginUser = asyncHandler(async (req:Request, res:Response) => {
 });
 
 export const getMe = asyncHandler(async (req: UserRequest, res: Response) => {
-  console.log("🔥 getMe endpoint hit");
+  // console.log("🔥 getMe endpoint hit");
   if (!req.user) {
     return res.status(401).json({ message: "Unauthorized" });
   }

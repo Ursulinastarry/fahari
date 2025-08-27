@@ -6,22 +6,18 @@ import { UserRequest } from "../utils/types/userTypes";
 import { Response, NextFunction } from "express";
 
 export const protect = asyncHandler(async (req: UserRequest, res: Response, next: NextFunction) => {
-  console.log("🔒 protect middleware triggered for:", req.method, req.originalUrl);
-  console.log("Headers:", req.headers);
-  console.log("Cookies:", req.cookies);
+ 
 
   let token;
 
   // 1. Try Authorization header
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     token = req.headers.authorization.split(" ")[1];
-    console.log("📦 Found token in header:", token);
   }
 
   // 2. Fallback cookie
   if (!token && req.cookies?.access_token) {
     token = req.cookies.access_token;
-    console.log("📦 Found token in cookie:", token);
   }
 
   if (!token) {
@@ -30,9 +26,9 @@ export const protect = asyncHandler(async (req: UserRequest, res: Response, next
   }
 
   try {
-    console.log("🔑 Verifying token...");
+    // console.log("🔑 Verifying token...");
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as { id: string; role: string };
-    console.log("✅ Decoded JWT:", decoded);
+    // console.log("✅ Decoded JWT:", decoded);
 
     const userQuery = await pool.query(
       `SELECT id, email, phone, "firstName", "lastName", avatar, role, "isActive", "isVerified"
@@ -41,7 +37,7 @@ export const protect = asyncHandler(async (req: UserRequest, res: Response, next
     );
 
     if (userQuery.rows.length === 0) {
-      console.log("❌ No user found in DB for id:", decoded.id);
+      // console.log("❌ No user found in DB for id:", decoded.id);
       return res.status(401).json({ message: "User not found" });
     }
 

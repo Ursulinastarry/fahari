@@ -1,23 +1,32 @@
-import prisma  from "../config/prisma";
+import prisma from "../config/prisma";
+import { DateTime } from "luxon";
 
-export async function generateSlotsForDay(salonId: string, date: Date, openHour: number, closeHour: number) {
+export async function generateSlotsForDay(
+  salonId: string,
+  date: Date,
+  openHour: number,
+  closeHour: number
+) {
   const slots = [];
+  const day = DateTime.fromJSDate(date).setZone("Africa/Nairobi").startOf("day");
 
   for (let hour = openHour; hour < closeHour; hour++) {
+    const start = day.plus({ hours: hour }).toJSDate();
+    const end = day.plus({ hours: hour + 1 }).toJSDate();
+
     slots.push({
       salonId,
-      date,
-      startTime: `${hour}:00`,
-      endTime: `${hour + 1}:00`,
+      date: start,     // you can store start of day here if needed
+      startTime: start,
+      endTime: end,
       isAvailable: true,
     });
   }
 
-  // Bulk insert (skip duplicates if they exist)
   await prisma.slot.createMany({
     data: slots,
     skipDuplicates: true,
   });
 
-  console.log(`✅ Slots generated for salon ${salonId} on ${date.toDateString()}`);
+  console.log(`✅ Slots generated for salon ${salonId} on ${day.toISODate()}`);
 }

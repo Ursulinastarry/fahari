@@ -1,13 +1,13 @@
-// src/pages/owner/AppointmentsPage.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { DateTime } from "luxon";
 
 interface Booking {
   id: string;
   bookingNumber: string;
   totalAmount: number;
   status: string;
-  createdAt: string;
+  createdAt: string;  // UTC
   salonName: string;
   firstName: string;
   lastName: string;
@@ -64,6 +64,12 @@ const AppointmentsPage: React.FC = () => {
     }
   };
 
+  const formatEAT = (utcDate: string) => {
+    return DateTime.fromISO(utcDate, { zone: "utc" })
+      .setZone("Africa/Nairobi")
+      .toFormat("dd LLL yyyy, HH:mm");
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">📅 Manage Appointments</h1>
@@ -78,7 +84,7 @@ const AppointmentsPage: React.FC = () => {
               <p className="text-sm text-gray-600">Booking: {b.bookingNumber}</p>
               <p className="text-sm text-gray-600">Salon: {b.salonName}</p>
               <p className="text-sm text-gray-600">
-                Created: {new Date(b.createdAt).toLocaleString()}
+                Created: {formatEAT(b.createdAt)}
               </p>
               <p className="text-sm text-gray-600">
                 Email: {b.email} | Phone: {b.phone}

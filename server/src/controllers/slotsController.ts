@@ -5,13 +5,25 @@ import { UserRequest } from "../utils/types/userTypes";
 import { PrismaClient } from '@prisma/client';
 import { pool } from "../index";
 import prisma from "../config/prisma";
+import { DateTime } from 'luxon';
+
 export const createSlot = asyncHandler(async (req: Request, res: Response) => {
- try {
+  try {
     const { salonId, serviceId, date, startTime, endTime, isRecurring } = req.body;
 
-    // Combine into ISO timestamps
-    const start = new Date(`${date}T${startTime}:00.000Z`);
-    const end = new Date(`${date}T${endTime}:00.000Z`);
+    // Parse the date in EAT timezone
+    const day = DateTime.fromISO(date, { zone: "Africa/Nairobi" }).startOf("day");
+
+    // Combine day + startTime/endTime in EAT
+    const start = day.plus({
+      hours: Number(startTime.split(":")[0]),
+      minutes: Number(startTime.split(":")[1] || 0),
+    }).toJSDate();
+
+    const end = day.plus({
+      hours: Number(endTime.split(":")[0]),
+      minutes: Number(endTime.split(":")[1] || 0),
+    }).toJSDate();
 
     console.log("DEBUG start:", start, "end:", end);
 
@@ -19,9 +31,9 @@ export const createSlot = asyncHandler(async (req: Request, res: Response) => {
       data: {
         salonId,
         serviceId,
-        date: new Date(date), // just the day
-        startTime: start,
-        endTime: end,
+        date: day.toJSDate(), // store only the day
+        startTime: start,     // full datetime
+        endTime: end,         // full datetime
         isRecurring: Boolean(isRecurring),
         isAvailable: true,
       },
@@ -63,6 +75,23 @@ export const getSlots = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
+export const getSalonSlots = asyncHandler(async (req: Request, res: Response) => {
+  const { salonId } = req.params;
+
+  const slots = await prisma.slot.findMany({
+    where: { salonId },
+    orderBy: { startTime: "asc" },
+    select: {
+      id: true,
+      startTime: true,
+      endTime: true,
+      isAvailable: true,
+      serviceId: true,
+    },
+  });
+
+  res.json(slots);
+});
 export const updateSlot = asyncHandler(async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

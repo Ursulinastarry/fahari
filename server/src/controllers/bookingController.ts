@@ -5,126 +5,84 @@ import { UserRequest } from "../utils/types/userTypes";
 import { PrismaClient } from '@prisma/client';
 import { pool } from "../index";
 import prisma from "../config/prisma";
-export const createBooking = asyncHandler(async (req: Request, res: Response) => {
-  const { slotId, clientNotes } = req.body;
-  const userId = (req as any).user?.id;
-  const userRole = (req as any).user?.role;
+import { DateTime } from "luxon";
 
-  if (!slotId) return res.status(400).json({ message: "slotId is required" });
-  if (!userId) return res.status(401).json({ message: "Unauthorized" });
-  if (userRole !== "CLIENT" && userRole !== "ADMIN") {
-    return res.status(403).json({ message: "Only clients can create bookings" });
+export const createBooking = asyncHandler(async (req: UserRequest, res: Response) => {
+  const { salonId, salonServiceId, slotDate, slotStartTime } = req.body; 
+  // slotDate = "2025-08-28", slotStartTime = "06:00"
+
+  if (!req.user) return res.status(401).json({ error: "Unauthorized" });
+
+  // Fetch the salon service directly
+  const salonService = await prisma.salonService.findUnique({
+    where: { id: salonServiceId },
+  });
+
+  if (!salonService) return res.status(404).json({ error: "SalonService not found" });
+
+  const slotDuration = 60; // each slot = 60 mins
+  const requiredSlots = Math.ceil(salonService.duration / slotDuration);
+
+  // Combine date + time into a proper Date object in UTC
+  console.log("slotDate:", slotDate, "slotStartTime:", slotStartTime);
+
+
+  const startSlot = DateTime.fromISO(`${slotDate}T${slotStartTime}`, { zone: 'Africa/Nairobi' }).toJSDate();
+
+  const slots = await prisma.slot.findMany({
+    where: {
+      salonId,
+      startTime: { gte: startSlot },
+      isAvailable: true
+    },
+    orderBy: { startTime: 'asc' },
+    take: 1
+  });
+
+  if (slots.length < requiredSlots) {
+    return res.status(400).json({ error: "Not enough consecutive slots available" });
   }
 
-  try {
-    // Use a transaction to avoid races. First atomically mark the slot unavailable.
-    const booking = await prisma.$transaction(async (tx) => {
-      // Atomically flip slot to unavailable only if it was available.
-      const updated = await tx.slot.updateMany({
-        where: { id: slotId, isAvailable: true },
-        data: { isAvailable: false },
-      });
+  // Mark slots as booked
+  const slotIds = slots.map(s => s.id);
+  await prisma.slot.updateMany({
+    where: { id: { in: slotIds } },
+    data: { isAvailable: false },
+  });
 
-      if (updated.count === 0) {
-        // Slot not available (either non-existent or already booked)
-        throw new Error("Slot not available");
-      }
+  // Create an appointment for the booked time (represents merged slot)
+  const appointment = await prisma.appointment.create({
+    data: {
+      date: slots[0].date,
+      startTime: slots[0].startTime,
+      endTime: slots[slots.length - 1].endTime,
+      salonId,
+      serviceId: salonService.id, // Use SalonService ID
+      slotId: slotIds[0], // store first slot as representative
+      status: "CONFIRMED",
+    },
+  });
 
-      // Now fetch the slot with related info (we already made it unavailable)
-      const slot = await tx.slot.findUnique({
-        where: { id: slotId },
-        include: { salon: true, service: true, appointment: true },
-      });
+  // Create the booking linked to appointment, salonService, slot, and client
+  const booking = await prisma.booking.create({
+    data: {
+      bookingNumber: `BK-${Date.now()}`,
+      totalAmount: salonService.price,
+      status: "CONFIRMED",
+      clientId: req.user.id,
+      salonId,
+      serviceId: salonService.id,
+      appointmentId: appointment.id,
+      slotId: slotIds[0], // first slot
+    },
+  });
 
-      if (!slot) throw new Error("Slot not found after lock");
-
-      if (!slot.serviceId) {
-        throw new Error("Slot is not linked to a service");
-      }
-
-      // Verify the service is offered by the salon and get price
-      const salonService = await tx.salonService.findUnique({
-        where: {
-          salonId_serviceId: {
-            salonId: slot.salonId,
-            serviceId: slot.serviceId,
-          },
-        },
-      });
-
-      if (!salonService) {
-        throw new Error("Service not available at this salon");
-      }
-
-      // If appointment already exists, ensure it doesn't already have a booking
-      let appointmentId = slot.appointment?.id;
-      if (appointmentId) {
-        const existingBooking = await tx.booking.findUnique({
-          where: { appointmentId },
-        });
-        if (existingBooking) {
-          throw new Error("This appointment is already booked");
-        }
-      } else {
-        // create appointment
-        const appointment = await tx.appointment.create({
-          data: {
-            date: slot.date,
-            startTime: slot.startTime,
-            endTime: slot.endTime,
-            salonId: slot.salonId,
-            serviceId: slot.serviceId,
-            slotId: slot.id,
-            status: "CONFIRMED", // or PENDING depending on your flow
-            notes: clientNotes || undefined,
-          },
-        });
-        appointmentId = appointment.id;
-      }
-
-      // Generate a booking number (you can replace with your uuid/sequence approach)
-      const bookingNumber = `BK${Date.now()}${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
-
-      // Create booking
-      const newBooking = await tx.booking.create({
-        data: {
-          bookingNumber,
-          totalAmount: salonService.price,
-          clientId: userId,
-          salonId: slot.salonId,
-          serviceId: slot.serviceId,
-          appointmentId,
-          slotId: slot.id,
-          clientNotes,
-        },
-        include: {
-          appointment: true,
-          salon: { select: { name: true } },
-          service: { select: { name: true } },
-          client: { select: { firstName: true, lastName: true } },
-        },
-      });
-
-      return newBooking;
-    }); // end transaction
-
-    res.status(201).json(booking);
-  } catch (err: any) {
-    const msg = err?.message || "Booking error";
-    // map some errors to 400-level responses
-    if (msg === "Slot not available" || msg === "This appointment is already booked" || msg === "Service not available at this salon" || msg === "Slot is not linked to a service") {
-      return res.status(400).json({ message: msg });
-    }
-    console.error("Booking error:", err);
-    return res.status(500).json({ message: "Internal server error" });
-  }
+  res.status(201).json({ booking, bookedSlots: slotIds, appointment });
 });
-
-
 export const getBookings = asyncHandler(async (req: Request, res: Response) => {
   try {
     const { status, salonId } = req.query;
-    const userId = (req as any).user.userId;
+    const userId = (req as any).user.id;
     const userRole = (req as any).user.role;
     
     const where: any = {};
