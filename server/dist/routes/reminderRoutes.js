@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const protect_1 = require("../middlewares/protect");
+const reminderController_1 = require("../controllers/reminderController");
+const router = (0, express_1.Router)();
+router.post("/", protect_1.protect, reminderController_1.createReminder);
+router.get("/", protect_1.protect, reminderController_1.getReminders);
+router.put("/:id/sent", protect_1.protect, reminderController_1.markReminderAsSent);
+exports.default = router;

@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const protect_1 = require("../middlewares/protect");
+const slotsController_1 = require("../controllers/slotsController");
+const router = (0, express_1.Router)();
+router.post("/", protect_1.protect, slotsController_1.createSlot);
+router.get("/", slotsController_1.getSlots);
+router.get("/salons/:salonId", slotsController_1.getSalonSlots);
+router.put("/:id", protect_1.protect, slotsController_1.updateSlot);
+router.delete("/:id", protect_1.protect, slotsController_1.deleteSlot);
+exports.default = router;

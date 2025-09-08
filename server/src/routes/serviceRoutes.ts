@@ -1,17 +1,20 @@
-import { Router } from "express";
-import { protect } from "../middlewares/protect";
+import express from "express";
 import {
-  addSalonService,
-  updateSalonService,
-  removeSalonService,
-  getOwnerServices,
-} from "../controllers/servicesController";
+  getAllServices,
+  createService,
+  updateService,
+  deleteService,
+} from "../controllers/servicesContoller";
+import { protect} from "../middlewares/protect"; 
 
-const router = Router();
+const router = express.Router();
 
-router.post("/", protect, addSalonService);
-router.get("/owner", protect, getOwnerServices);
-router.put("/:id", protect, updateSalonService);
-router.delete("/:id", protect, removeSalonService);
+// Public - anyone can see services
+router.get("/", getAllServices);
+
+// Admin only
+router.post("/", protect, createService);
+router.put("/:id", protect, updateService);
+router.delete("/:id", protect, deleteService);
 
 export default router;

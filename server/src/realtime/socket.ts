@@ -9,7 +9,12 @@ export let io: Server;
 
 export function initSocket(server: HTTPServer) {
   io = new Server(server, {
-    cors: { origin: "*" },
+    cors: {
+      origin: "http://localhost:5173",   // 👈 explicit, not "*"
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+    transports: ["websocket"],   // force WebSocket, skip polling
   });
 
   io.use((socket, next) => {
@@ -31,11 +36,13 @@ export function initSocket(server: HTTPServer) {
       return next(new Error("Unauthorized"));
     }
   });
-
-  io.on("connection", (socket) => {
-    // optional: on connect, push unread notifications
-    // your API route can also handle this; see below
+io.on("connection", (socket) => {
+  console.log("✅ Socket connected:", socket.id);
+  socket.on("disconnect", (reason) => {
+    console.log("❌ Socket disconnected:", socket.id, "reason:", reason);
   });
+});
+
 
   return io;
 }

@@ -54,37 +54,45 @@ const ReviewsPage: React.FC = () => {
 
       {/* Reviews list */}
       <div className="space-y-4">
-        {reviews.map((review) => (
-          <div
-            key={review.id}
-            className="bg-white shadow rounded-lg p-4 flex justify-between items-start"
-          >
-            <div>
-              <p className="font-semibold">{review.clientName}</p>
-              <div className="flex items-center gap-1 mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`h-4 w-4 ${
-                      i < review.rating
-                        ? "text-yellow-400 fill-yellow-400"
-                        : "text-gray-300"
-                    }`}
-                  />
-                ))}
-              </div>
-              <p className="text-gray-700">{review.comment}</p>
-            </div>
-            <p className="text-xs text-gray-500">
-              {new Date(review.createdAt).toLocaleDateString()}
-            </p>
-          </div>
-        ))}
+  {reviews.map((review) => (
+    <div
+      key={review.id}
+      className="bg-white shadow rounded-lg p-4 flex justify-between items-start gap-4"
+    >
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-3">
+          <img
+            // src={review.client.avatar || "/default-avatar.png"}
+            alt={review.clientName}
+            className="w-10 h-10 rounded-full object-cover"
+          />
+          <p className="font-semibold">{review.clientName}</p>
+        </div>
 
-        {reviews.length === 0 && (
-          <p className="text-gray-500 text-center">No reviews yet.</p>
-        )}
+        <div className="flex items-center gap-1">
+          {[...Array(5)].map((_, i) => (
+            <Star
+              key={i}
+              className={`h-4 w-4 ${
+                i < review.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+              }`}
+            />
+          ))}
+        </div>
+
+        <p className="text-gray-700">{review.comment}</p>
       </div>
+
+      <p className="text-xs text-gray-500">
+        {new Date(review.createdAt).toLocaleDateString()}
+      </p>
+    </div>
+  ))}
+
+  {reviews.length === 0 && (
+    <p className="text-gray-500 text-center">No reviews yet.</p>
+  )}
+</div>
     </div>
   );
 };

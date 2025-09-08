@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { DateTime } from "luxon";
+import { Star } from "lucide-react";
 
 interface Booking {
   id: string;
   bookingNumber: string;
   totalAmount: number;
   status: string;
-  createdAt: string;  // UTC
+  createdAt: string; // UTC
   salonName: string;
+  serviceName: string; // new field
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
+  slotStartTime: string; // UTC
 }
 
 const AppointmentsPage: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [rescheduleId, setRescheduleId] = useState<string | null>(null);
   const [newDateTime, setNewDateTime] = useState<string>("");
+
+  // Review modal state
+  const [selectedReview, setSelectedReview] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loadingReview, setLoadingReview] = useState(false);
 
   const fetchBookings = async () => {
     try {
@@ -37,8 +45,8 @@ const AppointmentsPage: React.FC = () => {
 
   const updateStatus = async (id: string, status: string) => {
     try {
-      await axios.put(
-        `http://localhost:4000/api/bookings/${id}`,
+      await axios.patch(
+        `http://localhost:4000/api/bookings/${id}/cancel`,
         { status },
         { withCredentials: true }
       );
@@ -64,76 +72,131 @@ const AppointmentsPage: React.FC = () => {
     }
   };
 
+  const fetchBookingReview = async (bookingId: string) => {
+    setLoadingReview(true);
+    try {
+      const res = await axios.get(`http://localhost:4000/api/reviews/${bookingId}`, {
+        withCredentials: true,
+      });
+      setSelectedReview(res.data);
+      setIsModalOpen(true);
+    } catch (err: any) {
+      console.error("Error fetching review:", err.response?.data?.message || err.message);
+    } finally {
+      setLoadingReview(false);
+    }
+  };
+
   const formatEAT = (utcDate: string) => {
     return DateTime.fromISO(utcDate, { zone: "utc" })
       .setZone("Africa/Nairobi")
       .toFormat("dd LLL yyyy, HH:mm");
   };
 
+  const now = DateTime.now().setZone("Africa/Nairobi");
+
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">📅 Manage Appointments</h1>
       <div className="space-y-4">
-        {bookings.map((b) => (
-          <div
-            key={b.id}
-            className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white shadow rounded-lg p-4"
-          >
-            <div>
-              <p className="font-semibold">{b.firstName} {b.lastName}</p>
-              <p className="text-sm text-gray-600">Booking: {b.bookingNumber}</p>
-              <p className="text-sm text-gray-600">Salon: {b.salonName}</p>
-              <p className="text-sm text-gray-600">
-                Created: {formatEAT(b.createdAt)}
-              </p>
-              <p className="text-sm text-gray-600">
-                Email: {b.email} | Phone: {b.phone}
-              </p>
-            </div>
+        {bookings.map((b) => {
+          const slotTime = DateTime.fromISO(b.slotStartTime, { zone: "utc" }).setZone(
+            "Africa/Nairobi"
+          );
+          let effectiveStatus = b.status;
+          if (b.status !== "CANCELLED" && slotTime < now) {
+            effectiveStatus = "COMPLETED";
+          }
 
-            <div className="flex flex-wrap items-center gap-3 mt-3 md:mt-0">
-              <p className="font-bold">KES {b.totalAmount}</p>
-              <span
-                className={`px-3 py-1 text-xs rounded-full ${
-                  b.status === "CONFIRMED"
-                    ? "bg-green-100 text-green-600"
-                    : b.status === "CANCELLED"
-                    ? "bg-red-100 text-red-600"
-                    : "bg-yellow-100 text-yellow-600"
-                }`}
-              >
-                {b.status}
-              </span>
-              {b.status === "PENDING_PAYMENT" && (
-                <>
+          return (
+            <div
+              key={b.id}
+              className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white shadow rounded-lg p-4"
+            >
+              <div>
+                <p className="font-semibold">
+                  {b.firstName} {b.lastName}
+                </p>
+                <p className="text-sm text-gray-600">Booking: {b.bookingNumber}</p>
+                <p className="text-sm text-gray-600">Salon: {b.salonName}</p>
+                  <p className="text-sm text-gray-600">Service: {b.serviceName}</p> {/* New line */}
+
+                <p className="text-sm text-gray-600">
+                  Appointment: {formatEAT(b.slotStartTime)}
+                </p>
+                <p className="text-sm text-gray-600">Created: {formatEAT(b.createdAt)}</p>
+                <p className="text-sm text-gray-600">
+                  Email: {b.email} | Phone: {b.phone}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 mt-3 md:mt-0">
+                <p className="font-bold">KES {b.totalAmount}</p>
+                <span
+                  className={`px-3 py-1 text-xs rounded-full ${
+                    effectiveStatus === "CONFIRMED"
+                      ? "bg-green-100 text-green-600"
+                      : effectiveStatus === "CANCELLED"
+                      ? "bg-red-100 text-red-600"
+                      : effectiveStatus === "COMPLETED"
+                      ? "bg-gray-200 text-gray-700"
+                      : "bg-yellow-100 text-yellow-600"
+                  }`}
+                >
+                  {effectiveStatus}
+                </span>
+
+                {effectiveStatus === "PENDING_PAYMENT" && (
+                  <>
+                    <button
+                      onClick={() => updateStatus(b.id, "CONFIRMED")}
+                      className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      onClick={() => updateStatus(b.id, "CANCELLED")}
+                      className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                    >
+                      Cancel
+                    </button>
+                  </>
+                )}
+
+                {effectiveStatus === "CONFIRMED" && (
+                  <>
+                    <button
+                      onClick={() => setRescheduleId(b.id)}
+                      className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    >
+                      Reschedule
+                    </button>
+                    <button
+                      onClick={() => updateStatus(b.id, "CANCELLED")}
+                      className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                    >
+                      Cancel
+                    </button>
+                  </>
+                )}
+
+                {effectiveStatus === "COMPLETED" && (
                   <button
-                    onClick={() => updateStatus(b.id, "CONFIRMED")}
-                    className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    onClick={() => fetchBookingReview(b.id)}
+                    className="px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
                   >
-                    Confirm
+                    {loadingReview ? "Loading..." : "Review"}
                   </button>
-                  <button
-                    onClick={() => updateStatus(b.id, "CANCELLED")}
-                    className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                  >
-                    Cancel
-                  </button>
-                </>
-              )}
-              <button
-                onClick={() => setRescheduleId(b.id)}
-                className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-              >
-                Reschedule
-              </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Reschedule Modal */}
       {rescheduleId && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
           <div className="bg-white rounded-lg p-6 shadow-lg w-96">
             <h2 className="text-lg font-bold mb-4">Reschedule Booking</h2>
             <input
@@ -156,6 +219,49 @@ const AppointmentsPage: React.FC = () => {
                 Save
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Review Modal */}
+      {isModalOpen && selectedReview && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96 relative">
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              onClick={() => setIsModalOpen(false)}
+            >
+              ✕
+            </button>
+
+            <div className="flex items-center gap-3 mb-4">
+              <img
+                src={selectedReview.client.avatar || "/default-avatar.png"}
+                alt={selectedReview.client.firstName}
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <p className="font-semibold">
+                {selectedReview.client.firstName} {selectedReview.client.lastName}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-1 mb-2">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`h-5 w-5 ${
+                    i < selectedReview.rating
+                      ? "text-yellow-400 fill-yellow-400"
+                      : "text-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <p className="text-gray-700 mb-2">{selectedReview.comment}</p>
+            <p className="text-xs text-gray-500">
+              {new Date(selectedReview.createdAt).toLocaleDateString()}
+            </p>
           </div>
         </div>
       )}

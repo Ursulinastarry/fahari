@@ -1,13 +1,317 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql" // or "mysql", "sqlite", "sqlserver"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String             @id @default(dbgenerated("gen_random_uuid()"))
+  email           String             @unique
+  phone           String             @unique
+  password        String
+  firstName       String
+  lastName        String
+  avatar          String?
+  role            UserRole           @default(CLIENT)
+  isActive        Boolean            @default(false)
+  isVerified      Boolean            @default(false)
+  lastLoginAt     DateTime?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @default(now()) @updatedAt
+  bookings        Booking[]
+  clientProfile   ClientProfile?
+  notifications   Notification[]
+  reviews         Review[]
+  salonProfile    SalonOwnerProfile?
+  ownedSalons     Salon[]
+  waitlistEntries WaitlistEntry[]
+
+  @@map("users")
+}
+
+model ClientProfile {
+  id            String    @id @default(dbgenerated("gen_random_uuid()"))
+  userId        String    @unique
+  dateOfBirth   DateTime?
+  gender        String?
+  location      String?
+  preferences   Json?
+  totalBookings Int       @default(0)
+  totalSpent    Float     @default(0)
+  loyaltyPoints Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("client_profiles")
+}
+
+model SalonOwnerProfile {
+  id              String   @id @default(dbgenerated("gen_random_uuid()"))
+  userId          String   @unique
+  businessName    String
+  businessLicense String?
+  taxId           String?
+  bankAccount     String?
+  totalEarnings   Float    @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("salon_owner_profiles")
+}
+
+model Salon {
+  id              String           @id @default(dbgenerated("gen_random_uuid()"))
+  name            String
+  description     String?
+  email           String?
+  phone           String
+  address         String
+  city            String
+  location        String
+  latitude        Float?
+  longitude       Float?
+  businessHours   Json
+  isActive        Boolean          @default(true)
+  isVerified      Boolean          @default(false)
+  averageRating   Float            @default(0)
+  totalReviews    Int              @default(0)
+  profileImage    String?
+  coverImage      String?
+  gallery         String[]
+  ownerId         String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @default(now()) @updatedAt
+  appointments    Appointment[]
+  bookings        Booking[]
+  reviews         Review[]
+  salonServices   SalonService[]
+  statistics      SalonStatistic[]
+  owner           User             @relation(fields: [ownerId], references: [id])
+  slots           Slot[]
+  waitlistEntries WaitlistEntry[]
+
+  @@map("salons")
+}
+
+model Service {
+  id            String         @id @default(dbgenerated("gen_random_uuid()"))
+  name          String
+  description   String?
+  category      String?
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  salonServices SalonService[]
+  slots         Slot[]
+  
+
+  @@map("services")
+}
+
+model SalonService {
+  id        String  @id @default(dbgenerated("gen_random_uuid()"))
+  salonId   String
+  serviceId String
+  price     Float
+  duration  Int
+  salon     Salon   @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  appointments Appointment[] // ⬅ points back to Appointment
+  bookings     Booking[]     // ⬅ points back to Booking
+  @@unique([salonId, serviceId])
+  @@map("salon_services")
+}
+
+model Slot {
+  id          String       @id @default(dbgenerated("gen_random_uuid()"))
+  date        DateTime     @db.Date
+  startTime   DateTime     @db.Timestamptz(6)
+  endTime     DateTime     @db.Timestamptz(6)
+  isAvailable Boolean      @default(true)
+  isRecurring Boolean      @default(false)
+  salonId     String
+  serviceId   String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
+  appointment Appointment?
+  booking     Booking?
+  salon       Salon        @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  service     Service?     @relation(fields: [serviceId], references: [id])
+
+  @@unique([salonId, date, startTime])
+  @@map("slots")
+}
+
+model Appointment {
+  id        String            @id @default(dbgenerated("gen_random_uuid()"))
+  date      DateTime          @db.Date
+  startTime DateTime          @db.Time(6)
+  endTime   DateTime          @db.Time(6)
+  status    AppointmentStatus @default(PENDING)
+  notes     String?
+  salonId   String
+  salonServiceId String
+  slotId    String            @unique
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @default(now()) @updatedAt
+
+  salon   Salon   @relation(fields: [salonId], references: [id])
+  slot    Slot    @relation(fields: [slotId], references: [id])
+  salonService SalonService @relation(fields: [salonServiceId], references: [id])  // 🔥 ADD THIS
+  booking Booking?
+
+  @@map("appointments")
+}
+
+model Booking {
+  id            String        @id @default(dbgenerated("gen_random_uuid()"))
+  bookingNumber String        @unique @default(dbgenerated("('BKG'::text || lpad((nextval('booking_number_seq'::regclass))::text, 6, '0'::text))"))
+  totalAmount   Float
+  status        BookingStatus @default(PENDING_PAYMENT)
+  clientNotes   String?
+  salonNotes    String?
+  clientId      String
+  salonId       String
+  salonServiceId     String
+  appointmentId String        @unique
+  slotId        String        @unique
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+  client      User        @relation(fields: [clientId], references: [id])
+  salon       Salon       @relation(fields: [salonId], references: [id])
+  slot        Slot        @relation(fields: [slotId], references: [id])
+  salonService     SalonService?     @relation(fields: [salonServiceId], references: [id])  // 🔥 ADD THIS
+
+  payment   Payment?
+  reminders Reminder[]
+  review    Review?
+
+  @@map("bookings")
+}
+
+
+model Payment {
+  id                 String        @id @default(dbgenerated("gen_random_uuid()"))
+  amount             Float
+  method             PaymentMethod
+  status             PaymentStatus @default(PENDING)
+  transactionId      String?       @unique
+  mpesaReceiptNumber String?
+  failureReason      String?
+  processedAt        DateTime?
+  bookingId          String        @unique
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @default(now()) @updatedAt
+  booking            Booking       @relation(fields: [bookingId], references: [id])
+
+  @@map("payments")
+}
+
+model WaitlistEntry {
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  date       DateTime @db.Date
+  timeSlot   String
+  priority   Int      @default(0)
+  isNotified Boolean  @default(false)
+  clientId   String
+  salonId    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  client     User     @relation(fields: [clientId], references: [id])
+  salon      Salon    @relation(fields: [salonId], references: [id])
+
+  @@unique([clientId, salonId, date])
+  @@map("waitlist_entries")
+}
+
+model Review {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  rating    Float
+  comment   String?
+  images    String[]
+  clientId  String
+  salonId   String
+  bookingId String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  client    User     @relation(fields: [clientId], references: [id])
+  salon     Salon    @relation(fields: [salonId], references: [id])
+
+  @@map("reviews")
+}
+
+model Reminder {
+  id           String    @id @default(dbgenerated("gen_random_uuid()"))
+  type         String
+  scheduledFor DateTime
+  sentAt       DateTime?
+  message      String
+  channel      String
+  bookingId    String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt
+  booking      Booking   @relation(fields: [bookingId], references: [id])
+
+  @@map("reminders")
+}
+
+model Notification {
+  id        String           @id @default(dbgenerated("gen_random_uuid()"))
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  data      Json?
+  userId    String
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @default(now()) @updatedAt
+  user      User             @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+model SalonStatistic {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()"))
+  date                DateTime @db.Date
+  totalBookings       Int      @default(0)
+  completedBookings   Int      @default(0)
+  cancelledBookings   Int      @default(0)
+  noShowBookings      Int      @default(0)
+  totalRevenue        Float    @default(0)
+  averageBookingValue Float    @default(0)
+  newClients          Int      @default(0)
+  returningClients    Int      @default(0)
+  salonId             String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now()) @updatedAt
+  salon               Salon    @relation(fields: [salonId], references: [id])
+
+  @@unique([salonId, date])
+  @@map("salon_statistics")
+}
+
+model PlatformStatistic {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()"))
+  date               DateTime @unique @db.Date
+  totalUsers         Int      @default(0)
+  newUsers           Int      @default(0)
+  totalSalons        Int      @default(0)
+  newSalons          Int      @default(0)
+  totalBookings      Int      @default(0)
+  totalRevenue       Float    @default(0)
+  platformCommission Float    @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now()) @updatedAt
+
+  @@map("platform_statistics")
 }
 
 enum UserRole {
@@ -31,6 +335,8 @@ enum BookingStatus {
   CANCELLED
   REFUNDED
   RESCHEDULED
+  COMPLETED
+  REVIEWED
 }
 
 enum PaymentStatus {
@@ -54,368 +360,4 @@ enum NotificationType {
   PAYMENT_SUCCESS
   PAYMENT_FAILED
   GENERAL
-}
-
-model User {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  phone         String   @unique
-  password      String
-  firstName     String
-  lastName      String
-  avatar        String?
-  role          UserRole @default(CLIENT)
-  isActive      Boolean  @default(true)
-  isVerified    Boolean  @default(false)
-  lastLoginAt   DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  // Client specific
-  clientProfile ClientProfile?
-  bookings      Booking[]
-  reviews       Review[]
-  waitlistEntries WaitlistEntry[]
-  notifications Notification[]
-
-  // Salon Owner specific
-  salonProfile  SalonOwnerProfile?
-  ownedSalons   Salon[]
-
-  @@map("users")
-}
-
-model ClientProfile {
-  id              String @id @default(cuid())
-  userId          String @unique
-  user            User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  dateOfBirth     DateTime?
-  gender          String?
-  location        String?
-  preferences     Json? // Store service preferences, favorite salons, etc.
-  totalBookings   Int    @default(0)
-  totalSpent      Float  @default(0)
-  loyaltyPoints   Int    @default(0)
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@map("client_profiles")
-}
-
-model SalonOwnerProfile {
-  id              String @id @default(cuid())
-  userId          String @unique
-  user            User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  businessName    String
-  businessLicense String?
-  taxId           String?
-  bankAccount     String?
-  totalEarnings   Float   @default(0)
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@map("salon_owner_profiles")
-}
-
-model Salon {
-  id              String          @id @default(cuid())
-  name            String
-  description     String?
-  email           String?
-  phone           String
-  address         String
-  city            String
-  location        String
-  latitude        Float?
-  longitude       Float?
-
-  // Relations
-  salonServices   SalonService[]
-  appointments    Appointment[]
-  bookings        Booking[]
-  reviews         Review[]
-  slots           Slot[]
-  waitlistEntries WaitlistEntry[]
-  statistics      SalonStatistic[]
-
-  // Business details
-  businessHours   Json
-  isActive        Boolean   @default(true)
-  isVerified      Boolean   @default(false)
-  averageRating   Float     @default(0)
-  totalReviews    Int       @default(0)
-
-  // Media
-  profileImage    String?
-  coverImage      String?
-  gallery         String[]
-
-  // Owner
-  ownerId         String
-  owner           User      @relation(fields: [ownerId], references: [id])
-
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-
-  @@map("salons")
-}
-
-model Service {
-  id              String          @id @default(cuid())
-  name            String
-  description     String?
-  category        String? // Hair, Nails, Facial, etc.
-  isActive        Boolean         @default(true)
-
-  // Relations
-  salonServices   SalonService[]
-  appointments    Appointment[]
-  bookings        Booking[]
-  slots           Slot[]
-
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-
-  @@map("services")
-}
-
-model SalonService {
-  id          String   @id @default(cuid())
-  salonId     String
-  serviceId   String
-  price       Float
-  duration    Int // in minutes
-
-  salon       Salon   @relation(fields: [salonId], references: [id], onDelete: Cascade)
-  service     Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-
-  @@unique([salonId, serviceId])
-  @@map("salon_services")
-}
-model Slot {
-  id          String    @id @default(cuid())
-  date        DateTime  @db.Date
-  startTime   DateTime  @db.Time
-  endTime     DateTime  @db.Time
-  isAvailable Boolean   @default(true)
-  isRecurring Boolean   @default(false)
-  
-  // Relations
-  salonId     String
-  salon       Salon     @relation(fields: [salonId], references: [id], onDelete: Cascade)
-  
-  serviceId   String?
-  service     Service?  @relation(fields: [serviceId], references: [id])
-  
-  appointment Appointment?
-  booking     Booking?
-  
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@unique([salonId, date, startTime])
-  @@map("slots")
-}
-
-model Appointment {
-  id            String            @id @default(cuid())
-  date          DateTime          @db.Date
-  startTime     DateTime          @db.Time
-  endTime       DateTime          @db.Time
-  status        AppointmentStatus @default(PENDING)
-  notes         String?
-  
-  // Relations
-  salonId       String
-  salon         Salon    @relation(fields: [salonId], references: [id])
-  
-  serviceId     String
-  service       Service  @relation(fields: [serviceId], references: [id])
-  
-  slotId        String   @unique
-  slot          Slot     @relation(fields: [slotId], references: [id])
-  
-  booking       Booking?
-  
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  @@map("appointments")
-}
-
-model Booking {
-  id              String        @id @default(cuid())
-  bookingNumber   String        @unique
-  totalAmount     Float
-  status          BookingStatus @default(PENDING_PAYMENT)
-  clientNotes     String?
-  salonNotes      String?
-  
-  // Relations
-  clientId        String
-  client          User          @relation(fields: [clientId], references: [id])
-  
-  salonId         String
-  salon           Salon         @relation(fields: [salonId], references: [id])
-  
-  serviceId       String
-  service         Service       @relation(fields: [serviceId], references: [id])
-  
-  appointmentId   String        @unique
-  appointment     Appointment   @relation(fields: [appointmentId], references: [id])
-  
-  slotId          String        @unique
-  slot            Slot          @relation(fields: [slotId], references: [id])
-  
-  payment         Payment?
-  review          Review?
-  reminders       Reminder[]
-  
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-
-  @@map("bookings")
-}
-
-model Payment {
-  id              String        @id @default(cuid())
-  amount          Float
-  method          PaymentMethod
-  status          PaymentStatus @default(PENDING)
-  transactionId   String?       @unique
-  mpesaReceiptNumber String?
-  failureReason   String?
-  processedAt     DateTime?
-  
-  // Relations
-  bookingId       String        @unique
-  booking         Booking       @relation(fields: [bookingId], references: [id])
-  
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-
-  @@map("payments")
-}
-
-model WaitlistEntry {
-  id          String   @id @default(cuid())
-  date        DateTime @db.Date
-  timeSlot    String // "morning", "afternoon", "evening" or specific time
-  priority    Int      @default(0)
-  isNotified  Boolean  @default(false)
-  
-  // Relations
-  clientId    String
-  client      User     @relation(fields: [clientId], references: [id])
-  
-  salonId     String
-  salon       Salon    @relation(fields: [salonId], references: [id])
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@unique([clientId, salonId, date])
-  @@map("waitlist_entries")
-}
-
-model Review {
-  id          String @id @default(cuid())
-  rating      Float // 1-5 stars
-  comment     String?
-  images      String[] // Array of image URLs
-  
-  // Relations
-  clientId    String
-  client      User   @relation(fields: [clientId], references: [id])
-  
-  salonId     String
-  salon       Salon  @relation(fields: [salonId], references: [id])
-  
-  bookingId   String @unique
-  booking     Booking @relation(fields: [bookingId], references: [id])
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("reviews")
-}
-
-model Reminder {
-  id          String   @id @default(cuid())
-  type        String // "24h_before", "1h_before", "custom"
-  scheduledFor DateTime
-  sentAt      DateTime?
-  message     String
-  channel     String // "sms", "email", "push"
-  
-  // Relations
-  bookingId   String
-  booking     Booking @relation(fields: [bookingId], references: [id])
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("reminders")
-}
-
-model Notification {
-  id          String           @id @default(cuid())
-  type        NotificationType
-  title       String
-  message     String
-  isRead      Boolean          @default(false)
-  data        Json?            // Additional data for the notification
-  
-  // Relations
-  userId      String
-  user        User             @relation(fields: [userId], references: [id])
-  
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-
-  @@map("notifications")
-}
-
-model SalonStatistic {
-  id                    String   @id @default(cuid())
-  date                  DateTime @db.Date
-  totalBookings         Int      @default(0)
-  completedBookings     Int      @default(0)
-  cancelledBookings     Int      @default(0)
-  noShowBookings        Int      @default(0)
-  totalRevenue          Float    @default(0)
-  averageBookingValue   Float    @default(0)
-  newClients            Int      @default(0)
-  returningClients      Int      @default(0)
-  
-  // Relations
-  salonId               String
-  salon                 Salon    @relation(fields: [salonId], references: [id])
-  
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-
-  @@unique([salonId, date])
-  @@map("salon_statistics")
-}
-
-model PlatformStatistic {
-  id                    String   @id @default(cuid())
-  date                  DateTime @db.Date @unique
-  totalUsers            Int      @default(0)
-  newUsers              Int      @default(0)
-  totalSalons           Int      @default(0)
-  newSalons             Int      @default(0)
-  totalBookings         Int      @default(0)
-  totalRevenue          Float    @default(0)
-  platformCommission    Float    @default(0)
-  
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-
-  @@map("platform_statistics")
 }

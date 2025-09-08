@@ -15,10 +15,12 @@ import statisticRoutes from './routes/statisticRoutes';
 import slotRoutes from './routes/slotRoutes';
 import waitlistRoutes from './routes/waitlistRoutes';
 import searchRoutes from './routes/searchRoutes';
+import salonServiceRoutes from './routes/salonServiceRoutes';
 import serviceRoutes from './routes/serviceRoutes';
 import http from "http";
 import { initSocket } from "./realtime/socket";
 import cookieParser from 'cookie-parser';
+import fileUpload from 'express-fileupload';
 import "./cron/slotScheduler";
 
 
@@ -33,6 +35,14 @@ app.use(cors({
   methods: "GET, POST, PUT, PATCH, DELETE",
   credentials: true // allows cookies and auth headers
 }));
+
+app.use(
+  fileUpload({
+    createParentPath: true,
+    limits: { fileSize: 10 * 1024 * 1024 }, // max 10MB
+    abortOnLimit: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -80,6 +90,7 @@ app.use('/api/statistics', statisticRoutes);
 app.use('/api/slots', slotRoutes);
 app.use('/api/waitlist', waitlistRoutes);
 app.use('/api/search', searchRoutes);
+app.use('/api/salon-services', salonServiceRoutes);
 app.use('/api/services', serviceRoutes);
 
 app.get('/', (_, res) => res.send('Fahari AI Backend is Live 🚀'));

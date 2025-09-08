@@ -2,12 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import asyncHandler from "../middlewares/asyncHandler";
 import dotenv from "dotenv";
 import { UserRequest } from "../utils/types/userTypes";
-import { PrismaClient } from '@prisma/client';
 import { pool } from "../index";
 import prisma from "../config/prisma";
 export const createAppointment = asyncHandler(async (req: Request, res: Response) => {
   try {
-    const { salonId, serviceId, slotId, notes } = req.body;
+    const { salonId, salonServiceId, slotId, notes } = req.body;
     const userId = (req as any).user.id;
     const userRole = (req as any).user.role;
     
@@ -32,13 +31,13 @@ export const createAppointment = asyncHandler(async (req: Request, res: Response
         startTime: slot.startTime,
         endTime: slot.endTime,
         salonId,
-        serviceId,
+        salonServiceId,
         slotId,
         notes
       },
       include: {
         salon: { select: { name: true } },
-        service: { select: { name: true, category: true } },
+        salonService: { select: { service: { select: { name: true, category: true } } } },
         slot: true
       }
     });
@@ -71,7 +70,7 @@ export const getAppointments = asyncHandler(async (req: Request, res: Response) 
         where: { ownerId: userId },
         select: { id: true }
       });
-      where.salonId = { in: ownedSalons.map(s => s.id) };
+      where.salonId = { in: ownedSalons.map((s: { id: any; }) => s.id) };
     } else if (salonId && userRole === 'ADMIN') {
       where.salonId = salonId as string;
     }
@@ -80,7 +79,7 @@ export const getAppointments = asyncHandler(async (req: Request, res: Response) 
       where,
       include: {
         salon: { select: { name: true } },
-        service: { select: { name: true, category: true } },
+        salonService: { select: { service: { select: { name: true, category: true } } } },
         booking: {
           include: {
             client: { select: { firstName: true, lastName: true, phone: true } }

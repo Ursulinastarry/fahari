@@ -1,5 +1,5 @@
 import { Request } from "express";
-
+import { UploadedFile } from "express-fileupload";
 /**
  * User type matching the PostgreSQL "users" table schema
  */
@@ -24,4 +24,10 @@ export interface User {
  */
 export interface UserRequest extends Request {
     user?: User;
+}
+export interface FileUploadUserRequest extends Request {
+  user?: User;
+  files?: {
+    [key: string]: UploadedFile | UploadedFile[];
+  };
 }

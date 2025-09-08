@@ -1,0 +1,136 @@
+2025-09-04T16:50:31: Error fetching bookings: PrismaClientUnknownRequestError: 
+Invalid `prisma_1.default.booking.findMany()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:57
+
+  197 const userId = req.user?.id;
+  198 if (!userId)
+  199     return res.status(401).json({ error: "Unauthorized" });
+→ 200 const bookings = await prisma_1.default.booking.findMany(
+Inconsistent query result: Field service is required to return data, got `null` instead.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7473)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async getMyBookings (C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:26) {
+  clientVersion: '6.15.0'
+}
+2025-09-04T16:50:31: Error fetching bookings: PrismaClientUnknownRequestError: 
+Invalid `prisma_1.default.booking.findMany()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:57
+
+  197 const userId = req.user?.id;
+  198 if (!userId)
+  199     return res.status(401).json({ error: "Unauthorized" });
+→ 200 const bookings = await prisma_1.default.booking.findMany(
+Inconsistent query result: Field service is required to return data, got `null` instead.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7473)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async getMyBookings (C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:26) {
+  clientVersion: '6.15.0'
+}
+2025-09-04T16:51:18: Error fetching bookings: PrismaClientUnknownRequestError: 
+Invalid `prisma_1.default.booking.findMany()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:57
+
+  197 const userId = req.user?.id;
+  198 if (!userId)
+  199     return res.status(401).json({ error: "Unauthorized" });
+→ 200 const bookings = await prisma_1.default.booking.findMany(
+Inconsistent query result: Field service is required to return data, got `null` instead.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7473)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async getMyBookings (C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:26) {
+  clientVersion: '6.15.0'
+}
+2025-09-04T16:51:18: Error fetching bookings: PrismaClientUnknownRequestError: 
+Invalid `prisma_1.default.booking.findMany()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:57
+
+  197 const userId = req.user?.id;
+  198 if (!userId)
+  199     return res.status(401).json({ error: "Unauthorized" });
+→ 200 const bookings = await prisma_1.default.booking.findMany(
+Inconsistent query result: Field service is required to return data, got `null` instead.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7473)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async getMyBookings (C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:26) {
+  clientVersion: '6.15.0'
+}
+2025-09-04T16:52:35: Error fetching bookings: PrismaClientUnknownRequestError: 
+Invalid `prisma_1.default.booking.findMany()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:57
+
+  197 const userId = req.user?.id;
+  198 if (!userId)
+  199     return res.status(401).json({ error: "Unauthorized" });
+→ 200 const bookings = await prisma_1.default.booking.findMany(
+Inconsistent query result: Field service is required to return data, got `null` instead.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7473)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async getMyBookings (C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:26) {
+  clientVersion: '6.15.0'
+}
+2025-09-04T16:59:51: Error fetching bookings: PrismaClientUnknownRequestError: 
+Invalid `prisma_1.default.booking.findMany()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:57
+
+  197 const userId = req.user?.id;
+  198 if (!userId)
+  199     return res.status(401).json({ error: "Unauthorized" });
+→ 200 const bookings = await prisma_1.default.booking.findMany(
+Inconsistent query result: Field service is required to return data, got `null` instead.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7473)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async getMyBookings (C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:26) {
+  clientVersion: '6.15.0'
+}
+2025-09-04T17:04:33: Error fetching bookings: PrismaClientUnknownRequestError: 
+Invalid `prisma_1.default.booking.findMany()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:57
+
+  197 const userId = req.user?.id;
+  198 if (!userId)
+  199     return res.status(401).json({ error: "Unauthorized" });
+→ 200 const bookings = await prisma_1.default.booking.findMany(
+Inconsistent query result: Field service is required to return data, got `null` instead.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7473)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async getMyBookings (C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:26) {
+  clientVersion: '6.15.0'
+}
+2025-09-04T17:09:31: Error fetching bookings: PrismaClientUnknownRequestError: 
+Invalid `prisma_1.default.booking.findMany()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:57
+
+  197 const userId = req.user?.id;
+  198 if (!userId)
+  199     return res.status(401).json({ error: "Unauthorized" });
+→ 200 const bookings = await prisma_1.default.booking.findMany(
+Inconsistent query result: Field service is required to return data, got `null` instead.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7473)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async getMyBookings (C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:200:26) {
+  clientVersion: '6.15.0'
+}
+2025-09-04T21:01:23: error: column b.salonServiceId does not exist
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:169:22
+2025-09-04T21:02:37: error: column ss.name does not exist
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:169:22

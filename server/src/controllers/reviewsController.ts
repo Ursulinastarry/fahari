@@ -2,66 +2,72 @@ import { Request, Response, NextFunction } from "express";
 import asyncHandler from "../middlewares/asyncHandler";
 import dotenv from "dotenv";
 import { UserRequest } from "../utils/types/userTypes";
-import { PrismaClient } from '@prisma/client';
 import { pool } from "../index";
 import prisma from "../config/prisma";
-export const createReview = asyncHandler(async (req: Request, res: Response) => {
+import { FileUploadUserRequest } from "../utils/types/userTypes";
+import path from 'path';
+
+export const createReview = asyncHandler(async (req: FileUploadUserRequest, res:Response) => {
   try {
-    const { bookingId, rating, comment, images } = req.body;
-    const userId = (req as any).user.userId;
-    
+    const { bookingId, rating, comment } = req.body;
+    if (!req.user) {
+     return res.status(401).json({ message: "Unauthorized" });
+   }
+    const userId = req.user.id;
+
     const booking = await prisma.booking.findUnique({
       where: { id: bookingId },
-      include: { review: true }
+      include: { review: true },
     });
-    
-    if (!booking) {
-      return res.status(404).json({ message: 'Booking not found' });
+
+    if (!booking) return res.status(404).json({ message: "Booking not found" });
+    if (booking.clientId !== userId)
+      return res.status(403).json({ message: "Not authorized to review this booking" });
+    if (booking.review)
+      return res.status(400).json({ message: "Review already exists for this booking" });
+
+    // Handle uploaded files
+    const imageFiles = req.files ? req.files.images : [];
+    const imageArray = Array.isArray(imageFiles) ? imageFiles : [imageFiles];
+
+    const uploadedPaths: string[] = [];
+
+    for (const file of imageArray) {
+      const uploadPath = path.join(__dirname, "../uploads/", file.name);
+      await file.mv(uploadPath);
+      uploadedPaths.push(uploadPath);
     }
-    
-    if (booking.clientId !== userId) {
-      return res.status(403).json({ message: 'Not authorized to review this booking' });
-    }
-    
-    if (booking.review) {
-      return res.status(400).json({ message: 'Review already exists for this booking' });
-    }
-    
-    // if (booking.status !== 'COMPLETED') {
-    //   return res.status(400).json({ message: 'Can only review completed bookings' });
-    // }
-    
+
     const review = await prisma.review.create({
       data: {
-        rating,
+        rating: Number(rating),
         comment,
-        images: images || [],
+        images: uploadedPaths,
         clientId: userId,
         salonId: booking.salonId,
-        bookingId
-      }
+        bookingId,
+      },
     });
-    
-    // Update salon's average rating
-    const salonReviews = await prisma.review.findMany({
-      where: { salonId: booking.salonId }
-    });
-    
-    const averageRating = salonReviews.reduce((sum, r) => sum + r.rating, 0) / salonReviews.length;
-    
+
+    // Update salon average rating
+    const salonReviews = await prisma.review.findMany({ where: { salonId: booking.salonId } });
+    const averageRating =
+      salonReviews.reduce((sum: any, r: { rating: any; }) => sum + r.rating, 0) / salonReviews.length;
+
     await prisma.salon.update({
       where: { id: booking.salonId },
-      data: {
-        averageRating,
-        totalReviews: salonReviews.length
-      }
+      data: { averageRating, totalReviews: salonReviews.length },
     });
-    
+
+    await prisma.booking.update({ where: { id: bookingId }, data: { status: "REVIEWED" } });
+
     res.status(201).json(review);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 });
+
+
 
 export const getSalonRating = asyncHandler(async (req: Request, res: Response) => {
   const { salonId } = req.params;
@@ -76,7 +82,7 @@ export const getSalonRating = asyncHandler(async (req: Request, res: Response) =
   }
 
   const averageRating =
-    reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+    reviews.reduce((sum: any, r: { rating: any; }) => sum + r.rating, 0) / reviews.length;
 
   res.json({
     averageRating: parseFloat(averageRating.toFixed(1)), // e.g. 4.5
@@ -107,6 +113,92 @@ export const getReviews = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
+export const getOwnerReviews = asyncHandler(async (req: UserRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const ownerId = req.user.id;
+
+    if (!ownerId) {
+      return res.status(400).json({ message: "Owner ID is required" });
+    }
+
+    const reviews = await prisma.review.findMany({
+      where: {
+        salon: {
+          ownerId: ownerId as string,
+        },
+      },
+      include: {
+        client: { select: { firstName: true, lastName: true, avatar: true } },
+        salon: { select: { name: true } }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    res.json(reviews);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+export const getBookingReview = asyncHandler(async (req: Request, res: Response) => {
+  try {
+    const { bookingId } = req.params;
+
+    if (!bookingId) {
+      return res.status(400).json({ message: "Booking ID is required" });
+    }
+
+    const review = await prisma.review.findUnique({
+      where: { bookingId: bookingId as string },
+      include: {
+        client: { select: { firstName: true, lastName: true, avatar: true } },
+        salon: { select: { name: true } }
+      }
+    });
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found for this booking" });
+    }
+
+    res.json(review);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+});
+export const getReviewsBySalon = asyncHandler(async (req: Request, res: Response) => {
+  const { salonId } = req.params;
+
+  if (!salonId) {
+    return res.status(400).json({ message: "Salon ID is required" });
+  }
+
+  const reviews = await prisma.review.findMany({
+    where: {
+      booking: {
+        salonId: salonId, // filter by salon
+      },
+    },
+    include: {
+      client: {
+        select: {
+          firstName: true,
+          lastName: true,
+          avatar: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  res.json(reviews);
+});
+
+
 export const updateReview = asyncHandler(async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -135,7 +227,7 @@ export const updateReview = asyncHandler(async (req: Request, res: Response) => 
       where: { salonId: review.salonId }
     });
     
-    const averageRating = salonReviews.reduce((sum, r) => sum + r.rating, 0) / salonReviews.length;
+    const averageRating = salonReviews.reduce((sum: any, r: { rating: any; }) => sum + r.rating, 0) / salonReviews.length;
     
     await prisma.salon.update({
       where: { id: review.salonId },
@@ -176,7 +268,7 @@ export const deleteReview = asyncHandler(async (req: Request, res: Response) => 
     });
     
     const averageRating = salonReviews.length > 0 
-      ? salonReviews.reduce((sum, r) => sum + r.rating, 0) / salonReviews.length
+      ? salonReviews.reduce((sum: any, r: { rating: any; }) => sum + r.rating, 0) / salonReviews.length
       : 0;
     
     await prisma.salon.update({

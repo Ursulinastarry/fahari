@@ -21,7 +21,7 @@ const ClientDashboard: React.FC = () => {
         >
           Salons
         </button>
-        <button
+        {/* <button
           onClick={() => setActiveTab("slots")}
           className={`pb-2 px-4 font-medium ${
             activeTab === "slots"
@@ -29,8 +29,8 @@ const ClientDashboard: React.FC = () => {
               : "text-gray-500 hover:text-indigo-600"
           }`}
         >
-          {/* Slots
-        </button>
+          Slots
+        </button> */}
         <button
           onClick={() => setActiveTab("appointments")}
           className={`pb-2 px-4 font-medium ${
@@ -38,7 +38,7 @@ const ClientDashboard: React.FC = () => {
               ? "border-b-2 border-indigo-600 text-indigo-600"
               : "text-gray-500 hover:text-indigo-600"
           }`}
-        > */}
+        >
           My Appointments
         </button>
       </div>

@@ -2,24 +2,37 @@ import cron from "node-cron";
 import prisma from "../config/prisma";
 import { generateSlotsForDay } from "../utils/slotGenerator";
 
+
+// PRODUCTION CRON - Runs at 10am
 cron.schedule(
-  "0 0 * * *",
+  "0 10 * * *", // 10am daily
   async () => {
-    console.log("🕛 Running daily slot generator...");
+    console.log("🕛 Running daily slot generator for day +7...");
+    console.log("⏰ Current time:", new Date().toLocaleString("en-US", {timeZone: "Africa/Nairobi"}));
+    
     try {
       const salons = await prisma.salon.findMany();
+      console.log(`📍 Found ${salons.length} salons`);
+      
+      if (salons.length === 0) {
+        console.log("⚠️ No salons found in database");
+        return;
+      }
+      
       const today = new Date();
-
+      const targetDay = new Date(today.getTime());
+      targetDay.setDate(today.getDate() + 7);
+      
+      console.log(`🎯 Generating slots for ${targetDay.toDateString()}`);
+      
       for (const salon of salons) {
-        for (let i = 1; i <= 7; i++) {
-          const day = new Date(today.getTime());
-          day.setDate(today.getDate() + i);
-
-          const weekday = day.getDay();
-          let openHour = 9,
-            closeHour = 17;
-
+        try {
+          const weekday = targetDay.getDay();
+          let openHour = 9, closeHour = 17;
+          
           const businessHours = salon.businessHours as any;
+          console.log(`🏪 Processing ${salon.name}, business hours:`, businessHours);
+          
           if (weekday >= 1 && weekday <= 5) {
             [openHour, closeHour] = businessHours.weekdays
               .split("-")
@@ -33,18 +46,36 @@ cron.schedule(
                 idx === 1 && Number(h) < 12 ? Number(h) + 12 : Number(h)
               );
           }
-
-          try {
-            await generateSlotsForDay(salon.id, day, openHour, closeHour);
-            console.log(`Slots generated for ${salon.name} on ${day.toDateString()}`);
-          } catch (err) {
-            console.error(`Failed to generate slots for ${salon.name} on ${day.toDateString()}:`, err);
+          
+          if (openHour >= closeHour) {
+            console.log(`🚫 ${salon.name} is closed on ${targetDay.toDateString()}`);
+            continue;
           }
+          
+          console.log(`⏰ ${salon.name} hours: ${openHour}:00 - ${closeHour}:00`);
+          
+          await generateSlotsForDay(salon.id, targetDay, openHour, closeHour);
+          console.log(`✅ Slots generated for ${salon.name} on ${targetDay.toDateString()}`);
+          
+        } catch (err) {
+          console.error(`❌ Failed to generate slots for ${salon.name}:`, err);
         }
       }
+      
+      console.log(`🎉 Completed slot generation for ${targetDay.toDateString()}`);
+      
     } catch (err) {
-      console.error("Failed to fetch salons:", err);
+      console.error("❌ Failed to fetch salons:", err);
     }
   },
   { timezone: "Africa/Nairobi" }
 );
+
+// Manual trigger function for testing
+export const triggerSlotGeneration = async () => {
+  console.log("🔧 Manually triggering slot generation...");
+  // Copy the same logic from the midnight cron here
+};
+
+console.log("📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)");
+console.log("⏰ Current time:", new Date().toLocaleString("en-US", {timeZone: "Africa/Nairobi"}));

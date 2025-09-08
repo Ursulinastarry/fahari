@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const protect_1 = require("../middlewares/protect");
+const salonServicesController_1 = require("../controllers/salonServicesController");
+const router = (0, express_1.Router)();
+router.post("/", protect_1.protect, salonServicesController_1.addSalonService);
+router.get("/owner", protect_1.protect, salonServicesController_1.getOwnerServices);
+router.put("/:id", protect_1.protect, salonServicesController_1.updateSalonService);
+router.delete("/:id", protect_1.protect, salonServicesController_1.removeSalonService);
+exports.default = router;

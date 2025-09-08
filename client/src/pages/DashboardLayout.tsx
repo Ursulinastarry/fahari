@@ -56,8 +56,9 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
 
     // Real-time socket listener
     socket = io("http://localhost:4000", {
-      withCredentials: true,
-    });
+  transports: ["websocket"],   // force WebSocket, skip polling
+  withCredentials: true,
+});
 
     socket.on("notification", (notif) => {
       setNotifications((prev) => [notif, ...prev]);

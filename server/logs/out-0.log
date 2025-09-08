@@ -1,0 +1,357 @@
+2025-09-03T17:55:13: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+2025-09-03T17:55:13: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-03T17:55:13: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+2025-09-03T17:55:13: 🚀 Server running on http://localhost:3000
+2025-09-03T17:55:14: ✅ Connected to the database.
+2025-09-03T17:59:54: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-03T17:59:55: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-03T17:59:55: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-03T17:59:55: 🚀 Server running on http://localhost:3000
+2025-09-03T17:59:55: ✅ Connected to the database.
+2025-09-03T18:14:21: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+2025-09-03T18:14:21: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-03T18:14:21: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-03T18:14:21: 🚀 Server running on http://localhost:3000
+2025-09-03T18:14:21: ✅ Connected to the database.
+2025-09-03T18:17:14: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-03T18:17:15: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-03T18:17:15: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+2025-09-03T18:17:15: 🚀 Server running on http://localhost:4000
+2025-09-03T18:17:15: ✅ Connected to the database.
+2025-09-03T18:37:43: ❌ No token at all
+2025-09-04T11:30:19: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-04T11:30:20: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T11:30:20: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-04T11:30:20: 🚀 Server running on http://localhost:4000
+2025-09-04T11:30:20: ✅ Connected to the database.
+2025-09-04T11:35:36: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-04T11:35:36: 📅 Cron jobs scheduled:
+2025-09-04T11:35:36:   - Test cron: Every minute
+2025-09-04T11:35:36:   - Production cron: Daily at midnight (Africa/Nairobi)
+2025-09-04T11:35:36: ⏰ Current time: 9/4/2025, 11:35:36 AM
+2025-09-04T11:35:36: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-04T11:35:36: 🚀 Server running on http://localhost:4000
+2025-09-04T11:35:36: ✅ Connected to the database.
+2025-09-04T11:36:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:36:00 AM
+2025-09-04T11:37:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:37:00 AM
+2025-09-04T11:38:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:38:00 AM
+2025-09-04T11:39:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:39:00 AM
+2025-09-04T11:39:54: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-04T11:39:54: 📅 Cron jobs scheduled:
+2025-09-04T11:39:54:   - Test cron: Every minute
+2025-09-04T11:39:54:   - Production cron: Daily at midnight (Africa/Nairobi)
+2025-09-04T11:39:54: ⏰ Current time: 9/4/2025, 11:39:54 AM
+2025-09-04T11:39:54: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-04T11:39:54: 🚀 Server running on http://localhost:4000
+2025-09-04T11:39:55: ✅ Connected to the database.
+2025-09-04T11:40:00: 🧪 TEST SLOT GENERATION: Starting...
+2025-09-04T11:40:00: ⏰ Current time: 9/4/2025, 11:40:00 AM
+2025-09-04T11:40:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:40:00 AM
+2025-09-04T11:40:00: 📍 Found 1 salons
+2025-09-04T11:40:00: 🎯 Generating test slots for Fri Sep 05 2025
+2025-09-04T11:40:00: 🏪 Processing Bosslady salon, business hours: { weekdays: '9-6', weekends: '2-6' }
+2025-09-04T11:40:00: ⏰ Bosslady salon hours: 9:00 - 18:00
+2025-09-04T11:40:00: ✅ Slots generated for salon cmet06j240000v0fskl8yatal on 2025-09-05
+2025-09-04T11:40:00: ✅ Slots generated for Bosslady salon on Fri Sep 05 2025
+2025-09-04T11:40:00: 🎉 Test slot generation completed for Fri Sep 05 2025
+2025-09-04T11:41:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:41:00 AM
+2025-09-04T11:42:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:42:00 AM
+2025-09-04T11:42:00: 🧪 TEST SLOT GENERATION: Starting...
+2025-09-04T11:42:00: ⏰ Current time: 9/4/2025, 11:42:00 AM
+2025-09-04T11:42:00: 📍 Found 1 salons
+2025-09-04T11:42:00: 🎯 Generating test slots for Fri Sep 05 2025
+2025-09-04T11:42:00: 🏪 Processing Bosslady salon, business hours: { weekdays: '9-6', weekends: '2-6' }
+2025-09-04T11:42:00: ⏰ Bosslady salon hours: 9:00 - 18:00
+2025-09-04T11:42:00: ✅ Slots generated for salon cmet06j240000v0fskl8yatal on 2025-09-05
+2025-09-04T11:42:00: ✅ Slots generated for Bosslady salon on Fri Sep 05 2025
+2025-09-04T11:42:00: 🎉 Test slot generation completed for Fri Sep 05 2025
+2025-09-04T11:43:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:43:00 AM
+2025-09-04T11:44:00: 🧪 TEST SLOT GENERATION: Starting...
+2025-09-04T11:44:00: ⏰ Current time: 9/4/2025, 11:44:00 AM
+2025-09-04T11:44:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:44:00 AM
+2025-09-04T11:44:00: 📍 Found 1 salons
+2025-09-04T11:44:00: 🎯 Generating test slots for Fri Sep 05 2025
+2025-09-04T11:44:00: 🏪 Processing Bosslady salon, business hours: { weekdays: '9-6', weekends: '2-6' }
+2025-09-04T11:44:00: ⏰ Bosslady salon hours: 9:00 - 18:00
+2025-09-04T11:44:00: ✅ Slots generated for salon cmet06j240000v0fskl8yatal on 2025-09-05
+2025-09-04T11:44:00: ✅ Slots generated for Bosslady salon on Fri Sep 05 2025
+2025-09-04T11:44:00: 🎉 Test slot generation completed for Fri Sep 05 2025
+2025-09-04T11:44:29: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-04T11:44:30: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T11:44:30: ⏰ Current time: 9/4/2025, 11:44:30 AM
+2025-09-04T11:44:30: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+2025-09-04T11:44:30: 🚀 Server running on http://localhost:4000
+2025-09-04T11:44:30: ✅ Connected to the database.
+2025-09-04T11:45:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:45:00 AM
+2025-09-04T11:46:00: 🧪 TEST SLOT GENERATION: Starting...
+2025-09-04T11:46:00: ⏰ Current time: 9/4/2025, 11:46:00 AM
+2025-09-04T11:46:00: 🧪 TEST: Cron is working! Current time: 9/4/2025, 11:46:00 AM
+2025-09-04T11:46:00: 📍 Found 1 salons
+2025-09-04T11:46:00: 🎯 Generating test slots for Fri Sep 05 2025
+2025-09-04T11:46:00: 🏪 Processing Bosslady salon, business hours: { weekdays: '9-6', weekends: '2-6' }
+2025-09-04T11:46:00: ⏰ Bosslady salon hours: 9:00 - 18:00
+2025-09-04T11:46:00: ✅ Slots generated for salon cmet06j240000v0fskl8yatal on 2025-09-05
+2025-09-04T11:46:00: ✅ Slots generated for Bosslady salon on Fri Sep 05 2025
+2025-09-04T11:46:00: 🎉 Test slot generation completed for Fri Sep 05 2025
+2025-09-04T11:46:49: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-04T11:46:49: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T11:46:49: ⏰ Current time: 9/4/2025, 11:46:49 AM
+2025-09-04T11:46:49: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-04T11:46:49: 🚀 Server running on http://localhost:4000
+2025-09-04T11:46:49: ✅ Connected to the database.
+2025-09-04T11:59:24: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-04T11:59:24: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T11:59:24: ⏰ Current time: 9/4/2025, 11:59:24 AM
+2025-09-04T11:59:24: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+2025-09-04T11:59:24: 🚀 Server running on http://localhost:4000
+2025-09-04T11:59:24: ✅ Connected to the database.
+2025-09-04T12:08:29: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-04T12:08:30: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T12:08:30: ⏰ Current time: 9/4/2025, 12:08:30 PM
+2025-09-04T12:08:30: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-04T12:08:30: 🚀 Server running on http://localhost:4000
+2025-09-04T12:08:30: ✅ Connected to the database.
+2025-09-04T12:16:00: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-04T12:16:00: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T12:16:00: ⏰ Current time: 9/4/2025, 12:16:00 PM
+2025-09-04T12:16:00: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+2025-09-04T12:16:00: 🚀 Server running on http://localhost:4000
+2025-09-04T12:16:01: ✅ Connected to the database.
+2025-09-04T12:24:30: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-04T12:24:31: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T12:24:31: ⏰ Current time: 9/4/2025, 12:24:31 PM
+2025-09-04T12:24:31: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+2025-09-04T12:24:31: 🚀 Server running on http://localhost:4000
+2025-09-04T12:24:31: ✅ Connected to the database.
+2025-09-04T12:34:04: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-04T12:34:04: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T12:34:04: ⏰ Current time: 9/4/2025, 12:34:04 PM
+2025-09-04T12:34:04: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-04T12:34:04: 🚀 Server running on http://localhost:4000
+2025-09-04T12:34:04: ✅ Connected to the database.
+2025-09-04T13:06:51: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-04T13:06:52: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T13:06:52: ⏰ Current time: 9/4/2025, 1:06:52 PM
+2025-09-04T13:06:52: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-04T13:06:52: 🚀 Server running on http://localhost:4000
+2025-09-04T13:06:52: ✅ Connected to the database.
+2025-09-04T13:19:54: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+2025-09-04T13:19:54: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T13:19:54: ⏰ Current time: 9/4/2025, 1:19:54 PM
+2025-09-04T13:19:54: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+2025-09-04T13:19:54: 🚀 Server running on http://localhost:4000
+2025-09-04T13:19:54: ✅ Connected to the database.
+2025-09-04T13:31:34: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+2025-09-04T13:31:34: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T13:31:34: ⏰ Current time: 9/4/2025, 1:31:34 PM
+2025-09-04T13:31:34: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+2025-09-04T13:31:34: 🚀 Server running on http://localhost:4000
+2025-09-04T13:31:34: ✅ Connected to the database.
+2025-09-04T14:26:50: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-04T14:26:50: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T14:26:50: ⏰ Current time: 9/4/2025, 2:26:50 PM
+2025-09-04T14:26:50: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+2025-09-04T14:26:50: 🚀 Server running on http://localhost:4000
+2025-09-04T14:26:50: ✅ Connected to the database.
+2025-09-04T16:03:48: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+2025-09-04T16:03:49: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T16:03:49: ⏰ Current time: 9/4/2025, 4:03:49 PM
+2025-09-04T16:03:49: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-04T16:03:49: 🚀 Server running on http://localhost:4000
+2025-09-04T16:03:49: ✅ Connected to the database.
+2025-09-04T16:41:21: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-04T16:41:22: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T16:41:22: ⏰ Current time: 9/4/2025, 4:41:22 PM
+2025-09-04T16:41:22: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+2025-09-04T16:41:22: 🚀 Server running on http://localhost:4000
+2025-09-04T16:41:22: ✅ Connected to the database.
+2025-09-04T16:59:47: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-04T16:59:47: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T16:59:47: ⏰ Current time: 9/4/2025, 4:59:47 PM
+2025-09-04T16:59:47: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-04T16:59:47: 🚀 Server running on http://localhost:4000
+2025-09-04T16:59:47: ✅ Connected to the database.
+2025-09-04T17:04:26: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-04T17:04:26: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T17:04:26: ⏰ Current time: 9/4/2025, 5:04:26 PM
+2025-09-04T17:04:26: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-04T17:04:26: 🚀 Server running on http://localhost:4000
+2025-09-04T17:04:26: ✅ Connected to the database.
+2025-09-04T17:14:02: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-04T17:14:02: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T17:14:02: ⏰ Current time: 9/4/2025, 5:14:02 PM
+2025-09-04T17:14:02: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-04T17:14:02: 🚀 Server running on http://localhost:4000
+2025-09-04T17:14:02: ✅ Connected to the database.
+2025-09-04T17:27:18: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+2025-09-04T17:27:19: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T17:27:19: ⏰ Current time: 9/4/2025, 5:27:19 PM
+2025-09-04T17:27:19: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-04T17:27:19: 🚀 Server running on http://localhost:4000
+2025-09-04T17:27:19: ✅ Connected to the database.
+2025-09-04T17:38:55: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-04T17:38:55: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T17:38:55: ⏰ Current time: 9/4/2025, 5:38:55 PM
+2025-09-04T17:38:55: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-04T17:38:55: 🚀 Server running on http://localhost:4000
+2025-09-04T17:38:55: ✅ Connected to the database.
+2025-09-04T17:43:58: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-04T17:43:58: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T17:43:58: ⏰ Current time: 9/4/2025, 5:43:58 PM
+2025-09-04T17:43:58: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-04T17:43:58: 🚀 Server running on http://localhost:4000
+2025-09-04T17:43:58: ✅ Connected to the database.
+2025-09-04T17:48:08: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+2025-09-04T17:48:08: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T17:48:08: ⏰ Current time: 9/4/2025, 5:48:08 PM
+2025-09-04T17:48:08: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-04T17:48:08: 🚀 Server running on http://localhost:4000
+2025-09-04T17:48:09: ✅ Connected to the database.
+2025-09-04T18:17:49: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-04T18:17:49: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T18:17:49: ⏰ Current time: 9/4/2025, 6:17:49 PM
+2025-09-04T18:17:49: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-04T18:17:49: 🚀 Server running on http://localhost:4000
+2025-09-04T18:17:49: ✅ Connected to the database.
+2025-09-04T18:18:58: slotDate: 2025-09-05 slotStartTime: 06:00
+2025-09-04T18:44:00: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-04T18:44:01: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T18:44:01: ⏰ Current time: 9/4/2025, 6:44:01 PM
+2025-09-04T18:44:01: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-04T18:44:01: 🚀 Server running on http://localhost:4000
+2025-09-04T18:44:01: ✅ Connected to the database.
+2025-09-04T18:51:30: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+2025-09-04T18:51:31: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T18:51:31: ⏰ Current time: 9/4/2025, 6:51:31 PM
+2025-09-04T18:51:31: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-04T18:51:31: 🚀 Server running on http://localhost:4000
+2025-09-04T18:51:31: ✅ Connected to the database.
+2025-09-04T19:01:05: ❌ No token at all
+2025-09-04T19:02:14: ❌ No token at all
+2025-09-04T19:47:21: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-04T19:47:21: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T19:47:21: ⏰ Current time: 9/4/2025, 7:47:21 PM
+2025-09-04T19:47:21: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+2025-09-04T19:47:21: 🚀 Server running on http://localhost:4000
+2025-09-04T19:47:22: ✅ Connected to the database.
+2025-09-04T19:48:19: slotDate: 2025-09-05 slotStartTime: 07:00
+2025-09-04T20:07:46: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+2025-09-04T20:07:46: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T20:07:46: ⏰ Current time: 9/4/2025, 8:07:46 PM
+2025-09-04T20:07:46: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-04T20:07:46: 🚀 Server running on http://localhost:4000
+2025-09-04T20:07:47: ✅ Connected to the database.
+2025-09-04T20:29:49: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-04T20:29:49: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T20:29:49: ⏰ Current time: 9/4/2025, 8:29:49 PM
+2025-09-04T20:29:49: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-04T20:29:49: 🚀 Server running on http://localhost:4000
+2025-09-04T20:29:50: ✅ Connected to the database.
+2025-09-04T20:42:22: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+2025-09-04T20:42:22: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T20:42:22: ⏰ Current time: 9/4/2025, 8:42:22 PM
+2025-09-04T20:42:22: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+2025-09-04T20:42:22: 🚀 Server running on http://localhost:4000
+2025-09-04T20:42:22: ✅ Connected to the database.
+2025-09-04T20:51:42: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+2025-09-04T20:51:42: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T20:51:42: ⏰ Current time: 9/4/2025, 8:51:42 PM
+2025-09-04T20:51:42: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-04T20:51:42: 🚀 Server running on http://localhost:4000
+2025-09-04T20:51:42: ✅ Connected to the database.
+2025-09-04T20:54:01: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+2025-09-04T20:54:02: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T20:54:02: ⏰ Current time: 9/4/2025, 8:54:02 PM
+2025-09-04T20:54:02: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-04T20:54:02: 🚀 Server running on http://localhost:4000
+2025-09-04T20:54:02: ✅ Connected to the database.
+2025-09-04T20:58:10: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-04T20:58:10: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T20:58:10: ⏰ Current time: 9/4/2025, 8:58:10 PM
+2025-09-04T20:58:10: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+2025-09-04T20:58:10: 🚀 Server running on http://localhost:4000
+2025-09-04T20:58:11: ✅ Connected to the database.
+2025-09-04T21:01:20: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-04T21:01:21: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T21:01:21: ⏰ Current time: 9/4/2025, 9:01:21 PM
+2025-09-04T21:01:21: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-04T21:01:21: 🚀 Server running on http://localhost:4000
+2025-09-04T21:01:21: ✅ Connected to the database.
+2025-09-04T21:02:34: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-04T21:02:34: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T21:02:34: ⏰ Current time: 9/4/2025, 9:02:34 PM
+2025-09-04T21:02:34: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-04T21:02:34: 🚀 Server running on http://localhost:4000
+2025-09-04T21:02:34: ✅ Connected to the database.
+2025-09-04T21:05:54: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-04T21:05:55: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T21:05:55: ⏰ Current time: 9/4/2025, 9:05:55 PM
+2025-09-04T21:05:55: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-04T21:05:55: 🚀 Server running on http://localhost:4000
+2025-09-04T21:05:55: ✅ Connected to the database.
+2025-09-04T21:16:11: [dotenv@17.2.1] injecting env (10) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-04T21:16:12: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T21:16:12: ⏰ Current time: 9/4/2025, 9:16:12 PM
+2025-09-04T21:16:12: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-04T21:16:12: 🚀 Server running on http://localhost:4000
+2025-09-04T21:16:12: ✅ Connected to the database.
+2025-09-04T21:35:18: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+2025-09-04T21:35:18: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T21:35:18: ⏰ Current time: 9/4/2025, 9:35:18 PM
+2025-09-04T21:35:18: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+2025-09-04T21:35:18: 🚀 Server running on http://localhost:4000
+2025-09-04T21:35:19: ✅ Connected to the database.
+2025-09-04T21:52:58: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-04T21:52:58: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T21:52:58: ⏰ Current time: 9/4/2025, 9:52:58 PM
+2025-09-04T21:52:58: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-04T21:52:58: 🚀 Server running on http://localhost:4000
+2025-09-04T21:52:58: ✅ Connected to the database.
+2025-09-04T22:35:24: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-04T22:35:24: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T22:35:24: ⏰ Current time: 9/4/2025, 10:35:24 PM
+2025-09-04T22:35:24: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-04T22:35:24: 🚀 Server running on http://localhost:4000
+2025-09-04T22:35:25: ✅ Connected to the database.
+2025-09-04T22:38:31: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-04T22:38:31: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-04T22:38:31: ⏰ Current time: 9/4/2025, 10:38:31 PM
+2025-09-04T22:38:31: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-04T22:38:31: 🚀 Server running on http://localhost:4000
+2025-09-04T22:38:31: ✅ Connected to the database.
+2025-09-05T09:26:00: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+2025-09-05T09:26:02: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-05T09:26:02: ⏰ Current time: 9/5/2025, 9:26:02 AM
+2025-09-05T09:26:02: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-05T09:26:02: 🚀 Server running on http://localhost:4000
+2025-09-05T09:26:02: ✅ Connected to the database.
+2025-09-05T10:00:00: 🕛 Running daily slot generator for day +7...
+2025-09-05T10:00:00: ⏰ Current time: 9/5/2025, 10:00:00 AM
+2025-09-05T10:00:00: 📍 Found 1 salons
+2025-09-05T10:00:00: 🎯 Generating slots for Fri Sep 12 2025
+2025-09-05T10:00:00: 🏪 Processing Bosslady salon, business hours: { weekdays: '9-6', weekends: '2-6' }
+2025-09-05T10:00:00: ⏰ Bosslady salon hours: 9:00 - 18:00
+2025-09-05T10:00:00: ✅ Slots generated for salon cmet06j240000v0fskl8yatal on 2025-09-12
+2025-09-05T10:00:00: ✅ Slots generated for Bosslady salon on Fri Sep 12 2025
+2025-09-05T10:00:00: 🎉 Completed slot generation for Fri Sep 12 2025
+2025-09-06T10:00:00: 🕛 Running daily slot generator for day +7...
+2025-09-06T10:00:00: ⏰ Current time: 9/6/2025, 10:00:00 AM
+2025-09-06T10:00:00: 📍 Found 1 salons
+2025-09-06T10:00:00: 🎯 Generating slots for Sat Sep 13 2025
+2025-09-06T10:00:00: 🏪 Processing Bosslady salon, business hours: { weekdays: '9-6', weekends: '2-6' }
+2025-09-06T10:00:00: ⏰ Bosslady salon hours: 2:00 - 18:00
+2025-09-06T10:00:00: ✅ Slots generated for salon cmet06j240000v0fskl8yatal on 2025-09-13
+2025-09-06T10:00:00: ✅ Slots generated for Bosslady salon on Sat Sep 13 2025
+2025-09-06T10:00:00: 🎉 Completed slot generation for Sat Sep 13 2025
+2025-09-06T10:37:05: ❌ No token at all
+2025-09-06T10:37:05: ❌ No token at all
+2025-09-06T10:37:05: ❌ No token at all
+2025-09-06T10:37:05: ❌ No token at all
+2025-09-06T10:37:05: ❌ No token at all
+2025-09-06T10:37:05: ❌ No token at all
+2025-09-06T17:23:41: [dotenv@17.2.1] injecting env (10) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-06T17:23:43: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-06T17:23:43: ⏰ Current time: 9/6/2025, 5:23:43 PM
+2025-09-06T17:23:43: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-06T17:23:44: 🚀 Server running on http://localhost:4000
+2025-09-06T17:23:44: ✅ Connected to the database.

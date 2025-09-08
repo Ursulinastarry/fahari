@@ -2,82 +2,108 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-interface Service {
+interface BaseService {
   id: string;
   name: string;
-  duration: number;
+  description?: string;
+  category?: string;
+  isActive: boolean;
+}
+
+interface SalonService {
+  id: string; // salonService.id
   price: number;
-  active: boolean;
+  duration: number;
+  service: BaseService; // base service details
 }
 
 const ServicesPage: React.FC = () => {
-  const [services, setServices] = useState<Service[]>([]);
-  const [editingService, setEditingService] = useState<Service | null>(null);
+  const [salonServices, setSalonServices] = useState<SalonService[]>([]);
+  const [baseServices, setBaseServices] = useState<BaseService[]>([]);
+  const [editingService, setEditingService] = useState<SalonService | null>(null);
   const [isNew, setIsNew] = useState(false);
 
-    useEffect(() => {
-    const fetchServices = async () => {
-        try {
-        const res = await axios.get("http://localhost:4000/api/services/owner", {
+  // Fetch both base services + salon services
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [salonRes, baseRes] = await Promise.all([
+          axios.get("http://localhost:4000/api/salon-services/owner", {
             withCredentials: true,
-        });
-
-        // Normalize backend → frontend
-        const mapped = res.data.map((s: any) => ({
-            id: s.serviceId,
-            name: s.serviceName,
-            duration: s.duration,
-            price: s.price,
-            active: s.isActive,
-        }));
-
-        setServices(mapped);
-        } catch (err) {
+          }),
+          axios.get("http://localhost:4000/api/services", {
+            withCredentials: true,
+          }),
+        ]);
+        setSalonServices(salonRes.data);
+        setBaseServices(baseRes.data);
+      } catch (err) {
         console.error("Error fetching services:", err);
-        }
+      }
     };
-    fetchServices();
-    }, []);
-
+    fetchData();
+  }, []);
 
   const deleteService = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:4000/api/services/${id}`, {
+      await axios.delete(`http://localhost:4000/api/salon-services/${id}`, {
         withCredentials: true,
       });
-      setServices((prev) => prev.filter((s) => s.id !== id));
+      setSalonServices((prev) => prev.filter((s) => s.id !== id));
     } catch (err) {
       console.error("Error deleting service:", err);
     }
   };
 
-  const handleEditChange = (field: keyof Service, value: any) => {
+  const handleEditChange = (field: "price" | "duration" | "serviceId", value: any) => {
     if (!editingService) return;
-    setEditingService({ ...editingService, [field]: value });
+
+    if (field === "serviceId") {
+      const selected = baseServices.find((b) => b.id === value);
+      if (!selected) return;
+      setEditingService({
+        ...editingService,
+        service: selected,
+      });
+    } else {
+      setEditingService({
+        ...editingService,
+        [field]: value,
+      });
+    }
   };
 
   const saveService = async () => {
     if (!editingService) return;
+
     try {
       if (isNew) {
-        // Create new service
+        // Create new salon service
         const res = await axios.post(
-          `http://localhost:4000/api/services`,
-          editingService,
+          "http://localhost:4000/api/salon-services",
+          {
+            serviceId: editingService.service.id, // base service id
+            price: editingService.price,
+            duration: editingService.duration,
+          },
           { withCredentials: true }
         );
-        setServices((prev) => [...prev, res.data]);
+        setSalonServices((prev) => [...prev, res.data]);
       } else {
-        // Update existing service
+        // Update existing salon service
         const res = await axios.put(
-          `http://localhost:4000/api/services/${editingService.id}`,
-          editingService,
+          `http://localhost:4000/api/salon-services/${editingService.id}`,
+          {
+            price: editingService.price,
+            duration: editingService.duration,
+          },
           { withCredentials: true }
         );
-        setServices((prev) =>
+        setSalonServices((prev) =>
           prev.map((s) => (s.id === editingService.id ? res.data : s))
         );
       }
+
       setEditingService(null);
       setIsNew(false);
     } catch (err) {
@@ -92,7 +118,12 @@ const ServicesPage: React.FC = () => {
         <button
           onClick={() => {
             setIsNew(true);
-            setEditingService({ id: "", name: "", duration: 30, price: 0, active: true });
+            setEditingService({
+              id: "",
+              price: 0,
+              duration: 30,
+              service: { id: "", name: "", isActive: true },
+            });
           }}
           className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
         >
@@ -100,43 +131,42 @@ const ServicesPage: React.FC = () => {
         </button>
       </div>
 
-      {services.length === 0 ? (
+      {salonServices.length === 0 ? (
         <p className="text-gray-500">No services added yet.</p>
       ) : (
         <div className="grid md:grid-cols-2 gap-4">
-          {services.map((service) => (
+          {salonServices.map((s) => (
             <div
-              key={service.id}
+              key={s.id}
               className="p-4 border rounded-lg bg-white shadow flex flex-col justify-between"
             >
               <div>
-                <h3 className="font-semibold text-lg">{service.name}</h3>
-                <p className="text-sm text-gray-600">{service.duration} mins</p>
-                <p className="font-bold text-purple-600">KES {service.price}</p>
+                <h3 className="font-semibold text-lg">{s.service.name}</h3>
+                <p className="text-sm text-gray-600">{s.duration} mins</p>
+                <p className="font-bold text-purple-600">KES {s.price}</p>
                 <span
                   className={`inline-block mt-2 px-3 py-1 text-sm rounded-full ${
-                    service.active
+                    s.service.isActive
                       ? "bg-green-100 text-green-600"
                       : "bg-gray-200 text-gray-500"
                   }`}
                 >
-                  {service.active ? "Active" : "Inactive"}
+                  {s.service.isActive ? "Active" : "Inactive"}
                 </span>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex gap-3 mt-4">
                 <button
                   onClick={() => {
                     setIsNew(false);
-                    setEditingService(service);
+                    setEditingService(s);
                   }}
                   className="px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700"
                 >
                   Edit
                 </button>
                 <button
-                  onClick={() => deleteService(service.id)}
+                  onClick={() => deleteService(s.id)}
                   className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
                 >
                   Delete
@@ -156,15 +186,33 @@ const ServicesPage: React.FC = () => {
             </h3>
 
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium">Name</label>
-                <input
-                  type="text"
-                  value={editingService.name}
-                  onChange={(e) => handleEditChange("name", e.target.value)}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
+              {isNew ? (
+                <div>
+                  <label className="block text-sm font-medium">Service</label>
+                  <select
+                    value={editingService.service.id}
+                    onChange={(e) => handleEditChange("serviceId", e.target.value)}
+                    className="w-full p-2 border rounded"
+                  >
+                    <option value="">Select a service</option>
+                    {baseServices.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-sm font-medium">Service</label>
+                  <input
+                    type="text"
+                    value={editingService.service.name}
+                    disabled
+                    className="w-full p-2 border rounded bg-gray-100"
+                  />
+                </div>
+              )}
               <div>
                 <label className="block text-sm font-medium">Duration (mins)</label>
                 <input
@@ -187,17 +235,8 @@ const ServicesPage: React.FC = () => {
                   className="w-full p-2 border rounded"
                 />
               </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={editingService.active}
-                  onChange={(e) => handleEditChange("active", e.target.checked)}
-                />
-                <label className="text-sm">Active</label>
-              </div>
             </div>
 
-            {/* Modal Buttons */}
             <div className="flex justify-end gap-3 mt-6">
               <button
                 onClick={() => {

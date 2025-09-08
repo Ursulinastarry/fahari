@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import asyncHandler from "../middlewares/asyncHandler";
 import dotenv from "dotenv";
 import { UserRequest } from "../utils/types/userTypes";
-import { PrismaClient } from '@prisma/client';
 import { pool } from "../index";
 import prisma from "../config/prisma";
 import { DateTime } from "luxon";
@@ -44,7 +43,7 @@ export const createBooking = asyncHandler(async (req: UserRequest, res: Response
   }
 
   // Mark slots as booked
-  const slotIds = slots.map(s => s.id);
+  const slotIds = slots.map((s: { id: any; }) => s.id);
   await prisma.slot.updateMany({
     where: { id: { in: slotIds } },
     data: { isAvailable: false },
@@ -57,7 +56,7 @@ export const createBooking = asyncHandler(async (req: UserRequest, res: Response
       startTime: slots[0].startTime,
       endTime: slots[slots.length - 1].endTime,
       salonId,
-      serviceId: salonService.id, // Use SalonService ID
+      salonServiceId, // Use SalonService ID
       slotId: slotIds[0], // store first slot as representative
       status: "CONFIRMED",
     },
@@ -71,7 +70,7 @@ export const createBooking = asyncHandler(async (req: UserRequest, res: Response
       status: "CONFIRMED",
       clientId: req.user.id,
       salonId,
-      serviceId: salonService.id,
+      salonServiceId,
       appointmentId: appointment.id,
       slotId: slotIds[0], // first slot
     },
@@ -107,7 +106,7 @@ export const getBookings = asyncHandler(async (req: Request, res: Response) => {
           where: { ownerId: userId },
           select: { id: true }
         });
-        where.salonId = { in: ownedSalons.map(s => s.id) };
+        where.salonId = { in: ownedSalons.map((s: { id: any; }) => s.id) };
       }
     } else if (userRole === 'ADMIN' && salonId) {
       where.salonId = salonId as string;
@@ -118,7 +117,7 @@ export const getBookings = asyncHandler(async (req: Request, res: Response) => {
       include: {
         client: { select: { firstName: true, lastName: true, phone: true } },
         salon: { select: { name: true } },
-        service: { select: { name: true, category: true } },
+        salonService: { select: { service: { select: { name: true, category: true } } } },
         appointment: true,
         payment: true,
         review: true
@@ -132,44 +131,44 @@ export const getBookings = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-export const getBooking = asyncHandler(async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const userId = (req as any).user.userId;
-    const userRole = (req as any).user.role;
+// export const getBooking = asyncHandler(async (req: Request, res: Response) => {
+//   try {
+//     const { id } = req.params;
+//     const userId = (req as any).user.userId;
+//     const userRole = (req as any).user.role;
     
-    const booking = await prisma.booking.findUnique({
-      where: { id },
-      include: {
-        client: { select: { firstName: true, lastName: true, phone: true } },
-        salon: { 
-          select: { name: true, ownerId: true }
-        },
-        service: { select: { name: true, category: true } },
-        appointment: true,
-        payment: true,
-        review: true
-      }
-    });
+//     const booking = await prisma.booking.findUnique({
+//       where: { id },
+//       include: {
+//         client: { select: { firstName: true, lastName: true, phone: true } },
+//         salon: { 
+//           select: { name: true, ownerId: true }
+//         },
+//         salonService: { select: { service: { select: { name: true, category: true } } } },
+//         appointment: true,
+//         payment: true,
+//         review: true
+//       }
+//     });
     
-    if (!booking) {
-      return res.status(404).json({ message: 'Booking not found' });
-    }
+//     if (!booking) {
+//       return res.status(404).json({ message: 'Booking not found' });
+//     }
     
-    // Check authorization
-    const isOwner = booking.clientId === userId;
-    const isSalonOwner = booking.salon.ownerId === userId;
-    const isAdmin = userRole === 'ADMIN';
+//     // Check authorization
+//     const isOwner = booking.clientId === userId;
+//     const isSalonOwner = booking.salon.ownerId === userId;
+//     const isAdmin = userRole === 'ADMIN';
     
-    if (!isOwner && !isSalonOwner && !isAdmin) {
-      return res.status(403).json({ message: 'Not authorized to view this booking' });
-    }
+//     if (!isOwner && !isSalonOwner && !isAdmin) {
+//       return res.status(403).json({ message: 'Not authorized to view this booking' });
+//     }
     
-    res.json(booking);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-});
+//     res.json(booking);
+//   } catch (error: any) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 
 export const getOwnerBookings = asyncHandler(async (req: UserRequest, res: Response) => {
   if (!req.user) {
@@ -185,19 +184,37 @@ export const getOwnerBookings = asyncHandler(async (req: UserRequest, res: Respo
 
   // Query all bookings for salons owned by this user
   const { rows } = await pool.query(
-    `
-    SELECT b.id, b."bookingNumber", b."totalAmount", b.status,
-           b."createdAt", b."updatedAt",
-           s.id as "salonId", s.name as "salonName",
-           u.id as "clientId", u."firstName", u."lastName", u.email, u.phone
-    FROM bookings b
-    JOIN salons s ON b."salonId" = s.id
-    JOIN users u ON b."clientId" = u.id
-    WHERE s."ownerId" = $1
-    ORDER BY b."createdAt" DESC
-    `,
-    [ownerId]
-  );
+  `
+  SELECT 
+    b.id, 
+    b."bookingNumber", 
+    b."totalAmount", 
+    b.status,
+    b."createdAt", 
+    b."updatedAt",
+    s.id as "salonId", 
+    s.name as "salonName",
+    ss.id as "salonServiceId",
+    sv.id as "serviceId",
+    sv.name as "serviceName",
+    u.id as "clientId", 
+    u."firstName", 
+    u."lastName", 
+    u.email, 
+    u.phone,
+    sl."startTime" as "slotStartTime",
+    sl."endTime"   as "slotEndTime"
+  FROM bookings b
+  JOIN salons s ON b."salonId" = s.id
+  JOIN users u ON b."clientId" = u.id
+  JOIN slots sl ON b."slotId" = sl.id
+  JOIN salon_services ss ON b."salonServiceId" = ss.id
+  JOIN services sv ON ss."serviceId" = sv.id
+  WHERE s."ownerId" = $1
+  ORDER BY b."createdAt" DESC
+  `,
+  [ownerId]
+);
 
   res.json(rows);
 });
@@ -206,27 +223,50 @@ export const getMyBookings = async (req: UserRequest, res: Response) => {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
-    const bookings = await prisma.booking.findMany({
-      where: { clientId: userId },
-      include: {
-        salon: { select: { name: true } },
-        service: { select: { name: true } },
-        appointment: true, // date, startTime, endTime, status
-      },
-      orderBy: { createdAt: "desc" },
-    });
+    const {rows:bookingArray} =  await pool.query(
+    `
+  SELECT 
+    b.id, 
+    b."bookingNumber", 
+    b."totalAmount", 
+    b.status,
+    b."createdAt", 
+    b."updatedAt",
+    s.id as "salonId", 
+    s.name as "salonName",
+    ss.id as "salonServiceId",
+    sv.id as "serviceId",
+    sv.name as "serviceName",
+    u.id as "clientId", 
+    u."firstName", 
+    u."lastName", 
+    u.email, 
+    u.phone,
+    sl."startTime" as "slotStartTime",
+    sl."endTime"   as "slotEndTime"
+  FROM bookings b
+  JOIN salons s ON b."salonId" = s.id
+  JOIN users u ON b."clientId" = u.id
+  JOIN slots sl ON b."slotId" = sl.id
+  JOIN salon_services ss ON b."salonServiceId" = ss.id
+  JOIN services sv ON ss."serviceId" = sv.id
+    WHERE u.id = $1
+    ORDER BY b."createdAt" DESC
+    `,
+    [userId]
+  );
 
-    res.json(bookings);
+    res.json(bookingArray);
   } catch (err) {
     console.error("Error fetching bookings:", err);
-    res.status(500).json({ error: "Failed to fetch bookings" });
+    res.status(500).json({ error: err instanceof Error ? err.message : err });
   }
 };
 export const updateBooking = asyncHandler(async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { status, salonNotes } = req.body;
-    const userId = (req as any).user.userId;
+    const userId = (req as any).user.id;
     const userRole = (req as any).user.role;
     
     const booking = await prisma.booking.findUnique({
@@ -239,8 +279,12 @@ export const updateBooking = asyncHandler(async (req: Request, res: Response) =>
     }
     
     // Only salon owner can update booking status and add salon notes
-    if (booking.salon.ownerId !== userId && userRole !== 'ADMIN') {
-      return res.status(403).json({ message: 'Not authorized to update this booking' });
+       const canReschedule = booking.clientId === userId || 
+                     booking.salon.ownerId === userId || 
+                     userRole === 'ADMIN';
+    
+    if (!canReschedule) {
+      return res.status(403).json({ message: 'Not authorized to reschedule this booking' });
     }
     
     const updatedBooking = await prisma.booking.update({
@@ -257,7 +301,7 @@ export const updateBooking = asyncHandler(async (req: Request, res: Response) =>
 export const cancelBooking = asyncHandler(async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const userId = (req as any).user.userId;
+    const userId = (req as any).user.id;
     const userRole = (req as any).user.role;
     
     const booking = await prisma.booking.findUnique({

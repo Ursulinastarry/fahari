@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const protect_1 = require("../middlewares/protect");
+const bookingController_1 = require("../controllers/bookingController");
+const router = (0, express_1.Router)();
+router.post("/", protect_1.protect, bookingController_1.createBooking);
+router.get("/", protect_1.protect, bookingController_1.getBookings);
+router.get("/owner", protect_1.protect, bookingController_1.getOwnerBookings);
+router.get("/me", protect_1.protect, bookingController_1.getMyBookings);
+router.patch("/:id/reschedule", protect_1.protect, bookingController_1.updateBooking);
+router.patch("/:id/cancel", protect_1.protect, bookingController_1.cancelBooking);
+exports.default = router;
