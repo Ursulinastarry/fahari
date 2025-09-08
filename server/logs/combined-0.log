@@ -491,3 +491,18 @@ Inconsistent query result: Field service is required to return data, got `null` 
 2025-09-06T17:23:43: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
 2025-09-06T17:23:44: 🚀 Server running on http://localhost:4000
 2025-09-06T17:23:44: ✅ Connected to the database.
+2025-09-07T21:50:59: [dotenv@17.2.1] injecting env (10) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-07T21:51:00: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-07T21:51:00: ⏰ Current time: 9/7/2025, 9:51:00 PM
+2025-09-07T21:51:00: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-07T21:51:01: 🚀 Server running on http://localhost:4000
+2025-09-07T21:51:03: ✅ Connected to the database.
+2025-09-08T10:00:00: 🕛 Running daily slot generator for day +7...
+2025-09-08T10:00:00: ⏰ Current time: 9/8/2025, 10:00:00 AM
+2025-09-08T10:00:00: 📍 Found 1 salons
+2025-09-08T10:00:00: 🎯 Generating slots for Mon Sep 15 2025
+2025-09-08T10:00:00: 🏪 Processing Bosslady salon, business hours: { weekdays: '9-6', weekends: '2-6' }
+2025-09-08T10:00:00: ⏰ Bosslady salon hours: 9:00 - 18:00
+2025-09-08T10:00:00: ✅ Slots generated for salon cmet06j240000v0fskl8yatal on 2025-09-15
+2025-09-08T10:00:00: ✅ Slots generated for Bosslady salon on Mon Sep 15 2025
+2025-09-08T10:00:00: 🎉 Completed slot generation for Mon Sep 15 2025
