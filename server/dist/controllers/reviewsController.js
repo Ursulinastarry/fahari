@@ -3,12 +3,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteReview = exports.updateReview = exports.getReviewsBySalon = exports.getBookingReview = exports.getOwnerReviews = exports.getReviews = exports.getSalonRating = exports.createReview = void 0;
+exports.deleteReview = exports.updateReview = exports.getReviewsBySalon = exports.getBookingReview = exports.getOwnerReviews = exports.getReviews = exports.getSalonRating = exports.createReview = exports.uploadReviewImages = void 0;
 const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
 const prisma_1 = __importDefault(require("../config/prisma"));
+// import { FileUploadUserRequest } from "../utils/types/userTypes";
 const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
+const multer_1 = __importDefault(require("multer"));
+// Review image upload setup
+const reviewUploadDir = 'uploads/reviews';
+if (!fs_1.default.existsSync(reviewUploadDir)) {
+    fs_1.default.mkdirSync(reviewUploadDir, { recursive: true });
+}
+const reviewStorage = multer_1.default.diskStorage({
+    destination: (_req, _file, cb) => {
+        cb(null, reviewUploadDir);
+    },
+    filename: (_req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const extension = path_1.default.extname(file.originalname);
+        const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
+        cb(null, filename);
+    }
+});
+const fileFilter = (_req, file, cb) => {
+    // Accept only image files
+    if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+    }
+    else {
+        cb(new Error('Only image files are allowed!'));
+    }
+};
+exports.uploadReviewImages = (0, multer_1.default)({
+    storage: reviewStorage,
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB per file
+        files: 5 // Max 5 images per review
+    },
+    fileFilter
+}).array('reviewImages', 5);
 exports.createReview = (0, asyncHandler_1.default)(async (req, res) => {
     try {
+        console.log("---- Incoming Review Request ----");
+        console.log("Body:", req.body);
+        console.log("Files:", req.files);
         const { bookingId, rating, comment } = req.body;
         if (!req.user) {
             return res.status(401).json({ message: "Unauthorized" });
@@ -25,19 +64,16 @@ exports.createReview = (0, asyncHandler_1.default)(async (req, res) => {
         if (booking.review)
             return res.status(400).json({ message: "Review already exists for this booking" });
         // Handle uploaded files
-        const imageFiles = req.files ? req.files.images : [];
-        const imageArray = Array.isArray(imageFiles) ? imageFiles : [imageFiles];
-        const uploadedPaths = [];
-        for (const file of imageArray) {
-            const uploadPath = path_1.default.join(__dirname, "../uploads/", file.name);
-            await file.mv(uploadPath);
-            uploadedPaths.push(uploadPath);
+        let images = [];
+        if (req.files) {
+            const files = req.files;
+            images = files.map(file => file.filename);
         }
         const review = await prisma_1.default.review.create({
             data: {
                 rating: Number(rating),
                 comment,
-                images: uploadedPaths,
+                images,
                 clientId: userId,
                 salonId: booking.salonId,
                 bookingId,
@@ -45,11 +81,14 @@ exports.createReview = (0, asyncHandler_1.default)(async (req, res) => {
         });
         // Update salon average rating
         const salonReviews = await prisma_1.default.review.findMany({ where: { salonId: booking.salonId } });
-        const averageRating = salonReviews.reduce((sum, r) => sum + r.rating, 0) / salonReviews.length;
+        const averageRating = salonReviews.length > 0
+            ? salonReviews.reduce((sum, r) => sum + r.rating, 0) / salonReviews.length
+            : 0;
         await prisma_1.default.salon.update({
             where: { id: booking.salonId },
             data: { averageRating, totalReviews: salonReviews.length },
         });
+        // Set booking status to REVIEWED only after successful review creation and salon update
         await prisma_1.default.booking.update({ where: { id: bookingId }, data: { status: "REVIEWED" } });
         res.status(201).json(review);
     }

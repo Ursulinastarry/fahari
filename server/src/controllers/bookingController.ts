@@ -5,19 +5,35 @@ import { UserRequest } from "../utils/types/userTypes";
 import { pool } from "../index";
 import prisma from "../config/prisma";
 import { DateTime } from "luxon";
+import { createAndSendNotification } from "../services/notificationService";
 
-export const createBooking = asyncHandler(async (req: UserRequest, res: Response) => {
-  const { salonId, salonServiceId, slotDate, slotStartTime } = req.body; 
+interface CreateBookingBody {
+  salonId: string;
+  salonServiceId: string;
+  slotDate: string;       // ISO date string, we can convert later
+  slotStartTime: string;  // e.g. "14:00"
+}
+
+type CreateBookingRequest = Omit<UserRequest, "body"> & { body: CreateBookingBody };
+export const createBooking = asyncHandler(
+  async (req: CreateBookingRequest, res: Response) => {
+    const { salonId, salonServiceId, slotDate, slotStartTime } = req.body;
   // slotDate = "2025-08-28", slotStartTime = "06:00"
+// console.log("req.body:", req.body);
+// console.log("salonServiceId:", req.body.salonServiceId);
 
   if (!req.user) return res.status(401).json({ error: "Unauthorized" });
 
   // Fetch the salon service directly
   const salonService = await prisma.salonService.findUnique({
-    where: { id: salonServiceId },
+    where: { id: salonServiceId  },
   });
 
   if (!salonService) return res.status(404).json({ error: "SalonService not found" });
+  
+if (!salonServiceId) {
+  throw new Error("Missing salonServiceId param");
+}
 
   const slotDuration = 60; // each slot = 60 mins
   const requiredSlots = Math.ceil(salonService.duration / slotDuration);
@@ -74,8 +90,29 @@ export const createBooking = asyncHandler(async (req: UserRequest, res: Response
       appointmentId: appointment.id,
       slotId: slotIds[0], // first slot
     },
+     include: {
+    salonService: {
+      include: {
+        service: true, // if salonService → service relation exists
+      },
+    },
+    salon: true,},
   });
-
+  const user=req.user;
+ await createAndSendNotification({
+    userId: booking.clientId,
+    title: "Booking Confirmed",
+    message: `Your booking for ${booking.salonService?.service.name} at ${booking.salon.name} is confirmed.`,
+    type: "BOOKING_CONFIRMATION",
+    data: { bookingId: booking.id, bookingNumber: booking.bookingNumber }
+  });
+  await createAndSendNotification({
+    userId: booking.salon.ownerId,
+    title: "New Booking",
+    message: `${user.firstName} ${user.lastName} booked ${booking.salonService?.service.name}.`,
+    type: "BOOKING_CONFIRMATION",
+    data: { bookingId: booking.id, client: booking.clientId }
+  });
   res.status(201).json({ booking, bookedSlots: slotIds, appointment });
 });
 export const getBookings = asyncHandler(async (req: Request, res: Response) => {
@@ -262,43 +299,94 @@ export const getMyBookings = async (req: UserRequest, res: Response) => {
     res.status(500).json({ error: err instanceof Error ? err.message : err });
   }
 };
-export const updateBooking = asyncHandler(async (req: Request, res: Response) => {
+// controllers/bookingController.ts
+export const rescheduleBooking = asyncHandler(async (req: UserRequest, res: Response) => {
+    if (!req.user) return res.status(401).json({ error: "Unauthorized" });
+
   try {
     const { id } = req.params;
-    const { status, salonNotes } = req.body;
+    const { newDateTime } = req.body;
     const userId = (req as any).user.id;
     const userRole = (req as any).user.role;
-    
+console.log("newDateTime:", newDateTime);
+    if (!newDateTime) {
+      return res.status(400).json({ message: "newDateTime is required" });
+    }
     const booking = await prisma.booking.findUnique({
       where: { id },
-      include: { salon: true }
+      include: { salon: true , slot: true },
     });
-    
+
     if (!booking) {
-      return res.status(404).json({ message: 'Booking not found' });
+      return res.status(404).json({ message: "Booking not found" });
     }
-    
-    // Only salon owner can update booking status and add salon notes
-       const canReschedule = booking.clientId === userId || 
-                     booking.salon.ownerId === userId || 
-                     userRole === 'ADMIN';
-    
+
+    // Authorization: client, salon owner, or admin
+    const canReschedule =
+      booking.clientId === userId ||
+      booking.salon.ownerId === userId ||
+      userRole === "ADMIN";
+
     if (!canReschedule) {
-      return res.status(403).json({ message: 'Not authorized to reschedule this booking' });
+      return res.status(403).json({ message: "Not authorized to reschedule this booking" });
     }
-    
-    const updatedBooking = await prisma.booking.update({
-      where: { id },
-      data: { status, salonNotes }
-    });
-    
-    res.json(updatedBooking);
+    const originalDateTime = booking.slot.startTime;
+
+    // 1. Find the new slot
+const newSlot = await prisma.slot.findFirst({
+  where: {
+    salonId: booking.salonId,
+    startTime: new Date(newDateTime),
+  },
+});
+
+if (!newSlot) {
+  return res.status(400).json({ message: "No available slot at that time" });
+}
+
+// 2. Update the booking to link to the new slot
+const updatedBooking = await prisma.booking.update({
+  where: { id },
+  data: { slotId: newSlot.id },
+  include: {
+    salonService: {
+      include: {
+        service: true, // if salonService → service relation exists
+      },
+    },
+    salon: true,
+    slot: true,
+  },
+});
+await createAndSendNotification({
+    userId: booking.clientId,
+    title: "Booking Rescheduled",
+    message: `Your booking for ${updatedBooking.salonService!.service.name} at ${updatedBooking.salon.name} has been rescheduled to ${new Date(updatedBooking.slot.startTime).toLocaleString()}.`,
+    type: "BOOKING_REMINDER",
+    data: { bookingId: booking.id }
+  });
+const user=req.user;
+  await createAndSendNotification({
+    userId: booking.salon.ownerId,
+    title: "Booking Rescheduled",
+    message: `${user.firstName} ${user.lastName} rescheduled ${updatedBooking.salonService!.service.name} to ${new Date(updatedBooking.slot.startTime).toLocaleString()}.`,
+    type: "BOOKING_REMINDER",
+    data: { bookingId: booking.id }
+  });
+res.json({
+  message: "Booking rescheduled successfully",
+  originalDateTime: booking.slot.startTime,
+  newDateTime: updatedBooking.slot.startTime,
+});
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 });
 
-export const cancelBooking = asyncHandler(async (req: Request, res: Response) => {
+
+export const cancelBooking = asyncHandler(async (req: UserRequest, res: Response) => {
+      if (!req.user) return res.status(401).json({ error: "Unauthorized" });
+
   try {
     const { id } = req.params;
     const userId = (req as any).user.id;
@@ -306,7 +394,14 @@ export const cancelBooking = asyncHandler(async (req: Request, res: Response) =>
     
     const booking = await prisma.booking.findUnique({
       where: { id },
-      include: { salon: true, slot: true }
+      include: { salon: true,
+         slot: true, 
+         salonService: {
+           include: {
+             service: true, // if salonService → service relation exists
+           },
+         },
+       }
     });
     
     if (!booking) {
@@ -325,7 +420,7 @@ export const cancelBooking = asyncHandler(async (req: Request, res: Response) =>
     // Update booking status
     await prisma.booking.update({
       where: { id },
-      data: { status: 'CANCELLED' }
+      data: { status: 'CANCELLED' },  
     });
     
     // Update appointment status
@@ -339,7 +434,21 @@ export const cancelBooking = asyncHandler(async (req: Request, res: Response) =>
       where: { id: booking.slotId },
       data: { isAvailable: true }
     });
-    
+    await createAndSendNotification({
+    userId: booking.clientId,
+    title: "Booking Cancelled",
+    message: `Your booking for ${booking.salonService!.service.name} at ${booking.salon.name} has been cancelled.`,
+    type: "BOOKING_CANCELLATION",
+    data: { bookingId: booking.id }
+  });
+const user=req.user;
+  await createAndSendNotification({
+    userId: booking.salon.ownerId,
+    title: "Booking Cancelled",
+    message: `${user.firstName} ${user.lastName} cancelled their booking for ${booking.salonService!.service.name}.`,
+    type: "BOOKING_CANCELLATION",
+    data: { bookingId: booking.id }
+  });
     res.json({ message: 'Booking cancelled successfully' });
   } catch (error: any) {
     res.status(500).json({ message: error.message });

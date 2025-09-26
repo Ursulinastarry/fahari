@@ -35,7 +35,8 @@
     "node-cron": "^4.2.1",
     "pg": "^8.13.3",
     "pm2-windows-startup": "^1.0.3",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@prisma/client": "^6.15.0",

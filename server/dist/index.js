@@ -27,25 +27,28 @@ const serviceRoutes_1 = __importDefault(require("./routes/serviceRoutes"));
 const http_1 = __importDefault(require("http"));
 const socket_1 = require("./realtime/socket");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const express_fileupload_1 = __importDefault(require("express-fileupload"));
 require("./cron/slotScheduler");
+const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 4000;
 const server = http_1.default.createServer(app);
 (0, socket_1.initSocket)(server);
 app.use((0, cors_1.default)({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://fahari.vercel.app"],
     methods: "GET, POST, PUT, PATCH, DELETE",
     credentials: true // allows cookies and auth headers
 }));
-app.use((0, express_fileupload_1.default)({
-    createParentPath: true,
-    limits: { fileSize: 10 * 1024 * 1024 }, // max 10MB
-    abortOnLimit: true,
-}));
+// app.use(
+//   fileUpload({
+//     createParentPath: true,
+//     limits: { fileSize: 10 * 1024 * 1024 }, // max 10MB
+//     abortOnLimit: true,
+//   })
+// );
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
+app.use('/uploads', express_1.default.static('uploads'));
 const { Pool } = pg_1.default;
 exports.pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -89,5 +92,6 @@ app.use('/api/waitlist', waitlistRoutes_1.default);
 app.use('/api/search', searchRoutes_1.default);
 app.use('/api/salon-services', salonServiceRoutes_1.default);
 app.use('/api/services', serviceRoutes_1.default);
+app.use('/uploads', express_1.default.static(path_1.default.join(__dirname, '../uploads')));
 app.get('/', (_, res) => res.send('Fahari AI Backend is Live 🚀'));
 server.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));

@@ -9,6 +9,7 @@ export type NotifyPayload = {
   message: string;
   type?:
     | "BOOKING_CONFIRMATION"
+    | "BOOKING_UPDATE"
     | "BOOKING_REMINDER"
     | "BOOKING_CANCELLATION"
     | "PAYMENT_SUCCESS"
@@ -67,3 +68,6 @@ export async function createAndSendNotification(payload: NotifyPayload) {
 
   throw new Error("Notification must have either userId or role");
 }
+
+
+  

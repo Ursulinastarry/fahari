@@ -4,15 +4,56 @@ import dotenv from "dotenv";
 import { UserRequest } from "../utils/types/userTypes";
 import { pool } from "../index";
 import prisma from "../config/prisma";
-import { FileUploadUserRequest } from "../utils/types/userTypes";
+// import { FileUploadUserRequest } from "../utils/types/userTypes";
 import path from 'path';
+import fs from "fs";
+import multer from "multer";
 
-export const createReview = asyncHandler(async (req: FileUploadUserRequest, res:Response) => {
+// Review image upload setup
+const reviewUploadDir = 'uploads/reviews';
+if (!fs.existsSync(reviewUploadDir)) {
+  fs.mkdirSync(reviewUploadDir, { recursive: true });
+}
+
+const reviewStorage = multer.diskStorage({
+  destination: (_req, _file, cb) => {
+    cb(null, reviewUploadDir);
+  },
+  filename: (_req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const extension = path.extname(file.originalname);
+    const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
+    cb(null, filename);
+  }
+});
+
+const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+  // Accept only image files
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed!'));
+  }
+};
+
+export const uploadReviewImages = multer({
+  storage: reviewStorage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB per file
+    files: 5 // Max 5 images per review
+  },
+  fileFilter
+}).array('reviewImages', 5);
+
+export const createReview = asyncHandler(async (req: UserRequest, res: Response) => {
   try {
+    console.log("---- Incoming Review Request ----");
+    console.log("Body:", req.body);
+    console.log("Files:", req.files);
     const { bookingId, rating, comment } = req.body;
     if (!req.user) {
-     return res.status(401).json({ message: "Unauthorized" });
-   }
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     const userId = req.user.id;
 
     const booking = await prisma.booking.findUnique({
@@ -27,22 +68,17 @@ export const createReview = asyncHandler(async (req: FileUploadUserRequest, res:
       return res.status(400).json({ message: "Review already exists for this booking" });
 
     // Handle uploaded files
-    const imageFiles = req.files ? req.files.images : [];
-    const imageArray = Array.isArray(imageFiles) ? imageFiles : [imageFiles];
-
-    const uploadedPaths: string[] = [];
-
-    for (const file of imageArray) {
-      const uploadPath = path.join(__dirname, "../uploads/", file.name);
-      await file.mv(uploadPath);
-      uploadedPaths.push(uploadPath);
+    let images: string[] = [];
+    if (req.files) {
+      const files = req.files as unknown as Express.Multer.File[];
+      images = files.map(file => file.filename);
     }
 
     const review = await prisma.review.create({
       data: {
         rating: Number(rating),
         comment,
-        images: uploadedPaths,
+        images,
         clientId: userId,
         salonId: booking.salonId,
         bookingId,
@@ -52,13 +88,16 @@ export const createReview = asyncHandler(async (req: FileUploadUserRequest, res:
     // Update salon average rating
     const salonReviews = await prisma.review.findMany({ where: { salonId: booking.salonId } });
     const averageRating =
-      salonReviews.reduce((sum: any, r: { rating: any; }) => sum + r.rating, 0) / salonReviews.length;
+      salonReviews.length > 0
+        ? salonReviews.reduce((sum: number, r: { rating: number }) => sum + r.rating, 0) / salonReviews.length
+        : 0;
 
     await prisma.salon.update({
       where: { id: booking.salonId },
       data: { averageRating, totalReviews: salonReviews.length },
     });
 
+    // Set booking status to REVIEWED only after successful review creation and salon update
     await prisma.booking.update({ where: { id: bookingId }, data: { status: "REVIEWED" } });
 
     res.status(201).json(review);

@@ -3,14 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancelBooking = exports.updateBooking = exports.getMyBookings = exports.getOwnerBookings = exports.getBookings = exports.createBooking = void 0;
+exports.cancelBooking = exports.rescheduleBooking = exports.getMyBookings = exports.getOwnerBookings = exports.getBookings = exports.createBooking = void 0;
 const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
 const index_1 = require("../index");
 const prisma_1 = __importDefault(require("../config/prisma"));
 const luxon_1 = require("luxon");
+const notificationService_1 = require("../services/notificationService");
 exports.createBooking = (0, asyncHandler_1.default)(async (req, res) => {
     const { salonId, salonServiceId, slotDate, slotStartTime } = req.body;
     // slotDate = "2025-08-28", slotStartTime = "06:00"
+    // console.log("req.body:", req.body);
+    // console.log("salonServiceId:", req.body.salonServiceId);
     if (!req.user)
         return res.status(401).json({ error: "Unauthorized" });
     // Fetch the salon service directly
@@ -19,6 +22,9 @@ exports.createBooking = (0, asyncHandler_1.default)(async (req, res) => {
     });
     if (!salonService)
         return res.status(404).json({ error: "SalonService not found" });
+    if (!salonServiceId) {
+        throw new Error("Missing salonServiceId param");
+    }
     const slotDuration = 60; // each slot = 60 mins
     const requiredSlots = Math.ceil(salonService.duration / slotDuration);
     // Combine date + time into a proper Date object in UTC
@@ -66,6 +72,29 @@ exports.createBooking = (0, asyncHandler_1.default)(async (req, res) => {
             appointmentId: appointment.id,
             slotId: slotIds[0], // first slot
         },
+        include: {
+            salonService: {
+                include: {
+                    service: true, // if salonService → service relation exists
+                },
+            },
+            salon: true,
+        },
+    });
+    const user = req.user;
+    await (0, notificationService_1.createAndSendNotification)({
+        userId: booking.clientId,
+        title: "Booking Confirmed",
+        message: `Your booking for ${booking.salonService?.service.name} at ${booking.salon.name} is confirmed.`,
+        type: "BOOKING_CONFIRMATION",
+        data: { bookingId: booking.id, bookingNumber: booking.bookingNumber }
+    });
+    await (0, notificationService_1.createAndSendNotification)({
+        userId: booking.salon.ownerId,
+        title: "New Booking",
+        message: `${user.firstName} ${user.lastName} booked ${booking.salonService?.service.name}.`,
+        type: "BOOKING_CONFIRMATION",
+        data: { bookingId: booking.id, client: booking.clientId }
     });
     res.status(201).json({ booking, bookedSlots: slotIds, appointment });
 });
@@ -238,44 +267,100 @@ const getMyBookings = async (req, res) => {
     }
 };
 exports.getMyBookings = getMyBookings;
-exports.updateBooking = (0, asyncHandler_1.default)(async (req, res) => {
+// controllers/bookingController.ts
+exports.rescheduleBooking = (0, asyncHandler_1.default)(async (req, res) => {
+    if (!req.user)
+        return res.status(401).json({ error: "Unauthorized" });
     try {
         const { id } = req.params;
-        const { status, salonNotes } = req.body;
+        const { newDateTime } = req.body;
         const userId = req.user.id;
         const userRole = req.user.role;
+        console.log("newDateTime:", newDateTime);
+        if (!newDateTime) {
+            return res.status(400).json({ message: "newDateTime is required" });
+        }
         const booking = await prisma_1.default.booking.findUnique({
             where: { id },
-            include: { salon: true }
+            include: { salon: true, slot: true },
         });
         if (!booking) {
-            return res.status(404).json({ message: 'Booking not found' });
+            return res.status(404).json({ message: "Booking not found" });
         }
-        // Only salon owner can update booking status and add salon notes
+        // Authorization: client, salon owner, or admin
         const canReschedule = booking.clientId === userId ||
             booking.salon.ownerId === userId ||
-            userRole === 'ADMIN';
+            userRole === "ADMIN";
         if (!canReschedule) {
-            return res.status(403).json({ message: 'Not authorized to reschedule this booking' });
+            return res.status(403).json({ message: "Not authorized to reschedule this booking" });
         }
+        const originalDateTime = booking.slot.startTime;
+        // 1. Find the new slot
+        const newSlot = await prisma_1.default.slot.findFirst({
+            where: {
+                salonId: booking.salonId,
+                startTime: new Date(newDateTime),
+            },
+        });
+        if (!newSlot) {
+            return res.status(400).json({ message: "No available slot at that time" });
+        }
+        // 2. Update the booking to link to the new slot
         const updatedBooking = await prisma_1.default.booking.update({
             where: { id },
-            data: { status, salonNotes }
+            data: { slotId: newSlot.id },
+            include: {
+                salonService: {
+                    include: {
+                        service: true, // if salonService → service relation exists
+                    },
+                },
+                salon: true,
+                slot: true,
+            },
         });
-        res.json(updatedBooking);
+        await (0, notificationService_1.createAndSendNotification)({
+            userId: booking.clientId,
+            title: "Booking Rescheduled",
+            message: `Your booking for ${updatedBooking.salonService.service.name} at ${updatedBooking.salon.name} has been rescheduled to ${new Date(updatedBooking.slot.startTime).toLocaleString()}.`,
+            type: "BOOKING_REMINDER",
+            data: { bookingId: booking.id }
+        });
+        const user = req.user;
+        await (0, notificationService_1.createAndSendNotification)({
+            userId: booking.salon.ownerId,
+            title: "Booking Rescheduled",
+            message: `${user.firstName} ${user.lastName} rescheduled ${updatedBooking.salonService.service.name} to ${new Date(updatedBooking.slot.startTime).toLocaleString()}.`,
+            type: "BOOKING_REMINDER",
+            data: { bookingId: booking.id }
+        });
+        res.json({
+            message: "Booking rescheduled successfully",
+            originalDateTime: booking.slot.startTime,
+            newDateTime: updatedBooking.slot.startTime,
+        });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
 exports.cancelBooking = (0, asyncHandler_1.default)(async (req, res) => {
+    if (!req.user)
+        return res.status(401).json({ error: "Unauthorized" });
     try {
         const { id } = req.params;
         const userId = req.user.id;
         const userRole = req.user.role;
         const booking = await prisma_1.default.booking.findUnique({
             where: { id },
-            include: { salon: true, slot: true }
+            include: { salon: true,
+                slot: true,
+                salonService: {
+                    include: {
+                        service: true, // if salonService → service relation exists
+                    },
+                },
+            }
         });
         if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
@@ -290,7 +375,7 @@ exports.cancelBooking = (0, asyncHandler_1.default)(async (req, res) => {
         // Update booking status
         await prisma_1.default.booking.update({
             where: { id },
-            data: { status: 'CANCELLED' }
+            data: { status: 'CANCELLED' },
         });
         // Update appointment status
         await prisma_1.default.appointment.update({
@@ -301,6 +386,21 @@ exports.cancelBooking = (0, asyncHandler_1.default)(async (req, res) => {
         await prisma_1.default.slot.update({
             where: { id: booking.slotId },
             data: { isAvailable: true }
+        });
+        await (0, notificationService_1.createAndSendNotification)({
+            userId: booking.clientId,
+            title: "Booking Cancelled",
+            message: `Your booking for ${booking.salonService.service.name} at ${booking.salon.name} has been cancelled.`,
+            type: "BOOKING_CANCELLATION",
+            data: { bookingId: booking.id }
+        });
+        const user = req.user;
+        await (0, notificationService_1.createAndSendNotification)({
+            userId: booking.salon.ownerId,
+            title: "Booking Cancelled",
+            message: `${user.firstName} ${user.lastName} cancelled their booking for ${booking.salonService.service.name}.`,
+            type: "BOOKING_CANCELLATION",
+            data: { bookingId: booking.id }
         });
         res.json({ message: 'Booking cancelled successfully' });
     }

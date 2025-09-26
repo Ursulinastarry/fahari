@@ -1,18 +1,64 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteSalon = exports.updateSalon = exports.getSalonServices = exports.getMySalon = exports.getSalon = exports.getSalons = exports.createSalon = void 0;
+exports.deleteSalon = exports.deleteFileIfExists = exports.updateSalon = exports.getSalonServices = exports.getMySalon = exports.getSalon = exports.getSalons = exports.createSalon = exports.uploadSalonMedia = void 0;
 // At the top of your file
 const client_1 = require("@prisma/client");
 const index_1 = require("../index");
+const multer_1 = __importDefault(require("multer"));
+const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
+// Configure multer for file uploads
+const storage = multer_1.default.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/salons/'); // Make sure this directory exists
+    },
+    filename: (req, file, cb) => {
+        const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path_1.default.extname(file.originalname)}`;
+        cb(null, uniqueName);
+    }
+});
+const upload = (0, multer_1.default)({
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        }
+        else {
+            cb(null, false);
+        }
+    }
+});
+exports.uploadSalonMedia = (0, multer_1.default)({ storage });
 const prisma = new client_1.PrismaClient();
 const createSalon = async (req, res) => {
     try {
-        const userId = req.user.id; // 🔥 make sure this matches protect
+        const userId = req.user.id;
         const userRole = req.user.role;
         if (userRole !== "SALON_OWNER" && userRole !== "ADMIN") {
             return res.status(403).json({ message: "Only salon owners can create salons" });
         }
-        const { name, description, email, phone, address, city, location, latitude, longitude, businessHours, profileImage, coverImage, gallery } = req.body;
+        // With FormData, text fields come through req.body
+        const { name, description, email, phone, address, city, location, businessHours // This is a JSON string from FormData
+         } = req.body;
+        // Parse businessHours since it comes as JSON string
+        let parsedBusinessHours = {};
+        if (businessHours) {
+            try {
+                parsedBusinessHours = JSON.parse(businessHours);
+            }
+            catch (e) {
+                return res.status(400).json({ message: "Invalid businessHours format" });
+            }
+        }
+        // Files come through req.files (handled by multer)
+        const files = req.files;
+        const profileImage = files?.profileImage?.[0]?.filename || null;
+        const coverImage = files?.coverImage?.[0]?.filename || null;
+        const gallery = files?.gallery?.map(file => file.filename) || [];
         const salon = await prisma.salon.create({
             data: {
                 name,
@@ -22,12 +68,10 @@ const createSalon = async (req, res) => {
                 address,
                 city,
                 location,
-                latitude: latitude ? parseFloat(latitude) : null,
-                longitude: longitude ? parseFloat(longitude) : null,
-                businessHours,
+                businessHours: parsedBusinessHours,
                 profileImage,
                 coverImage,
-                gallery: gallery || [],
+                gallery,
                 owner: {
                     connect: { id: userId }
                 }
@@ -159,32 +203,97 @@ exports.getSalonServices = getSalonServices;
 const updateSalon = async (req, res) => {
     try {
         const { id } = req.params;
-        const userId = req.user.userId;
+        const userId = req.user.id;
         const userRole = req.user.role;
+        // Find existing salon
         const salon = await prisma.salon.findUnique({
-            where: { id }
+            where: { id },
         });
         if (!salon) {
-            return res.status(404).json({ message: 'Salon not found' });
+            return res.status(404).json({ message: "Salon not found" });
         }
-        if (salon.ownerId !== userId && userRole !== 'ADMIN') {
-            return res.status(403).json({ message: 'Not authorized to update this salon' });
+        if (salon.ownerId !== userId && userRole !== "ADMIN") {
+            return res.status(403).json({ message: "Not authorized to update this salon" });
         }
+        // Extract text fields
+        const { name, description, email, phone, address, city, location, businessHours, } = req.body;
+        // Handle uploaded files
+        const files = req.files;
+        // Initialize with existing values
+        let profileImage = salon.profileImage;
+        let coverImage = salon.coverImage;
+        let gallery = salon.gallery || [];
+        // Handle profile image update
+        if (files?.profileImage?.[0]) {
+            const newProfileImage = files.profileImage[0].filename;
+            // Delete old profile image if it exists
+            if (salon.profileImage) {
+                (0, exports.deleteFileIfExists)(path_1.default.join(__dirname, "../../uploads/salons", salon.profileImage));
+            }
+            profileImage = newProfileImage;
+        }
+        // Handle cover image update
+        if (files?.coverImage?.[0]) {
+            const newCoverImage = files.coverImage[0].filename;
+            // Delete old cover image if it exists
+            if (salon.coverImage) {
+                (0, exports.deleteFileIfExists)(path_1.default.join(__dirname, "../../uploads/salons", salon.coverImage));
+            }
+            coverImage = newCoverImage;
+        }
+        // Handle gallery images update
+        if (files?.gallery && files.gallery.length > 0) {
+            const newGalleryFiles = files.gallery.map((file) => file.filename);
+            // Delete old gallery images if they exist
+            if (salon.gallery && salon.gallery.length > 0) {
+                salon.gallery.forEach((oldFile) => {
+                    (0, exports.deleteFileIfExists)(path_1.default.join(__dirname, "../../uploads/salons", oldFile));
+                });
+            }
+            gallery = newGalleryFiles;
+        }
+        // Update salon in database
         const updatedSalon = await prisma.salon.update({
             where: { id },
-            data: req.body
+            data: {
+                name: name || salon.name,
+                description: description || salon.description,
+                email: email || salon.email,
+                phone: phone || salon.phone,
+                address: address || salon.address,
+                city: city || salon.city,
+                location: location || salon.location,
+                businessHours: businessHours || salon.businessHours,
+                profileImage,
+                coverImage,
+                gallery,
+            },
         });
         res.json(updatedSalon);
     }
     catch (error) {
+        console.error("Error updating salon:", error);
         res.status(500).json({ message: error.message });
     }
 };
 exports.updateSalon = updateSalon;
+// Helper function to safely delete files
+const deleteFileIfExists = (filePath) => {
+    try {
+        if (fs_1.default.existsSync(filePath)) {
+            fs_1.default.unlinkSync(filePath);
+            console.log(`Deleted old file: ${filePath}`);
+        }
+    }
+    catch (error) {
+        console.error(`Error deleting file ${filePath}:`, error);
+    }
+};
+exports.deleteFileIfExists = deleteFileIfExists;
 const deleteSalon = async (req, res) => {
     try {
         const { id } = req.params;
-        const userId = req.user.userId;
+        const userId = req.user.id;
         const userRole = req.user.role;
         const salon = await prisma.salon.findUnique({
             where: { id }
@@ -205,6 +314,3 @@ const deleteSalon = async (req, res) => {
     }
 };
 exports.deleteSalon = deleteSalon;
-function asyncHandler(arg0) {
-    throw new Error("Function not implemented.");
-}

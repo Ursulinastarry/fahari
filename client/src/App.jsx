@@ -17,20 +17,26 @@ import ClientDashboard from "./pages/ClientDashboard";
 import OwnerDashboard from "./pages/OwnerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Notifications from "./pages/Notifications";
+import CreateSalonForm from "./pages/owner/CreateSalonForm";
+import SalonOwnerSalons from "./pages/owner/SalonsPage";
+import { UserProvider } from './contexts/UserContext';
 
 function App() {
   return (
+    <UserProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Login />} />
-
+        <Route path="/create-salon" element={<CreateSalonForm />} />
         <Route path="/client" element={<ClientDashboard />} />
         <Route path="/owner" element={<OwnerDashboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/owner/salons" element={<SalonOwnerSalons />} />
       </Routes>
     </BrowserRouter>
+    </UserProvider>
   );
 }
 

@@ -9,10 +9,10 @@ import {
   getBookingReview,
   getReviewsBySalon
 } from "../controllers/reviewsController";
-
+import { uploadReviewImages,handleUploadError } from "../middlewares/upload";
 const router = Router();
 
-router.post("/", protect, createReview);
+router.post("/", protect, uploadReviewImages,handleUploadError, createReview);
 // router.get("/", getReviews);
 router.get("/owner", protect, getOwnerReviews);
 router.get("/rating/:salonId", getSalonRating);

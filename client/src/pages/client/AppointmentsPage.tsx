@@ -44,7 +44,7 @@ const AppointmentsPage: React.FC = () => {
     fetchBookings();
   }, []);
 
-  const updateStatus = async (id: string, status: string) => {
+  const cancelBooking = async (id: string, status: string) => {
     try {
       await axios.patch(
         `http://localhost:4000/api/bookings/${id}/cancel`,
@@ -58,20 +58,35 @@ const AppointmentsPage: React.FC = () => {
   };
 
   const rescheduleBooking = async () => {
-    if (!rescheduleId || !newDateTime) return;
-    try {
-      await axios.patch(
-        `http://localhost:4000/api/bookings/${rescheduleId}/reschedule`,
-        { newDateTime },
-        { withCredentials: true }
-      );
-      setRescheduleId(null);
-      setNewDateTime("");
-      fetchBookings();
-    } catch (err) {
-      console.error("Error rescheduling booking:", err);
-    }
-  };
+        console.log("Rescheduling booking:", rescheduleId, newDateTime);
+
+  if (!rescheduleId || !newDateTime) {
+    alert("Please select a booking and a new time before rescheduling.");
+    return;
+  }
+
+  try {
+    const { data } = await axios.patch(
+      `http://localhost:4000/api/bookings/${rescheduleId}/reschedule`,
+      { newDateTime },
+      { withCredentials: true }
+    );
+
+    // Show success message before refresh
+    alert(
+      `${data.message}\n\n` +
+      `Old Time: ${new Date(data.originalDateTime).toLocaleString()}\n` +
+      `New Time: ${new Date(data.newDateTime).toLocaleString()}`
+    );
+
+    setRescheduleId(null);
+    setNewDateTime("");
+    fetchBookings(); // refresh after message
+  } catch (err: any) {
+    console.error("Error rescheduling booking:", err);
+    alert(err.response?.data?.message || "Failed to reschedule booking. Try again.");
+  }
+};
 
   const formatEAT = (utcDate: string) => {
     return DateTime.fromISO(utcDate, { zone: "utc" })
@@ -87,99 +102,118 @@ const AppointmentsPage: React.FC = () => {
       <div className="space-y-4">
         {bookings.map((b) => {
           const slotTime = DateTime.fromISO(b.slotStartTime, { zone: "utc" }).setZone(
-            "Africa/Nairobi"
+        "Africa/Nairobi"
           );
           let effectiveStatus = b.status;
           if (b.status !== "CANCELLED" && slotTime < now) {
-            effectiveStatus = "COMPLETED";
+        if (b.status === "REVIEWED") {
+          effectiveStatus = "REVIEWED";
+        } else {
+          effectiveStatus = "COMPLETED";
+        }
+          }
+
+          // If backend status is REVIEWED, always show as REVIEWED
+          if (b.status === "REVIEWED") {
+        effectiveStatus = "REVIEWED";
           }
 
           return (
-            <div
-              key={b.id}
-              className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white shadow rounded-lg p-4"
+        <div
+          key={b.id}
+          className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white shadow rounded-lg p-4"
+        >
+          <div>
+            <p className="font-semibold">
+          {b.firstName} {b.lastName}
+            </p>
+            <p className="text-sm text-gray-600">
+          Booking: {b.bookingNumber}
+            </p>
+            <p className="text-sm text-gray-600">Salon: {b.salonName}</p>
+            <p className="text-sm text-gray-600">Service: {b.serviceName}</p>
+            <p className="text-sm text-gray-600">
+          Appointment: {formatEAT(b.slotStartTime)}
+            </p>
+            <p className="text-sm text-gray-600">
+          Created: {formatEAT(b.createdAt)}
+            </p>
+            <p className="text-sm text-gray-600">
+          Email: {b.email} | Phone: {b.phone}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 mt-3 md:mt-0">
+            <p className="font-bold">KES {b.totalAmount}</p>
+            <span
+          className={`px-3 py-1 text-xs rounded-full ${
+            effectiveStatus === "CONFIRMED"
+              ? "bg-green-100 text-green-600"
+              : effectiveStatus === "CANCELLED"
+              ? "bg-red-100 text-red-600"
+              : effectiveStatus === "COMPLETED"
+              ? "bg-gray-200 text-gray-700"
+              : effectiveStatus === "REVIEWED"
+              ? "bg-blue-100 text-blue-600"
+              : "bg-yellow-100 text-yellow-600"
+          }`}
             >
-              <div>
-  <p className="font-semibold">
-    {b.firstName} {b.lastName}
-  </p>
-  <p className="text-sm text-gray-600">
-    Booking: {b.bookingNumber}
-  </p>
-  <p className="text-sm text-gray-600">Salon: {b.salonName}</p>
-  <p className="text-sm text-gray-600">Service: {b.serviceName}</p> {/* New line */}
-  <p className="text-sm text-gray-600">
-    Appointment: {formatEAT(b.slotStartTime)}
-  </p>
-  <p className="text-sm text-gray-600">
-    Created: {formatEAT(b.createdAt)}
-  </p>
-  <p className="text-sm text-gray-600">
-    Email: {b.email} | Phone: {b.phone}
-  </p>
-</div>
+          {effectiveStatus}
+            </span>
 
+            {effectiveStatus === "PENDING_PAYMENT" && (
+          <>
+            <button
+              onClick={() => cancelBooking(b.id, "CONFIRMED")}
+              className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
+            >
+              Confirm
+            </button>
+            <button
+              onClick={() => cancelBooking(b.id, "CANCELLED")}
+              className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            >
+              Cancel
+            </button>
+          </>
+            )}
 
-              <div className="flex flex-wrap items-center gap-3 mt-3 md:mt-0">
-                <p className="font-bold">KES {b.totalAmount}</p>
-                <span
-                  className={`px-3 py-1 text-xs rounded-full ${
-                    effectiveStatus === "CONFIRMED"
-                      ? "bg-green-100 text-green-600"
-                      : effectiveStatus === "CANCELLED"
-                      ? "bg-red-100 text-red-600"
-                      : effectiveStatus === "COMPLETED"
-                      ? "bg-gray-200 text-gray-700"
-                      : "bg-yellow-100 text-yellow-600"
-                  }`}
-                >
-                  {effectiveStatus}
-                </span>
+            {effectiveStatus === "CONFIRMED" && (
+          <>
+            <button
+              onClick={() => setRescheduleId(b.id)}
+              className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            >
+              Reschedule
+            </button>
+            <button
+              onClick={() => cancelBooking(b.id, "CANCELLED")}
+              className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            >
+              Cancel
+            </button>
+          </>
+            )}
 
-                {effectiveStatus === "PENDING_PAYMENT" && (
-                  <>
-                    <button
-                      onClick={() => updateStatus(b.id, "CONFIRMED")}
-                      className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                    >
-                      Confirm
-                    </button>
-                    <button
-                      onClick={() => updateStatus(b.id, "CANCELLED")}
-                      className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                    >
-                      Cancel
-                    </button>
-                  </>
-                )}
+            {effectiveStatus === "COMPLETED" && (
+          <button
+            onClick={() => setReviewBookingId(b.id)}
+            className="px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+          >
+            Review
+          </button>
+            )}
 
-                {effectiveStatus === "CONFIRMED" && (
-                  <>
-                    <button
-                      onClick={() => setRescheduleId(b.id)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                    >
-                      Reschedule
-                    </button>
-                    <button
-                      onClick={() => updateStatus(b.id, "CANCELLED")}
-                      className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                    >
-                      Cancel
-                    </button>
-                  </>
-                )}
-
-                {effectiveStatus === "COMPLETED" && (
-                  <button
-                    onClick={() => setReviewBookingId(b.id)}
-                    className="px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
-                  >
-                    Review
-                  </button>
-                )}
-              </div>
-            </div>
+            {effectiveStatus === "REVIEWED" && (
+          <button
+            disabled
+            className="px-3 py-1 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed"
+          >
+            Reviewed
+          </button>
+            )}
+          </div>
+        </div>
           );
         })}
       </div>
@@ -254,40 +288,39 @@ const AppointmentsPage: React.FC = () => {
             {/* Actions */}
             <div className="flex justify-end gap-3">
               <button
-                onClick={() => setReviewBookingId(null)}
-                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+              onClick={() => setReviewBookingId(null)}
+              className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
               >
-                Cancel
+              Cancel
               </button>
               <button
-                onClick={async () => {
-                  const formData = new FormData();
-                  formData.append("bookingId", reviewBookingId!);
-                  formData.append("rating", rating.toString());
-                  formData.append("comment", comment);
-                  images.forEach((file) => formData.append("images", file));
+              onClick={async () => {
+                const formData = new FormData();
+                formData.append("bookingId", reviewBookingId!);
+                formData.append("rating", rating.toString());
+                formData.append("comment", comment);
+                images.forEach((file) => formData.append("reviewImages", file)); // field name must match multer config
 
-                  await axios.post("http://localhost:4000/api/reviews", formData, {
-                    withCredentials: true,
-                    headers: { "Content-Type": "multipart/form-data" },
-                  });
+                await axios.post("http://localhost:4000/api/reviews", formData, {
+                withCredentials: true,
+                });
 
-                  setReviewBookingId(null);
-                  setRating(0);
-                  setcomment("");
-                  setImages([]);
-                }}
-                disabled={rating === 0}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                setReviewBookingId(null);
+                setRating(0);
+                setcomment("");
+                setImages([]);
+              }}
+              disabled={rating === 0}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
               >
-                Submit
+              Submit
               </button>
             </div>
+            </div>
           </div>
-        </div>
+        )}
+      </div>
       )}
-    </div>
-  );
-};
+  
 
 export default AppointmentsPage;

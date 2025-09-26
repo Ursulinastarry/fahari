@@ -22,6 +22,7 @@ import { initSocket } from "./realtime/socket";
 import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
 import "./cron/slotScheduler";
+import path from 'path';
 
 
 dotenv.config();
@@ -31,20 +32,22 @@ const server = http.createServer(app);
 initSocket(server);
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173","https://fahari.vercel.app"],
   methods: "GET, POST, PUT, PATCH, DELETE",
   credentials: true // allows cookies and auth headers
 }));
 
-app.use(
-  fileUpload({
-    createParentPath: true,
-    limits: { fileSize: 10 * 1024 * 1024 }, // max 10MB
-    abortOnLimit: true,
-  })
-);
+// app.use(
+//   fileUpload({
+//     createParentPath: true,
+//     limits: { fileSize: 10 * 1024 * 1024 }, // max 10MB
+//     abortOnLimit: true,
+//   })
+// );
+
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static('uploads'));
 
 const { Pool } = pkg;
 
@@ -92,6 +95,7 @@ app.use('/api/waitlist', waitlistRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/salon-services', salonServiceRoutes);
 app.use('/api/services', serviceRoutes);
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.get('/', (_, res) => res.send('Fahari AI Backend is Live 🚀'));
 

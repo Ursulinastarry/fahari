@@ -198,7 +198,7 @@ const FahariBeauty = () => {
     }
   }, [isLoggedIn, userType]);
 
-const handleLogin = (e) => {
+const handleLogin = (e: { preventDefault: () => void; }) => {
   e.preventDefault();
   if (loginForm.username.toLowerCase().trim() === 'admin' && loginForm.password.toLowerCase().trim() === 'admin') {
     setUserType(loginForm.userType);
@@ -222,7 +222,7 @@ const handleLogin = (e) => {
     setLoginForm({ username: '', password: '', userType: 'client' });
   };
 
-  const handleChatSubmit = (e) => {
+  const handleChatSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     if (!chatInput.trim()) return;
 

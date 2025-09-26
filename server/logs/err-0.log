@@ -134,3 +134,1066 @@ Inconsistent query result: Field service is required to return data, got `null` 
     at C:\Users\user\Documents\Fahari-AI\server\node_modules\pg-pool\index.js:45:11
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
     at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:169:22
+2025-09-08T17:43:04: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:62
+
+  14 if (!req.user)
+  15     return res.status(401).json({ error: "Unauthorized" });
+  16 // Fetch the salon service directly
+→ 17 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:26
+2025-09-19T15:40:32: [2025-09-19T12:40:28.743Z] [PID: 13240] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Wed Sep 17 2025 10:00:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-19T15:40:32: [2025-09-19T12:40:32.359Z] [PID: 13240] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Thu Sep 18 2025 10:00:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-19T15:40:32: [2025-09-19T12:40:32.376Z] [PID: 13240] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Sep 19 2025 10:00:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-19T15:46:34: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:62
+
+  14 if (!req.user)
+  15     return res.status(401).json({ error: "Unauthorized" });
+  16 // Fetch the salon service directly
+→ 17 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:26
+2025-09-19T16:32:36: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:62
+
+  14 if (!req.user)
+  15     return res.status(401).json({ error: "Unauthorized" });
+  16 // Fetch the salon service directly
+→ 17 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:26
+2025-09-19T16:34:32: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:62
+
+  14 if (!req.user)
+  15     return res.status(401).json({ error: "Unauthorized" });
+  16 // Fetch the salon service directly
+→ 17 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:26
+2025-09-19T16:42:28: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:62
+
+  14 if (!req.user)
+  15     return res.status(401).json({ error: "Unauthorized" });
+  16 // Fetch the salon service directly
+→ 17 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:26
+2025-09-19T16:46:58: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:62
+
+  14 if (!req.user)
+  15     return res.status(401).json({ error: "Unauthorized" });
+  16 // Fetch the salon service directly
+→ 17 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:26
+2025-09-19T16:54:31: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:62
+
+  14 if (!req.user)
+  15     return res.status(401).json({ error: "Unauthorized" });
+  16 // Fetch the salon service directly
+→ 17 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:26
+2025-09-19T17:02:44: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:62
+
+  14 if (!req.user)
+  15     return res.status(401).json({ error: "Unauthorized" });
+  16 // Fetch the salon service directly
+→ 17 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:26
+2025-09-19T17:03:47: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:62
+
+  14 if (!req.user)
+  15     return res.status(401).json({ error: "Unauthorized" });
+  16 // Fetch the salon service directly
+→ 17 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:26
+2025-09-19T17:08:05: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:19:62
+
+  16 if (!req.user)
+  17     return res.status(401).json({ error: "Unauthorized" });
+  18 // Fetch the salon service directly
+→ 19 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:19:26
+2025-09-19T17:34:43: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:62
+
+  14 if (!req.user)
+  15     return res.status(401).json({ error: "Unauthorized" });
+  16 // Fetch the salon service directly
+→ 17 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:17:26
+2025-09-19T17:35:48: PrismaClientValidationError: 
+Invalid `prisma_1.default.salonService.findUnique()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:19:62
+
+  16 if (!req.user)
+  17     return res.status(401).json({ error: "Unauthorized" });
+  18 // Fetch the salon service directly
+→ 19 const salonService = await prisma_1.default.salonService.findUnique({
+       where: {
+         id: undefined,
+     ?   salonId_serviceId?: SalonServiceSalonIdServiceIdCompoundUniqueInput,
+     ?   AND?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   OR?: SalonServiceWhereInput[],
+     ?   NOT?: SalonServiceWhereInput | SalonServiceWhereInput[],
+     ?   salonId?: StringFilter | String,
+     ?   serviceId?: StringFilter | String,
+     ?   price?: FloatFilter | Float,
+     ?   duration?: IntFilter | Int,
+     ?   salon?: SalonScalarRelationFilter | SalonWhereInput,
+     ?   service?: ServiceScalarRelationFilter | ServiceWhereInput,
+     ?   appointments?: AppointmentListRelationFilter,
+     ?   bookings?: BookingListRelationFilter
+       }
+     })
+
+Argument `where` of type SalonServiceWhereUniqueInput needs at least one of `id` or `salonId_serviceId` arguments. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\bookingController.js:19:26
+2025-09-23T11:47:49: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T11:54:24: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T11:56:33: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T11:57:53: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T12:04:02: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T12:09:57: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T12:18:03: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T12:18:52: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T12:22:32: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T12:25:58: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T12:37:52: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T12:41:08: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T12:58:32: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T13:02:50: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T13:09:49: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T13:17:34: PayloadTooLargeError: request entity too large
+    at readStream (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:163:17)
+    at getRawBody (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:116:12)
+    at read (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\read.js:74:3)
+    at jsonParser (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:125:5)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:342:13)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:297:9
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\express-fileupload\lib\index.js:38:14
+2025-09-23T13:20:32: PayloadTooLargeError: request entity too large
+    at readStream (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:163:17)
+    at getRawBody (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:116:12)
+    at read (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\read.js:74:3)
+    at jsonParser (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:125:5)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:342:13)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:297:9
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\express-fileupload\lib\index.js:38:14
+2025-09-23T13:28:19: PayloadTooLargeError: request entity too large
+    at readStream (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:163:17)
+    at getRawBody (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:116:12)
+    at read (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\read.js:74:3)
+    at jsonParser (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:125:5)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:342:13)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:297:9
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\express-fileupload\lib\index.js:38:14
+2025-09-23T13:33:29: PayloadTooLargeError: request entity too large
+    at readStream (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:163:17)
+    at getRawBody (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:116:12)
+    at read (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\read.js:74:3)
+    at jsonParser (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:125:5)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:342:13)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:297:9
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\express-fileupload\lib\index.js:38:14
+2025-09-23T13:35:30: PayloadTooLargeError: request entity too large
+    at readStream (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:163:17)
+    at getRawBody (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:116:12)
+    at read (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\read.js:74:3)
+    at jsonParser (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:125:5)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:342:13)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:297:9
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\express-fileupload\lib\index.js:38:14
+2025-09-23T13:38:18: PayloadTooLargeError: request entity too large
+    at readStream (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:163:17)
+    at getRawBody (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:116:12)
+    at read (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\read.js:74:3)
+    at jsonParser (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:125:5)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:342:13)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:297:9
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\express-fileupload\lib\index.js:38:14
+2025-09-23T13:41:29: PayloadTooLargeError: request entity too large
+    at readStream (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:163:17)
+    at getRawBody (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:116:12)
+    at read (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\read.js:74:3)
+    at jsonParser (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:125:5)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:342:13)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:297:9
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\express-fileupload\lib\index.js:38:14
+2025-09-23T13:43:26: PayloadTooLargeError: request entity too large
+    at readStream (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:163:17)
+    at getRawBody (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:116:12)
+    at read (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\read.js:74:3)
+    at jsonParser (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:125:5)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:342:13)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:297:9
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\express-fileupload\lib\index.js:38:14
+2025-09-23T13:45:32: PayloadTooLargeError: request entity too large
+    at readStream (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:163:17)
+    at getRawBody (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:116:12)
+    at read (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\read.js:74:3)
+    at jsonParser (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:125:5)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:342:13)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:297:9
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\express-fileupload\lib\index.js:38:14
+2025-09-23T13:46:42: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T13:54:16: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T13:54:16: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T14:02:09: TypeError: Cannot destructure property 'email' of 'req.body' as it is undefined.
+    at C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:74:13
+    at C:\Users\user\Documents\Fahari-AI\server\dist\middlewares\asyncHandler.js:4:21
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:295:15
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+2025-09-23T14:04:29: TypeError: Cannot destructure property 'email' of 'req.body' as it is undefined.
+    at C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:74:13
+    at C:\Users\user\Documents\Fahari-AI\server\dist\middlewares\asyncHandler.js:4:21
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:295:15
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+2025-09-23T14:04:50: TypeError: Cannot destructure property 'email' of 'req.body' as it is undefined.
+    at C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:74:13
+    at C:\Users\user\Documents\Fahari-AI\server\dist\middlewares\asyncHandler.js:4:21
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:295:15
+    at processParams (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:582:12)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\index.js:291:5)
+2025-09-23T14:07:00: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T14:07:00: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T17:04:35: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T17:04:35: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T17:12:15: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T17:12:15: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T17:12:49: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T17:12:49: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T17:18:21: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T17:18:21: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T17:21:03: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T17:21:03: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T17:21:37: Multer error: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+  storageErrors: []
+}
+2025-09-23T17:21:37: Error: Unexpected end of form
+    at Multipart._final (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:588:17)
+    at prefinish (node:internal/streams/writable:916:14)
+    at finishMaybe (node:internal/streams/writable:930:5)
+    at Writable.end (node:internal/streams/writable:845:5)
+    at onend (node:internal/streams/readable:948:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-09-23T17:49:35: MulterError: Unexpected field
+    at wrappedFileFilter (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\index.js:40:19)
+    at Multipart.<anonymous> (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\lib\make-middleware.js:132:7)
+    at Multipart.emit (node:events:518:28)
+    at HeaderParser.cb (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:358:14)
+    at HeaderParser.push (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:162:20)
+    at SBMH.ssCb [as _cb] (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:394:37)
+    at feed (C:\Users\user\Documents\Fahari-AI\server\node_modules\streamsearch\lib\sbmh.js:248:10)
+    at SBMH.push (C:\Users\user\Documents\Fahari-AI\server\node_modules\streamsearch\lib\sbmh.js:104:16)
+    at Multipart._write (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:567:19)
+    at writeOrBuffer (node:internal/streams/writable:572:12)
+2025-09-23T17:54:40: MulterError: Unexpected field
+    at wrappedFileFilter (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\index.js:40:19)
+    at Multipart.<anonymous> (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\lib\make-middleware.js:132:7)
+    at Multipart.emit (node:events:518:28)
+    at HeaderParser.cb (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:358:14)
+    at HeaderParser.push (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:162:20)
+    at SBMH.ssCb [as _cb] (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:394:37)
+    at feed (C:\Users\user\Documents\Fahari-AI\server\node_modules\streamsearch\lib\sbmh.js:248:10)
+    at SBMH.push (C:\Users\user\Documents\Fahari-AI\server\node_modules\streamsearch\lib\sbmh.js:104:16)
+    at Multipart._write (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:567:19)
+    at writeOrBuffer (node:internal/streams/writable:572:12)
+2025-09-24T10:00:00: ❌ Failed to generate slots for Mrembo salon: TypeError: Cannot read properties of undefined (reading 'split')
+    at node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:34:26)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44)
+2025-09-25T13:12:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:13:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:14:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:15:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:16:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:17:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:18:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:19:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:20:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:21:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:22:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:23:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:24:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:25:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T13:26:00: ❌ Failed to delete expired slots: PrismaClientKnownRequestError: 
+Invalid `prisma.slot.deleteMany()` invocation:
+
+
+Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async node_cron_1.default.schedule.timezone (C:\Users\user\Documents\Fahari-AI\server\dist\cron\slotScheduler.js:21:25)
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\cjs\scheduler\runner.js:70:44) {
+  code: 'P2003',
+  meta: { modelName: 'Slot', constraint: 'appointments_slotId_fkey' },
+  clientVersion: '6.15.0'
+}
+2025-09-25T23:01:19: Multer error: MulterError: File too large
+    at abortWithCode (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\lib\make-middleware.js:85:22)
+    at FileStream.<anonymous> (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\lib\make-middleware.js:155:11)
+    at FileStream.emit (node:events:518:28)
+    at SBMH.ssCb [as _cb] (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:479:32)
+    at feed (C:\Users\user\Documents\Fahari-AI\server\node_modules\streamsearch\lib\sbmh.js:248:10)
+    at SBMH.push (C:\Users\user\Documents\Fahari-AI\server\node_modules\streamsearch\lib\sbmh.js:104:16)
+    at Multipart._write (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:567:19)
+    at writeOrBuffer (node:internal/streams/writable:572:12)
+    at _write (node:internal/streams/writable:501:10)
+    at Writable.write (node:internal/streams/writable:510:10) {
+  code: 'LIMIT_FILE_SIZE',
+  field: 'coverImage',
+  storageErrors: []
+}
+2025-09-26T02:04:37: MulterError: File too large
+    at abortWithCode (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\lib\make-middleware.js:85:22)
+    at FileStream.<anonymous> (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\lib\make-middleware.js:155:11)
+    at FileStream.emit (node:events:518:28)
+    at SBMH.ssCb [as _cb] (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:479:32)
+    at feed (C:\Users\user\Documents\Fahari-AI\server\node_modules\streamsearch\lib\sbmh.js:248:10)
+    at SBMH.push (C:\Users\user\Documents\Fahari-AI\server\node_modules\streamsearch\lib\sbmh.js:104:16)
+    at Multipart._write (C:\Users\user\Documents\Fahari-AI\server\node_modules\busboy\lib\types\multipart.js:567:19)
+    at writeOrBuffer (node:internal/streams/writable:572:12)
+    at _write (node:internal/streams/writable:501:10)
+    at Writable.write (node:internal/streams/writable:510:10)
+2025-09-26T03:08:59: TypeError: Cannot read properties of undefined (reading 'id')
+    at C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:200:29
+    at C:\Users\user\Documents\Fahari-AI\server\dist\middlewares\asyncHandler.js:4:21
+    at Layer.handleRequest (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\user\Documents\Fahari-AI\server\node_modules\router\lib\route.js:157:13)
+    at done (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\lib\make-middleware.js:59:7)
+    at indicateDone (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\lib\make-middleware.js:63:68)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\lib\make-middleware.js:176:11
+    at WriteStream.<anonymous> (C:\Users\user\Documents\Fahari-AI\server\node_modules\multer\storage\disk.js:43:9)
+    at WriteStream.emit (node:events:530:35)
+    at finish (node:internal/streams/writable:955:10)
+2025-09-26T04:06:01: SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:156:10)
+    at parse (C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\types\json.js:71:15)
+    at C:\Users\user\Documents\Fahari-AI\server\node_modules\body-parser\lib\read.js:123:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)

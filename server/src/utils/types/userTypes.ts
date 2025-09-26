@@ -25,9 +25,9 @@ export interface User {
 export interface UserRequest extends Request {
     user?: User;
 }
-export interface FileUploadUserRequest extends Request {
-  user?: User;
-  files?: {
-    [key: string]: UploadedFile | UploadedFile[];
-  };
-}
+// export interface FileUploadUserRequest extends Request {
+//   user?: User;
+//   files?: {
+//     [key: string]: UploadedFile | UploadedFile[];
+//   };
+// }

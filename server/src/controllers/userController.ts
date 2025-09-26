@@ -6,9 +6,10 @@ import jwt from "jsonwebtoken";
 import { UserRequest } from "../utils/types/userTypes";
 import {pool} from "../index"
 import { createAndSendNotification } from "../services/notificationService";
-
-
-
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+import prisma from "../config/prisma";
 dotenv.config()
 //Debugging  - check if env var are loaded correctly  
 
@@ -27,14 +28,14 @@ const generateToken = (res: Response, id: string, role: string) => {
       res.cookie("access_token", accessToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV !== "production",
-          sameSite: "strict",
+          sameSite: "lax",
           maxAge: 24 * 60 * 60 * 1000 // 1 day in ms
       });
 
       res.cookie("refresh_token", refreshToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV !== "production",
-          sameSite: "strict",
+          sameSite: "lax",
           maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
 
@@ -228,19 +229,149 @@ export const getUserById = asyncHandler(async (req: Request, res: Response)=> {
   }
 })
 
-/** Update user */
-export const updateUser = asyncHandler(async (req: Request, res: Response)=> {
-  try {
-    const { name, email, role } = req.body;
-    const query = `UPDATE users SET name = $1, email = $2, role = $3 WHERE id = $4 RETURNING *`;
-    const values = [name, email, role, req.params.id];
-    const { rows } = await pool.query(query, values);
-    if (!rows.length) return res.status(404).json({ message: "User not found" });
-    res.json(rows[0]);
-  } catch (error:any) {
-    res.status(500).json({ message: error.message });
+
+
+// Controller to update user
+export const updateUser = asyncHandler(async (req: UserRequest, res: Response) => {
+  const user = req.user;
+  
+  if (!user) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
-})
+
+  const userId = req.params.id;
+  
+  if (userId !== user.id && user.role !== "ADMIN") {
+    return res.status(403).json({ message: "Forbidden: Cannot update other user's profile" });
+  }
+
+  console.log("🔥 Update user endpoint hit for user ID:", userId);
+  console.log("🔥 Request body:", req.body);
+  console.log("🔥 Current user:", user);
+  
+  try {
+    const { firstName, lastName, email, phone} = req.body;
+    
+    const files = req.files as unknown as { [fieldname: string]: Express.Multer.File[] };
+    console.log("🔥 Files received:", files);
+    
+    // Initialize with existing values
+    let avatar = user.avatar;
+    
+    // Handle avatar/profileImage update
+    if (files?.avatar?.[0]) {
+      const newAvatarFilename = files.avatar[0].filename;
+      console.log("🔥 New avatar filename:", newAvatarFilename);
+      
+      // Delete old avatar if it exists
+      if (user.avatar) {
+        // Extract just the filename from the stored path if it's a full path
+        const oldAvatarFilename = user.avatar.startsWith('/uploads/users/') 
+          ? path.basename(user.avatar)
+          : user.avatar;
+        
+        const oldAvatarPath = path.join(__dirname, "../../uploads/users", oldAvatarFilename);
+        deleteFileIfExists(oldAvatarPath);
+        console.log("🔥 Attempted to delete old avatar:", oldAvatarPath);
+      }
+      
+      // Store the full path consistently
+      avatar = `/uploads/users/${newAvatarFilename}`;
+      console.log("🔥 New avatar path to store:", avatar);
+      
+    } else if (files?.profileImage?.[0]) {
+      const newAvatarFilename = files.profileImage[0].filename;
+      console.log("🔥 New profile image filename:", newAvatarFilename);
+      
+      if (user.avatar) {
+        const oldAvatarFilename = user.avatar.startsWith('/uploads/users/') 
+          ? path.basename(user.avatar)
+          : user.avatar;
+        
+        const oldAvatarPath = path.join(__dirname, "../../uploads/users", oldAvatarFilename);
+        deleteFileIfExists(oldAvatarPath);
+      }
+      
+      // Store the full path consistently
+      avatar = `/uploads/users/${newAvatarFilename}`;
+      console.log("🔥 New profile image path to store:", avatar);
+    }
+
+    // Prepare update data
+    const updateData: any = {
+      avatar, // This will now be the correct path
+    };
+
+    if (firstName !== undefined && firstName !== null) {
+      updateData.firstName = firstName.trim();
+    }
+    if (lastName !== undefined && lastName !== null) {
+      updateData.lastName = lastName.trim();
+    }
+    if (email !== undefined && email !== null) {
+      updateData.email = email.trim().toLowerCase();
+    }
+    if (phone !== undefined && phone !== null) {
+      updateData.phone = phone.trim();
+    }
+    
+    console.log("🔥 Update data:", updateData);
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        phone: true,
+        avatar: true,
+        role: true,
+        createdAt: true,
+      }
+    });
+
+    console.log("🔥 User updated successfully:", updatedUser);
+    res.json(updatedUser);
+    
+  } catch (error: any) {
+    console.error("🔥 Error updating user:", error);
+    
+    if (error.code === 'P2002') {
+      return res.status(400).json({ 
+        message: "Email already exists. Please use a different email address." 
+      });
+    }
+    
+    if (error.code === 'P2025') {
+      return res.status(404).json({ 
+        message: "User not found." 
+      });
+    }
+    
+    res.status(500).json({ 
+      message: "Internal server error",
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+const deleteFileIfExists = (filePath: string) => {
+  try {
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+      console.log(`🔥 Successfully deleted file: ${filePath}`);
+      return true;
+    } else {
+      console.log(`🔥 File doesn't exist: ${filePath}`);
+      return false;
+    }
+  } catch (error) {
+    console.error(`🔥 Error deleting file ${filePath}:`, error);
+    return false;
+  }
+};
 
 /** Delete user */
 export const deleteUser= asyncHandler(async (req: Request, res: Response)=> {

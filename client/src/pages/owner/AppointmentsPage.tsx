@@ -43,7 +43,7 @@ const AppointmentsPage: React.FC = () => {
     fetchBookings();
   }, []);
 
-  const updateStatus = async (id: string, status: string) => {
+  const cancelBooking = async (id: string, status: string) => {
     try {
       await axios.patch(
         `http://localhost:4000/api/bookings/${id}/cancel`,
@@ -57,20 +57,34 @@ const AppointmentsPage: React.FC = () => {
   };
 
   const rescheduleBooking = async () => {
-    if (!rescheduleId || !newDateTime) return;
-    try {
-      await axios.patch(
-        `http://localhost:4000/api/bookings/${rescheduleId}/reschedule`,
-        { newDateTime },
-        { withCredentials: true }
-      );
-      setRescheduleId(null);
-      setNewDateTime("");
-      fetchBookings();
-    } catch (err) {
-      console.error("Error rescheduling booking:", err);
-    }
-  };
+    console.log("Rescheduling booking:", rescheduleId, newDateTime);
+  if (!rescheduleId || !newDateTime) {
+    alert("Please select a booking and a new time before rescheduling.");
+    return;
+  }
+
+  try {
+    const { data } = await axios.patch(
+      `http://localhost:4000/api/bookings/${rescheduleId}/reschedule`,
+      { newDateTime },
+      { withCredentials: true }
+    );
+
+    // Show success message before refresh
+    alert(
+      `${data.message}\n\n` +
+      `Old Time: ${new Date(data.originalDateTime).toLocaleString()}\n` +
+      `New Time: ${new Date(data.newDateTime).toLocaleString()}`
+    );
+
+    setRescheduleId(null);
+    setNewDateTime("");
+    fetchBookings(); // refresh after message
+  } catch (err: any) {
+    console.error("Error rescheduling booking:", err);
+    alert(err.response?.data?.message || "Failed to reschedule booking. Try again.");
+  }
+};
 
   const fetchBookingReview = async (bookingId: string) => {
     setLoadingReview(true);
@@ -105,7 +119,16 @@ const AppointmentsPage: React.FC = () => {
           );
           let effectiveStatus = b.status;
           if (b.status !== "CANCELLED" && slotTime < now) {
-            effectiveStatus = "COMPLETED";
+        if (b.status === "REVIEWED") {
+          effectiveStatus = "REVIEWED";
+        } else {
+          effectiveStatus = "COMPLETED";
+        }
+          }
+
+          // If backend status is REVIEWED, always show as REVIEWED
+          if (b.status === "REVIEWED") {
+        effectiveStatus = "REVIEWED";
           }
 
           return (
@@ -140,7 +163,9 @@ const AppointmentsPage: React.FC = () => {
                       ? "bg-red-100 text-red-600"
                       : effectiveStatus === "COMPLETED"
                       ? "bg-gray-200 text-gray-700"
-                      : "bg-yellow-100 text-yellow-600"
+                      : effectiveStatus === "REVIEWED"
+              ? "bg-blue-100 text-blue-600"
+              : "bg-yellow-100 text-yellow-600"
                   }`}
                 >
                   {effectiveStatus}
@@ -149,13 +174,13 @@ const AppointmentsPage: React.FC = () => {
                 {effectiveStatus === "PENDING_PAYMENT" && (
                   <>
                     <button
-                      onClick={() => updateStatus(b.id, "CONFIRMED")}
+                      onClick={() => cancelBooking(b.id, "CONFIRMED")}
                       className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
                     >
                       Confirm
                     </button>
                     <button
-                      onClick={() => updateStatus(b.id, "CANCELLED")}
+                      onClick={() => cancelBooking(b.id, "CANCELLED")}
                       className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
                     >
                       Cancel
@@ -172,7 +197,7 @@ const AppointmentsPage: React.FC = () => {
                       Reschedule
                     </button>
                     <button
-                      onClick={() => updateStatus(b.id, "CANCELLED")}
+                      onClick={() => cancelBooking(b.id, "CANCELLED")}
                       className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
                     >
                       Cancel
@@ -180,14 +205,17 @@ const AppointmentsPage: React.FC = () => {
                   </>
                 )}
 
-                {effectiveStatus === "COMPLETED" && (
-                  <button
-                    onClick={() => fetchBookingReview(b.id)}
-                    className="px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
-                  >
-                    {loadingReview ? "Loading..." : "Review"}
-                  </button>
-                )}
+              
+                 {effectiveStatus === "REVIEWED" && (
+          <button
+              onClick={() => fetchBookingReview(b.id)}
+            className="px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+          >
+           {loadingReview ? "Loading..." : "see review"}
+
+            
+          </button>
+            )}
               </div>
             </div>
           );
