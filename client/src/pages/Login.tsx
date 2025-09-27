@@ -17,7 +17,7 @@ const Login = () => {
       );
       const { user } = res.data;
 
-      if (user.role === "CLIENT") navigate("/client");
+      if (user.role === "CLIENT") navigate("/");
       else if (user.role === "SALON_OWNER") navigate("/owner");
       else if (user.role === "ADMIN") navigate("/admin");
     } catch (err: any) {
@@ -68,6 +68,14 @@ const Login = () => {
             className="text-indigo-600 font-medium hover:underline"
           >
             Sign up here
+          </Link>
+        </p>
+        <p className="mt-4 text-center text-sm text-gray-600">
+          <Link
+            to="/reset"
+            className="text-indigo-600 font-medium hover:underline"
+          >
+            forgot password?
           </Link>
         </p>
       </div>

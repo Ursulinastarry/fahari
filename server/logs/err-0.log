@@ -1197,3 +1197,119 @@ Foreign key constraint violated on the constraint: `appointments_slotId_fkey`
     at IncomingMessage.onEnd (C:\Users\user\Documents\Fahari-AI\server\node_modules\raw-body\index.js:287:7)
     at IncomingMessage.emit (node:events:518:28)
     at endReadableNT (node:internal/streams/readable:1698:12)
+2025-09-26T18:01:21: 🔥 Error updating user: PrismaClientValidationError: 
+Invalid `prisma_1.default.user.update()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:265:57
+
+  262     updateData.phone = phone.trim();
+  263 }
+  264 console.log("🔥 Update data:", updateData);
+→ 265 const updatedUser = await prisma_1.default.user.update({
+        where: {
+          id: "93fab592-c018-4bc7-94ea-83be848ccd94"
+        },
+        data: {
+          avatar: {
+            fieldname: "avatar",
+            ~~~~~~~~~
+            originalname: "gigiri.jpg",
+            encoding: "7bit",
+            mimetype: "image/jpeg",
+            destination: "uploads/users",
+            filename: "avatar-1758898881368-330182494.jpg",
+            path: "uploads\\users\\avatar-1758898881368-330182494.jpg",
+            size: 1127077,
+      ?     set?: String | Null
+          },
+          firstName: "lina",
+          lastName: "warein",
+          email: "lina@fahari.com",
+          phone: "0706520328"
+        },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          phone: true,
+          avatar: true,
+          role: true,
+          createdAt: true
+        }
+      })
+
+Unknown argument `fieldname`. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:265:29 {
+  clientVersion: '6.15.0'
+}
+2025-09-26T18:12:42: 🔥 Error updating user: PrismaClientValidationError: 
+Invalid `prisma_1.default.user.update()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:266:57
+
+  263     updateData.phone = phone.trim();
+  264 }
+  265 console.log("🔥 Update data:", updateData);
+→ 266 const updatedUser = await prisma_1.default.user.update({
+        where: {
+          id: "93fab592-c018-4bc7-94ea-83be848ccd94"
+        },
+        data: {
+          user: {
+          ~~~~
+            id: "93fab592-c018-4bc7-94ea-83be848ccd94",
+            email: "lina@fahari.com",
+            phone: "0706520328",
+            firstName: "lina",
+            lastName: "warein",
+            avatar: null,
+            role: "SALON_OWNER",
+            isActive: true,
+            isVerified: false
+          },
+          firstName: "lina",
+          lastName: "warein",
+          email: "lina@fahari.com",
+          phone: "0706520328",
+      ?   id?: String | StringFieldUpdateOperationsInput,
+      ?   password?: String | StringFieldUpdateOperationsInput,
+      ?   avatar?: String | NullableStringFieldUpdateOperationsInput | Null,
+      ?   role?: UserRole | EnumUserRoleFieldUpdateOperationsInput,
+      ?   isActive?: Boolean | BoolFieldUpdateOperationsInput,
+      ?   isVerified?: Boolean | BoolFieldUpdateOperationsInput,
+      ?   lastLoginAt?: DateTime | NullableDateTimeFieldUpdateOperationsInput | Null,
+      ?   createdAt?: DateTime | DateTimeFieldUpdateOperationsInput,
+      ?   updatedAt?: DateTime | DateTimeFieldUpdateOperationsInput,
+      ?   bookings?: BookingUpdateManyWithoutClientNestedInput,
+      ?   clientProfile?: ClientProfileUpdateOneWithoutUserNestedInput,
+      ?   notifications?: NotificationUpdateManyWithoutUserNestedInput,
+      ?   reviews?: ReviewUpdateManyWithoutClientNestedInput,
+      ?   salonProfile?: SalonOwnerProfileUpdateOneWithoutUserNestedInput,
+      ?   ownedSalons?: SalonUpdateManyWithoutOwnerNestedInput,
+      ?   waitlistEntries?: WaitlistEntryUpdateManyWithoutClientNestedInput
+        },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          phone: true,
+          avatar: true,
+          role: true,
+          createdAt: true
+        }
+      })
+
+Unknown argument `user`. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:266:29 {
+  clientVersion: '6.15.0'
+}

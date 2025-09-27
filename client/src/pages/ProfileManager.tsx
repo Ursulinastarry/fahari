@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Edit3, Camera, X, Save, Mail, Phone, MapPin, User } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
-import Avatar from './avatars';
+import Avatar from './Avatars';
 const ProfileComponent = ({ user = useUser().user, onClose }: { user: any; onClose: any; }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
@@ -20,11 +20,11 @@ const ProfileComponent = ({ user = useUser().user, onClose }: { user: any; onClo
 const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (file) {
-    setNewavatar(file); // ✅ works now (File | null)
+    setNewavatar(file); 
 
     const reader = new FileReader();
     reader.onload = () => {
-      setavatarPreview(reader.result); // ✅ preview typed as string | ArrayBuffer | null
+      setavatarPreview(reader.result);
     };
     reader.readAsDataURL(file);
   }
@@ -42,26 +42,19 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
       if (newavatar) {
         formData.append('avatar', newavatar, newavatar.name);
-        console.log('🔥 Adding file to form data:', {
-          name: newavatar.name,
-          size: newavatar.size,
-          type: newavatar.type
-        });
       }
 
       ;
-    
-
-      // Replace with actual API call
       const response = await fetch(`http://localhost:4000/api/users/${user!.id}`, {
         method: 'PUT',
         credentials: 'include',
         body: formData,
       });
+      // avatar=response.avatar;
 
       if (response.ok) {
         setIsEditing(false);
-        setNewavatar(null);
+        setNewavatar(newavatar);
         // Update user context here
         console.log('Profile updated successfully');
       }
@@ -96,11 +89,12 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             <div className="relative inline-block mb-4">
               <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg bg-white">
                 {avatarPreview ? (
-                  <img
-                    src={avatarPreview}
-                    alt={editedUser!.firstName}
-                    className="w-full h-full object-cover"
-                  />
+                  <Avatar
+                filename={typeof user.avatar === 'string' ? user.avatar : undefined}
+                alt={user.firstName}
+                className="w-full h-40 object-cover rounded-lg mb-3"
+                fallback="/images/default-salon.jpg"
+              />
                 ) : (
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                     <User className="text-gray-400" size={32} />

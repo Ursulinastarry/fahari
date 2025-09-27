@@ -94,7 +94,7 @@ const OwnerDashboard: React.FC = () => {
         >
           Statistics & Performance
         </button>
-        <button
+        {/* <button
           onClick={() => setActiveTab("services")}
           className={`pb-2 px-4 font-medium ${
             activeTab === "services"
@@ -103,7 +103,7 @@ const OwnerDashboard: React.FC = () => {
           }`}
         >
           Services
-        </button>
+        </button> */}
         <button
           onClick={() => setActiveTab("appointments")}
           className={`pb-2 px-4 font-medium ${

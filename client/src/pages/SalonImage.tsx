@@ -6,6 +6,7 @@ interface SalonImageProps {
   alt: string;
   className?: string;
   fallback?: string;
+  onClick?: () => void;
 }
 
 const SalonImage: React.FC<SalonImageProps> = ({
@@ -13,6 +14,7 @@ const SalonImage: React.FC<SalonImageProps> = ({
   alt,
   className,
   fallback = "/images/placeholder.jpg",
+  onClick,
 }) => {
   const [imgSrc, setImgSrc] = useState(() => buildImageUrl(filename) || fallback);
   const [hasError, setHasError] = useState(false);
@@ -44,6 +46,7 @@ const SalonImage: React.FC<SalonImageProps> = ({
       className={className}
       onError={handleError}
       onLoad={handleLoad}
+      onClick={onClick}
     />
   );
 };

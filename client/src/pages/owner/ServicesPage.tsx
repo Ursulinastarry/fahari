@@ -1,6 +1,7 @@
 // src/pages/owner/ServicesPage.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 interface BaseService {
   id: string;
@@ -18,6 +19,7 @@ interface SalonService {
 }
 
 const ServicesPage: React.FC = () => {
+   const { salonId } = useParams();
   const [salonServices, setSalonServices] = useState<SalonService[]>([]);
   const [baseServices, setBaseServices] = useState<BaseService[]>([]);
   const [editingService, setEditingService] = useState<SalonService | null>(null);
@@ -26,9 +28,14 @@ const ServicesPage: React.FC = () => {
   // Fetch both base services + salon services
   useEffect(() => {
     const fetchData = async () => {
+      console.log("Fetching services for salonId:", salonId);
+      if (!salonId) {
+        console.error("No salonId provided in URL");
+        return;
+      }
       try {
         const [salonRes, baseRes] = await Promise.all([
-          axios.get("http://localhost:4000/api/salon-services/owner", {
+          axios.get(`http://localhost:4000/api/salon-services/${salonId}`, {
             withCredentials: true,
           }),
           axios.get("http://localhost:4000/api/services", {
@@ -113,8 +120,9 @@ const ServicesPage: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="mt-6 mb-4 ">
         <h2 className="text-2xl font-bold">My Services</h2>
+        <br />
         <button
           onClick={() => {
             setIsNew(true);

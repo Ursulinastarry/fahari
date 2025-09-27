@@ -229,6 +229,39 @@ export const getUserById = asyncHandler(async (req: Request, res: Response)=> {
   }
 })
 
+const uploadDirUser = "uploads/users";
+if (!fs.existsSync(uploadDirUser)) {
+  fs.mkdirSync(uploadDirUser, { recursive: true });
+}
+
+const userStorage = multer.diskStorage({
+  destination: (_req, _file, cb) => {
+    cb(null, uploadDirUser);
+  },
+  filename: (_req, file, cb) => {
+    // Create unique filename: timestamp-random-originalname
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const extension = path.extname(file.originalname);
+    const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
+    cb(null, filename);
+  }
+});
+const fileFilter = (_req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed'));
+  }
+};
+
+export const uploadUserAvatar = multer({
+  storage:userStorage,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit per file
+    files: 1 // Max 12 files total (1 profile + 1 cover + 10 gallery)
+  },
+  fileFilter
+});
 
 
 // Controller to update user
@@ -251,85 +284,46 @@ export const updateUser = asyncHandler(async (req: UserRequest, res: Response) =
   
   try {
     const { firstName, lastName, email, phone} = req.body;
-    
-    const files = req.files as unknown as { [fieldname: string]: Express.Multer.File[] };
-    console.log("🔥 Files received:", files);
-    
-    // Initialize with existing values
-    let avatar = user.avatar;
-    
-    // Handle avatar/profileImage update
-    if (files?.avatar?.[0]) {
-      const newAvatarFilename = files.avatar[0].filename;
-      console.log("🔥 New avatar filename:", newAvatarFilename);
-      
+    const avatar=req.file
+    console.log("🔥 File received:", avatar);
+          
       // Delete old avatar if it exists
       if (user.avatar) {
         // Extract just the filename from the stored path if it's a full path
         const oldAvatarFilename = user.avatar.startsWith('/uploads/users/') 
           ? path.basename(user.avatar)
           : user.avatar;
-        
-        const oldAvatarPath = path.join(__dirname, "../../uploads/users", oldAvatarFilename);
+        console.log("found olf file",oldAvatarFilename)
+        const oldAvatarPath = path.join(__dirname, "..\\..\\uploads\\users", oldAvatarFilename);
         deleteFileIfExists(oldAvatarPath);
         console.log("🔥 Attempted to delete old avatar:", oldAvatarPath);
       }
       
       // Store the full path consistently
-      avatar = `/uploads/users/${newAvatarFilename}`;
       console.log("🔥 New avatar path to store:", avatar);
-      
-    } else if (files?.profileImage?.[0]) {
-      const newAvatarFilename = files.profileImage[0].filename;
-      console.log("🔥 New profile image filename:", newAvatarFilename);
-      
-      if (user.avatar) {
-        const oldAvatarFilename = user.avatar.startsWith('/uploads/users/') 
-          ? path.basename(user.avatar)
-          : user.avatar;
-        
-        const oldAvatarPath = path.join(__dirname, "../../uploads/users", oldAvatarFilename);
-        deleteFileIfExists(oldAvatarPath);
-      }
-      
-      // Store the full path consistently
-      avatar = `/uploads/users/${newAvatarFilename}`;
-      console.log("🔥 New profile image path to store:", avatar);
-    }
-
-    // Prepare update data
-    const updateData: any = {
-      avatar, // This will now be the correct path
-    };
+    
 
     if (firstName !== undefined && firstName !== null) {
-      updateData.firstName = firstName.trim();
+      user.firstName = firstName.trim();
     }
     if (lastName !== undefined && lastName !== null) {
-      updateData.lastName = lastName.trim();
+      user.lastName = lastName.trim();
     }
     if (email !== undefined && email !== null) {
-      updateData.email = email.trim().toLowerCase();
+      user.email = email.trim().toLowerCase();
     }
     if (phone !== undefined && phone !== null) {
-      updateData.phone = phone.trim();
+      user.phone = phone.trim();
     }
-    
-    console.log("🔥 Update data:", updateData);
+    if (avatar !== undefined && avatar !== null) {
+      user.avatar = avatar.filename;
+    }
+    console.log("avatar string:", user.avatar);
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: updateData,
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        phone: true,
-        avatar: true,
-        role: true,
-        createdAt: true,
-      }
+      data: user,
+      
     });
 
     console.log("🔥 User updated successfully:", updatedUser);

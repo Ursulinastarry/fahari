@@ -67,7 +67,9 @@ exports.createReview = (0, asyncHandler_1.default)(async (req, res) => {
         let images = [];
         if (req.files) {
             const files = req.files;
+            console.log("Uploaded files:", files);
             images = files.map(file => file.filename);
+            console.log("Image filenames:", images);
         }
         const review = await prisma_1.default.review.create({
             data: {

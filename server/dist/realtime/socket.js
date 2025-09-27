@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.io = void 0;
 exports.initSocket = initSocket;
+exports.getIO = getIO;
 // src/realtime/socket.ts
 const socket_io_1 = require("socket.io");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -40,5 +41,11 @@ function initSocket(server) {
             console.log("❌ Socket disconnected:", socket.id, "reason:", reason);
         });
     });
+    return exports.io;
+}
+// src/realtime/socket.ts
+function getIO() {
+    if (!exports.io)
+        throw new Error("Socket.io not initialized!");
     return exports.io;
 }

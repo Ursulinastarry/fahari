@@ -5896,3 +5896,1100 @@ Require stack:
   role: 'SALON_OWNER',
   createdAt: 2025-09-23T11:17:39.646Z
 }
+2025-09-26T12:25:06: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+2025-09-26T12:25:07: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T12:25:07: ⏰ Current time: 9/26/2025, 12:25:07 PM
+2025-09-26T12:25:07: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-26T12:25:08: 🚀 Server running on http://localhost:4000
+2025-09-26T12:25:08: ✅ Connected to the database.
+2025-09-26T16:49:30: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+2025-09-26T16:49:32: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T16:49:32: ⏰ Current time: 9/26/2025, 4:49:32 PM
+2025-09-26T16:49:32: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-26T16:49:32: 🚀 Server running on http://localhost:4000
+2025-09-26T16:49:33: ✅ Connected to the database.
+2025-09-26T16:52:54: 🔥 File being processed: wendo.jpg Type: image/jpeg
+2025-09-26T16:52:54: 🔥 Original filename: wendo.jpg
+2025-09-26T16:52:54: 🔥 Generated filename: avatar-39f7e1a9-3aec-416f-a47f-dcbe7e0e0a6f.jpg
+2025-09-26T16:59:26: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-26T16:59:27: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T16:59:27: ⏰ Current time: 9/26/2025, 4:59:27 PM
+2025-09-26T16:59:27: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-26T16:59:27: 🚀 Server running on http://localhost:4000
+2025-09-26T16:59:27: ✅ Connected to the database.
+2025-09-26T17:01:18: 🔥 File being processed: wendo.jpg Type: image/jpeg
+2025-09-26T17:01:18: 🔥 Original filename: wendo.jpg
+2025-09-26T17:01:18: 🔥 Generated filename: avatar-938687f5-4157-443d-a7ef-6a36276a0889.jpg
+2025-09-26T17:01:18: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T17:01:18: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327'
+}
+2025-09-26T17:01:18: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520321',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: null,
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T17:01:18: 🔥 Files received: undefined
+2025-09-26T17:01:18: 🔥 Update data: {
+  avatar: null,
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327'
+}
+2025-09-26T17:01:19: 🔥 User updated successfully: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  avatar: null,
+  role: 'SALON_OWNER',
+  createdAt: 2025-08-26T23:08:02.269Z
+}
+2025-09-26T17:14:09: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-26T17:14:09: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T17:14:09: ⏰ Current time: 9/26/2025, 5:14:09 PM
+2025-09-26T17:14:09: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-26T17:14:09: 🚀 Server running on http://localhost:4000
+2025-09-26T17:14:09: ✅ Connected to the database.
+2025-09-26T17:20:01: 🔥 File being processed: wendo.jpg Type: image/jpeg
+2025-09-26T17:20:01: 🔥 Original filename: wendo.jpg
+2025-09-26T17:20:01: 🔥 Generated filename: avatar-ae203743-72fd-4629-9023-ecad6f3966f6.jpg
+2025-09-26T17:20:01: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T17:20:01: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327'
+}
+2025-09-26T17:20:01: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: null,
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T17:20:01: 🔥 Files received: undefined
+2025-09-26T17:20:01: 🔥 Update data: {
+  avatar: null,
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327'
+}
+2025-09-26T17:20:01: 🔥 User updated successfully: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  avatar: null,
+  role: 'SALON_OWNER',
+  createdAt: 2025-08-26T23:08:02.269Z
+}
+2025-09-26T17:24:40: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-26T17:24:41: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T17:24:41: ⏰ Current time: 9/26/2025, 5:24:41 PM
+2025-09-26T17:24:41: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+2025-09-26T17:24:41: 🚀 Server running on http://localhost:4000
+2025-09-26T17:24:41: ✅ Connected to the database.
+2025-09-26T17:25:07: files [Object: null prototype] {
+  coverImage: [
+    {
+      fieldname: 'coverImage',
+      originalname: 'gigiri.jpg',
+      encoding: '7bit',
+      mimetype: 'image/jpeg',
+      destination: 'uploads/salons/',
+      filename: '1758896707268-297719237.jpg',
+      path: 'uploads\\salons\\1758896707268-297719237.jpg',
+      size: 1127077
+    }
+  ]
+}
+2025-09-26T17:25:07: Deleted old file: C:\Users\user\Documents\Fahari-AI\server\uploads\salons\1758896168032-136808305.jpg
+2025-09-26T17:25:07: deleted a file 1758896168032-136808305.jpg
+2025-09-26T17:46:45: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-26T17:46:46: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T17:46:46: ⏰ Current time: 9/26/2025, 5:46:46 PM
+2025-09-26T17:46:46: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-26T17:46:46: 🚀 Server running on http://localhost:4000
+2025-09-26T17:46:46: ✅ Connected to the database.
+2025-09-26T17:47:25: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T17:47:25: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328'
+}
+2025-09-26T17:47:25: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: null,
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T17:47:25: 🔥 Files received: undefined
+2025-09-26T17:47:25: 🔥 Update data: {
+  avatar: null,
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328'
+}
+2025-09-26T17:47:25: 🔥 User updated successfully: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328',
+  avatar: null,
+  role: 'SALON_OWNER',
+  createdAt: 2025-08-26T23:08:02.269Z
+}
+2025-09-26T17:55:07: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-26T17:55:07: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T17:55:07: ⏰ Current time: 9/26/2025, 5:55:07 PM
+2025-09-26T17:55:07: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-26T17:55:07: 🚀 Server running on http://localhost:4000
+2025-09-26T17:55:07: ✅ Connected to the database.
+2025-09-26T17:55:23: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T17:55:23: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328'
+}
+2025-09-26T17:55:23: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520328',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: null,
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T17:55:23: 🔥 Files received: undefined
+2025-09-26T17:55:23: 🔥 Update data: {
+  avatar: null,
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328'
+}
+2025-09-26T17:55:23: 🔥 User updated successfully: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328',
+  avatar: null,
+  role: 'SALON_OWNER',
+  createdAt: 2025-08-26T23:08:02.269Z
+}
+2025-09-26T18:01:06: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-26T18:01:06: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T18:01:06: ⏰ Current time: 9/26/2025, 6:01:06 PM
+2025-09-26T18:01:06: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+2025-09-26T18:01:06: 🚀 Server running on http://localhost:4000
+2025-09-26T18:01:06: ✅ Connected to the database.
+2025-09-26T18:01:21: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T18:01:21: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328'
+}
+2025-09-26T18:01:21: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520328',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: null,
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T18:01:21: 🔥 File received: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758898881368-330182494.jpg',
+  path: 'uploads\\users\\avatar-1758898881368-330182494.jpg',
+  size: 1127077
+}
+2025-09-26T18:01:21: 🔥 New avatar path to store: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758898881368-330182494.jpg',
+  path: 'uploads\\users\\avatar-1758898881368-330182494.jpg',
+  size: 1127077
+}
+2025-09-26T18:01:21: 🔥 Update data: {
+  avatar: {
+    fieldname: 'avatar',
+    originalname: 'gigiri.jpg',
+    encoding: '7bit',
+    mimetype: 'image/jpeg',
+    destination: 'uploads/users',
+    filename: 'avatar-1758898881368-330182494.jpg',
+    path: 'uploads\\users\\avatar-1758898881368-330182494.jpg',
+    size: 1127077
+  },
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328'
+}
+2025-09-26T18:01:21: 🔥 Error updating user: PrismaClientValidationError: 
+Invalid `prisma_1.default.user.update()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:265:57
+
+  262     updateData.phone = phone.trim();
+  263 }
+  264 console.log("🔥 Update data:", updateData);
+→ 265 const updatedUser = await prisma_1.default.user.update({
+        where: {
+          id: "93fab592-c018-4bc7-94ea-83be848ccd94"
+        },
+        data: {
+          avatar: {
+            fieldname: "avatar",
+            ~~~~~~~~~
+            originalname: "gigiri.jpg",
+            encoding: "7bit",
+            mimetype: "image/jpeg",
+            destination: "uploads/users",
+            filename: "avatar-1758898881368-330182494.jpg",
+            path: "uploads\\users\\avatar-1758898881368-330182494.jpg",
+            size: 1127077,
+      ?     set?: String | Null
+          },
+          firstName: "lina",
+          lastName: "warein",
+          email: "lina@fahari.com",
+          phone: "0706520328"
+        },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          phone: true,
+          avatar: true,
+          role: true,
+          createdAt: true
+        }
+      })
+
+Unknown argument `fieldname`. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:265:29 {
+  clientVersion: '6.15.0'
+}
+2025-09-26T18:12:28: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-26T18:12:29: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T18:12:29: ⏰ Current time: 9/26/2025, 6:12:29 PM
+2025-09-26T18:12:29: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-26T18:12:29: 🚀 Server running on http://localhost:4000
+2025-09-26T18:12:29: ✅ Connected to the database.
+2025-09-26T18:12:42: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T18:12:42: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328'
+}
+2025-09-26T18:12:42: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520328',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: null,
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T18:12:42: 🔥 File received: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758899562053-809024264.jpg',
+  path: 'uploads\\users\\avatar-1758899562053-809024264.jpg',
+  size: 1127077
+}
+2025-09-26T18:12:42: 🔥 New avatar path to store: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758899562053-809024264.jpg',
+  path: 'uploads\\users\\avatar-1758899562053-809024264.jpg',
+  size: 1127077
+}
+2025-09-26T18:12:42: 🔥 Update data: {
+  user: {
+    id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+    email: 'lina@fahari.com',
+    phone: '0706520328',
+    firstName: 'lina',
+    lastName: 'warein',
+    avatar: null,
+    role: 'SALON_OWNER',
+    isActive: true,
+    isVerified: false
+  },
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328'
+}
+2025-09-26T18:12:42: 🔥 Error updating user: PrismaClientValidationError: 
+Invalid `prisma_1.default.user.update()` invocation in
+C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:266:57
+
+  263     updateData.phone = phone.trim();
+  264 }
+  265 console.log("🔥 Update data:", updateData);
+→ 266 const updatedUser = await prisma_1.default.user.update({
+        where: {
+          id: "93fab592-c018-4bc7-94ea-83be848ccd94"
+        },
+        data: {
+          user: {
+          ~~~~
+            id: "93fab592-c018-4bc7-94ea-83be848ccd94",
+            email: "lina@fahari.com",
+            phone: "0706520328",
+            firstName: "lina",
+            lastName: "warein",
+            avatar: null,
+            role: "SALON_OWNER",
+            isActive: true,
+            isVerified: false
+          },
+          firstName: "lina",
+          lastName: "warein",
+          email: "lina@fahari.com",
+          phone: "0706520328",
+      ?   id?: String | StringFieldUpdateOperationsInput,
+      ?   password?: String | StringFieldUpdateOperationsInput,
+      ?   avatar?: String | NullableStringFieldUpdateOperationsInput | Null,
+      ?   role?: UserRole | EnumUserRoleFieldUpdateOperationsInput,
+      ?   isActive?: Boolean | BoolFieldUpdateOperationsInput,
+      ?   isVerified?: Boolean | BoolFieldUpdateOperationsInput,
+      ?   lastLoginAt?: DateTime | NullableDateTimeFieldUpdateOperationsInput | Null,
+      ?   createdAt?: DateTime | DateTimeFieldUpdateOperationsInput,
+      ?   updatedAt?: DateTime | DateTimeFieldUpdateOperationsInput,
+      ?   bookings?: BookingUpdateManyWithoutClientNestedInput,
+      ?   clientProfile?: ClientProfileUpdateOneWithoutUserNestedInput,
+      ?   notifications?: NotificationUpdateManyWithoutUserNestedInput,
+      ?   reviews?: ReviewUpdateManyWithoutClientNestedInput,
+      ?   salonProfile?: SalonOwnerProfileUpdateOneWithoutUserNestedInput,
+      ?   ownedSalons?: SalonUpdateManyWithoutOwnerNestedInput,
+      ?   waitlistEntries?: WaitlistEntryUpdateManyWithoutClientNestedInput
+        },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          phone: true,
+          avatar: true,
+          role: true,
+          createdAt: true
+        }
+      })
+
+Unknown argument `user`. Available options are marked with ?.
+    at _n (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6926)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async C:\Users\user\Documents\Fahari-AI\server\dist\controllers\userController.js:266:29 {
+  clientVersion: '6.15.0'
+}
+2025-09-26T18:20:34: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-26T18:20:34: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T18:20:34: ⏰ Current time: 9/26/2025, 6:20:34 PM
+2025-09-26T18:20:34: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+2025-09-26T18:20:34: 🚀 Server running on http://localhost:4000
+2025-09-26T18:20:34: ✅ Connected to the database.
+2025-09-26T18:22:26: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T18:22:26: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328'
+}
+2025-09-26T18:22:26: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520328',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: null,
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T18:22:26: 🔥 File received: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758900146302-280019251.jpg',
+  path: 'uploads\\users\\avatar-1758900146302-280019251.jpg',
+  size: 1127077
+}
+2025-09-26T18:22:26: 🔥 New avatar path to store: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758900146302-280019251.jpg',
+  path: 'uploads\\users\\avatar-1758900146302-280019251.jpg',
+  size: 1127077
+}
+2025-09-26T18:22:26: 🔥 Update data: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520328',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: '[object Object]',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T18:22:26: 🔥 User updated successfully: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520328',
+  avatar: '[object Object]',
+  role: 'SALON_OWNER',
+  createdAt: 2025-08-26T23:08:02.269Z
+}
+2025-09-26T18:28:28: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-26T18:28:28: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T18:28:28: ⏰ Current time: 9/26/2025, 6:28:28 PM
+2025-09-26T18:28:28: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-26T18:28:28: 🚀 Server running on http://localhost:4000
+2025-09-26T18:28:28: ✅ Connected to the database.
+2025-09-26T18:28:47: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T18:28:47: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327'
+}
+2025-09-26T18:28:47: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520328',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: '[object Object]',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T18:28:47: 🔥 File received: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758900526994-978231659.jpg',
+  path: 'uploads\\users\\avatar-1758900526994-978231659.jpg',
+  size: 1127077
+}
+2025-09-26T18:28:47: found olf file [object Object]
+2025-09-26T18:28:47: 🔥 File doesn't exist: C:\Users\user\Documents\Fahari-AI\server\uploads\users\[object Object]
+2025-09-26T18:28:47: 🔥 Attempted to delete old avatar: C:\Users\user\Documents\Fahari-AI\server\uploads\users\[object Object]
+2025-09-26T18:28:47: 🔥 New avatar path to store: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758900526994-978231659.jpg',
+  path: 'uploads\\users\\avatar-1758900526994-978231659.jpg',
+  size: 1127077
+}
+2025-09-26T18:28:47: avatar string: [object Object]
+2025-09-26T18:28:47: 🔥 User updated successfully: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  password: '$2b$10$eGzpfhuptbqoSF4jB8Jy3eullJpZybRS5SmE.rT/0LypmWIrmw1Vi',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: '[object Object]',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false,
+  lastLoginAt: null,
+  createdAt: 2025-08-26T23:08:02.269Z,
+  updatedAt: 2025-09-26T15:28:47.155Z
+}
+2025-09-26T18:32:05: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-09-26T18:32:06: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T18:32:06: ⏰ Current time: 9/26/2025, 6:32:06 PM
+2025-09-26T18:32:06: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-26T18:32:06: 🚀 Server running on http://localhost:4000
+2025-09-26T18:32:06: ✅ Connected to the database.
+2025-09-26T18:32:24: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T18:32:24: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327'
+}
+2025-09-26T18:32:24: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: '[object Object]',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T18:32:24: 🔥 File received: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758900744219-521949823.jpg',
+  path: 'uploads\\users\\avatar-1758900744219-521949823.jpg',
+  size: 1127077
+}
+2025-09-26T18:32:24: found olf file [object Object]
+2025-09-26T18:32:24: 🔥 File doesn't exist: C:\Users\user\Documents\Fahari-AI\server\uploads\users\[object Object]
+2025-09-26T18:32:24: 🔥 Attempted to delete old avatar: C:\Users\user\Documents\Fahari-AI\server\uploads\users\[object Object]
+2025-09-26T18:32:24: 🔥 New avatar path to store: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758900744219-521949823.jpg',
+  path: 'uploads\\users\\avatar-1758900744219-521949823.jpg',
+  size: 1127077
+}
+2025-09-26T18:32:24: avatar string: avatar-1758900744219-521949823.jpg
+2025-09-26T18:32:24: 🔥 User updated successfully: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  password: '$2b$10$eGzpfhuptbqoSF4jB8Jy3eullJpZybRS5SmE.rT/0LypmWIrmw1Vi',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: 'avatar-1758900744219-521949823.jpg',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false,
+  lastLoginAt: null,
+  createdAt: 2025-08-26T23:08:02.269Z,
+  updatedAt: 2025-09-26T15:32:24.368Z
+}
+2025-09-26T18:33:44: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T18:33:44: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327'
+}
+2025-09-26T18:33:44: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: 'avatar-1758900744219-521949823.jpg',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T18:33:44: 🔥 File received: {
+  fieldname: 'avatar',
+  originalname: 'wendo.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758900824981-508784688.jpg',
+  path: 'uploads\\users\\avatar-1758900824981-508784688.jpg',
+  size: 704156
+}
+2025-09-26T18:33:44: found olf file avatar-1758900744219-521949823.jpg
+2025-09-26T18:33:44: 🔥 Successfully deleted file: C:\Users\user\Documents\Fahari-AI\server\uploads\users\avatar-1758900744219-521949823.jpg
+2025-09-26T18:33:44: 🔥 Attempted to delete old avatar: C:\Users\user\Documents\Fahari-AI\server\uploads\users\avatar-1758900744219-521949823.jpg
+2025-09-26T18:33:44: 🔥 New avatar path to store: {
+  fieldname: 'avatar',
+  originalname: 'wendo.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758900824981-508784688.jpg',
+  path: 'uploads\\users\\avatar-1758900824981-508784688.jpg',
+  size: 704156
+}
+2025-09-26T18:33:44: avatar string: avatar-1758900824981-508784688.jpg
+2025-09-26T18:33:45: 🔥 User updated successfully: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  password: '$2b$10$eGzpfhuptbqoSF4jB8Jy3eullJpZybRS5SmE.rT/0LypmWIrmw1Vi',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: 'avatar-1758900824981-508784688.jpg',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false,
+  lastLoginAt: null,
+  createdAt: 2025-08-26T23:08:02.269Z,
+  updatedAt: 2025-09-26T15:33:44.997Z
+}
+2025-09-26T18:36:14: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T18:36:14: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327'
+}
+2025-09-26T18:36:14: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: 'avatar-1758900824981-508784688.jpg',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T18:36:14: 🔥 File received: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758900974117-637463080.jpg',
+  path: 'uploads\\users\\avatar-1758900974117-637463080.jpg',
+  size: 1127077
+}
+2025-09-26T18:36:14: found olf file avatar-1758900824981-508784688.jpg
+2025-09-26T18:36:14: 🔥 Successfully deleted file: C:\Users\user\Documents\Fahari-AI\server\uploads\users\avatar-1758900824981-508784688.jpg
+2025-09-26T18:36:14: 🔥 Attempted to delete old avatar: C:\Users\user\Documents\Fahari-AI\server\uploads\users\avatar-1758900824981-508784688.jpg
+2025-09-26T18:36:14: 🔥 New avatar path to store: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758900974117-637463080.jpg',
+  path: 'uploads\\users\\avatar-1758900974117-637463080.jpg',
+  size: 1127077
+}
+2025-09-26T18:36:14: avatar string: avatar-1758900974117-637463080.jpg
+2025-09-26T18:36:14: 🔥 User updated successfully: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  password: '$2b$10$eGzpfhuptbqoSF4jB8Jy3eullJpZybRS5SmE.rT/0LypmWIrmw1Vi',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: 'avatar-1758900974117-637463080.jpg',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false,
+  lastLoginAt: null,
+  createdAt: 2025-08-26T23:08:02.269Z,
+  updatedAt: 2025-09-26T15:36:14.132Z
+}
+2025-09-26T18:37:45: 🔥 Update user endpoint hit for user ID: f0605b76-2b2e-4d63-8d9e-5af89b00b3f0
+2025-09-26T18:37:45: 🔥 Request body: [Object: null prototype] {
+  firstName: '0wner',
+  lastName: 'two',
+  email: 'owner2@fahari.com',
+  phone: '0700521320'
+}
+2025-09-26T18:37:45: 🔥 Current user: {
+  id: 'f0605b76-2b2e-4d63-8d9e-5af89b00b3f0',
+  email: 'owner2@fahari.com',
+  phone: '0700521320',
+  firstName: '0wner',
+  lastName: 'two',
+  avatar: '/uploads/users/user-1758843507845.png',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T18:37:45: 🔥 File received: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758901065813-257237371.jpg',
+  path: 'uploads\\users\\avatar-1758901065813-257237371.jpg',
+  size: 1127077
+}
+2025-09-26T18:37:45: found olf file user-1758843507845.png
+2025-09-26T18:37:45: 🔥 File doesn't exist: C:\Users\user\Documents\Fahari-AI\server\uploads\users\user-1758843507845.png
+2025-09-26T18:37:45: 🔥 Attempted to delete old avatar: C:\Users\user\Documents\Fahari-AI\server\uploads\users\user-1758843507845.png
+2025-09-26T18:37:45: 🔥 New avatar path to store: {
+  fieldname: 'avatar',
+  originalname: 'gigiri.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758901065813-257237371.jpg',
+  path: 'uploads\\users\\avatar-1758901065813-257237371.jpg',
+  size: 1127077
+}
+2025-09-26T18:37:45: avatar string: avatar-1758901065813-257237371.jpg
+2025-09-26T18:37:45: 🔥 User updated successfully: {
+  id: 'f0605b76-2b2e-4d63-8d9e-5af89b00b3f0',
+  email: 'owner2@fahari.com',
+  phone: '0700521320',
+  password: '$2b$10$BQtL1zHw0/.NS..iCNPR7eJAdyK6Un5zoOIZwop3uIpQF/0XmFNhy',
+  firstName: '0wner',
+  lastName: 'two',
+  avatar: 'avatar-1758901065813-257237371.jpg',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false,
+  lastLoginAt: null,
+  createdAt: 2025-09-23T11:17:39.646Z,
+  updatedAt: 2025-09-26T15:37:45.827Z
+}
+2025-09-26T18:50:02: 🔥 Update user endpoint hit for user ID: f0605b76-2b2e-4d63-8d9e-5af89b00b3f0
+2025-09-26T18:50:02: 🔥 Request body: [Object: null prototype] {
+  firstName: '0wner',
+  lastName: 'two',
+  email: 'owner2@fahari.com',
+  phone: '0700521320'
+}
+2025-09-26T18:50:02: 🔥 Current user: {
+  id: 'f0605b76-2b2e-4d63-8d9e-5af89b00b3f0',
+  email: 'owner2@fahari.com',
+  phone: '0700521320',
+  firstName: '0wner',
+  lastName: 'two',
+  avatar: 'avatar-1758901065813-257237371.jpg',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T18:50:02: 🔥 File received: {
+  fieldname: 'avatar',
+  originalname: 'passport.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758901802743-117883919.jpg',
+  path: 'uploads\\users\\avatar-1758901802743-117883919.jpg',
+  size: 188553
+}
+2025-09-26T18:50:02: found olf file avatar-1758901065813-257237371.jpg
+2025-09-26T18:50:02: 🔥 Successfully deleted file: C:\Users\user\Documents\Fahari-AI\server\uploads\users\avatar-1758901065813-257237371.jpg
+2025-09-26T18:50:02: 🔥 Attempted to delete old avatar: C:\Users\user\Documents\Fahari-AI\server\uploads\users\avatar-1758901065813-257237371.jpg
+2025-09-26T18:50:02: 🔥 New avatar path to store: {
+  fieldname: 'avatar',
+  originalname: 'passport.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/users',
+  filename: 'avatar-1758901802743-117883919.jpg',
+  path: 'uploads\\users\\avatar-1758901802743-117883919.jpg',
+  size: 188553
+}
+2025-09-26T18:50:02: avatar string: avatar-1758901802743-117883919.jpg
+2025-09-26T18:50:02: 🔥 User updated successfully: {
+  id: 'f0605b76-2b2e-4d63-8d9e-5af89b00b3f0',
+  email: 'owner2@fahari.com',
+  phone: '0700521320',
+  password: '$2b$10$BQtL1zHw0/.NS..iCNPR7eJAdyK6Un5zoOIZwop3uIpQF/0XmFNhy',
+  firstName: '0wner',
+  lastName: 'two',
+  avatar: 'avatar-1758901802743-117883919.jpg',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false,
+  lastLoginAt: null,
+  createdAt: 2025-09-23T11:17:39.646Z,
+  updatedAt: 2025-09-26T15:50:02.753Z
+}
+2025-09-26T19:23:42: 🔥 Update user endpoint hit for user ID: 93fab592-c018-4bc7-94ea-83be848ccd94
+2025-09-26T19:23:42: 🔥 Request body: [Object: null prototype] {
+  firstName: 'lina',
+  lastName: 'warein',
+  email: 'lina@fahari.com',
+  phone: '0706520327'
+}
+2025-09-26T19:23:42: 🔥 Current user: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: 'avatar-1758900974117-637463080.jpg',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false
+}
+2025-09-26T19:23:42: 🔥 File received: {
+  fieldname: 'avatar',
+  originalname: 'passport.png',
+  encoding: '7bit',
+  mimetype: 'image/png',
+  destination: 'uploads/users',
+  filename: 'avatar-1758903822312-943040246.png',
+  path: 'uploads\\users\\avatar-1758903822312-943040246.png',
+  size: 2184553
+}
+2025-09-26T19:23:42: found olf file avatar-1758900974117-637463080.jpg
+2025-09-26T19:23:42: 🔥 Successfully deleted file: C:\Users\user\Documents\Fahari-AI\server\uploads\users\avatar-1758900974117-637463080.jpg
+2025-09-26T19:23:42: 🔥 Attempted to delete old avatar: C:\Users\user\Documents\Fahari-AI\server\uploads\users\avatar-1758900974117-637463080.jpg
+2025-09-26T19:23:42: 🔥 New avatar path to store: {
+  fieldname: 'avatar',
+  originalname: 'passport.png',
+  encoding: '7bit',
+  mimetype: 'image/png',
+  destination: 'uploads/users',
+  filename: 'avatar-1758903822312-943040246.png',
+  path: 'uploads\\users\\avatar-1758903822312-943040246.png',
+  size: 2184553
+}
+2025-09-26T19:23:42: avatar string: avatar-1758903822312-943040246.png
+2025-09-26T19:23:43: 🔥 User updated successfully: {
+  id: '93fab592-c018-4bc7-94ea-83be848ccd94',
+  email: 'lina@fahari.com',
+  phone: '0706520327',
+  password: '$2b$10$eGzpfhuptbqoSF4jB8Jy3eullJpZybRS5SmE.rT/0LypmWIrmw1Vi',
+  firstName: 'lina',
+  lastName: 'warein',
+  avatar: 'avatar-1758903822312-943040246.png',
+  role: 'SALON_OWNER',
+  isActive: true,
+  isVerified: false,
+  lastLoginAt: null,
+  createdAt: 2025-08-26T23:08:02.269Z,
+  updatedAt: 2025-09-26T16:23:42.847Z
+}
+2025-09-26T19:48:58: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-26T19:48:58: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T19:48:58: ⏰ Current time: 9/26/2025, 7:48:58 PM
+2025-09-26T19:48:58: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-26T19:48:58: 🚀 Server running on http://localhost:4000
+2025-09-26T19:48:58: ✅ Connected to the database.
+2025-09-26T19:53:06: ---- Incoming Review Request ----
+2025-09-26T19:53:06: Body: [Object: null prototype] {
+  bookingId: '4f593c6d-7e87-43fd-8913-448cbfa32b9c',
+  rating: '4',
+  comment: 'the facial had me glowing ngl.'
+}
+2025-09-26T19:53:06: Files: [
+  {
+    fieldname: 'reviewImages',
+    originalname: 'passport.png',
+    encoding: '7bit',
+    mimetype: 'image/png',
+    destination: 'uploads/reviews',
+    filename: 'reviewImages-1758905586760-125909625.png',
+    path: 'uploads\\reviews\\reviewImages-1758905586760-125909625.png',
+    size: 2184553
+  }
+]
+2025-09-26T19:53:06: Uploaded files: [
+  {
+    fieldname: 'reviewImages',
+    originalname: 'passport.png',
+    encoding: '7bit',
+    mimetype: 'image/png',
+    destination: 'uploads/reviews',
+    filename: 'reviewImages-1758905586760-125909625.png',
+    path: 'uploads\\reviews\\reviewImages-1758905586760-125909625.png',
+    size: 2184553
+  }
+]
+2025-09-26T19:57:00: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+2025-09-26T19:57:01: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-26T19:57:01: ⏰ Current time: 9/26/2025, 7:57:01 PM
+2025-09-26T19:57:01: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-26T19:57:01: 🚀 Server running on http://localhost:4000
+2025-09-26T19:57:01: ✅ Connected to the database.
+2025-09-27T00:04:13: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+2025-09-27T00:04:14: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-27T00:04:14: ⏰ Current time: 9/27/2025, 12:04:14 AM
+2025-09-27T00:04:14: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-27T00:04:15: 🚀 Server running on http://localhost:4000
+2025-09-27T00:04:15: ✅ Connected to the database.
+2025-09-27T00:37:13: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-27T00:37:13: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-27T00:37:13: ⏰ Current time: 9/27/2025, 12:37:13 AM
+2025-09-27T00:37:13: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+2025-09-27T00:37:13: 🚀 Server running on http://localhost:4000
+2025-09-27T00:37:13: ✅ Connected to the database.
+2025-09-27T00:37:30: ❌ No token at all
+2025-09-27T01:09:21: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+2025-09-27T01:09:22: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-27T01:09:22: ⏰ Current time: 9/27/2025, 1:09:22 AM
+2025-09-27T01:09:22: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+2025-09-27T01:09:22: 🚀 Server running on http://localhost:4000
+2025-09-27T01:09:22: ✅ Connected to the database.
+2025-09-27T01:38:33: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-27T01:38:33: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-27T01:38:33: ⏰ Current time: 9/27/2025, 1:38:33 AM
+2025-09-27T01:38:33: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+2025-09-27T01:38:33: 🚀 Server running on http://localhost:4000
+2025-09-27T01:38:34: ✅ Connected to the database.
+2025-09-27T01:44:13: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+2025-09-27T01:44:14: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-27T01:44:14: ⏰ Current time: 9/27/2025, 1:44:14 AM
+2025-09-27T01:44:14: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-27T01:44:14: 🚀 Server running on http://localhost:4000
+2025-09-27T01:44:14: ✅ Connected to the database.
+2025-09-27T01:45:00: 🔔 Running reminder cron job
+2025-09-27T01:46:00: 🔔 Running reminder cron job
+2025-09-27T01:47:00: 🔔 Running reminder cron job
+2025-09-27T01:48:00: 🔔 Running reminder cron job
+2025-09-27T01:49:00: 🔔 Running reminder cron job
+2025-09-27T01:50:00: 🔔 Running reminder cron job
+2025-09-27T01:51:00: 🔔 Running reminder cron job
+2025-09-27T01:52:00: 🔔 Running reminder cron job
+2025-09-27T01:53:00: 🔔 Running reminder cron job
+2025-09-27T01:54:00: 🔔 Running reminder cron job
+2025-09-27T01:55:00: 🔔 Running reminder cron job
+2025-09-27T01:56:00: 🔔 Running reminder cron job
+2025-09-27T01:57:00: 🔔 Running reminder cron job
+2025-09-27T01:58:00: 🔔 Running reminder cron job
+2025-09-27T01:59:00: 🔔 Running reminder cron job
+2025-09-27T02:00:00: 🔔 Running reminder cron job
+2025-09-27T02:01:00: 🔔 Running reminder cron job
+2025-09-27T02:02:00: 🔔 Running reminder cron job
+2025-09-27T02:03:00: 🔔 Running reminder cron job
+2025-09-27T02:04:00: 🔔 Running reminder cron job
+2025-09-27T02:05:00: 🔔 Running reminder cron job
+2025-09-27T02:06:00: 🔔 Running reminder cron job
+2025-09-27T02:07:00: 🔔 Running reminder cron job
+2025-09-27T02:08:00: 🔔 Running reminder cron job
+2025-09-27T02:09:00: 🔔 Running reminder cron job
+2025-09-27T02:10:00: 🔔 Running reminder cron job
+2025-09-27T02:11:00: 🔔 Running reminder cron job
+2025-09-27T02:12:00: 🔔 Running reminder cron job
+2025-09-27T02:13:00: 🔔 Running reminder cron job
+2025-09-27T02:14:00: 🔔 Running reminder cron job
+2025-09-27T02:15:00: 🔔 Running reminder cron job
+2025-09-27T02:16:00: 🔔 Running reminder cron job
+2025-09-27T02:17:00: 🔔 Running reminder cron job
+2025-09-27T02:18:00: 🔔 Running reminder cron job
+2025-09-27T02:19:00: 🔔 Running reminder cron job
+2025-09-27T02:20:00: 🔔 Running reminder cron job
+2025-09-27T02:21:00: 🔔 Running reminder cron job
+2025-09-27T02:22:00: 🔔 Running reminder cron job
+2025-09-27T02:23:00: 🔔 Running reminder cron job
+2025-09-27T02:24:00: 🔔 Running reminder cron job
+2025-09-27T02:25:00: 🔔 Running reminder cron job
+2025-09-27T02:26:00: 🔔 Running reminder cron job
+2025-09-27T02:27:00: 🔔 Running reminder cron job
+2025-09-27T02:28:00: 🔔 Running reminder cron job
+2025-09-27T02:29:00: 🔔 Running reminder cron job
+2025-09-27T02:30:00: 🔔 Running reminder cron job
+2025-09-27T02:31:00: 🔔 Running reminder cron job
+2025-09-27T02:32:00: 🔔 Running reminder cron job
+2025-09-27T02:33:00: 🔔 Running reminder cron job
+2025-09-27T02:34:00: 🔔 Running reminder cron job
+2025-09-27T02:35:00: 🔔 Running reminder cron job
+2025-09-27T02:36:00: 🔔 Running reminder cron job
+2025-09-27T02:36:13: ❌ No token at all
+2025-09-27T02:36:13: ❌ No token at all
+2025-09-27T02:36:13: ❌ No token at all
+2025-09-27T02:36:13: ❌ No token at all
+2025-09-27T02:36:33: ❌ No token at all
+2025-09-27T02:36:33: ❌ No token at all
+2025-09-27T02:37:00: 🔔 Running reminder cron job
+2025-09-27T02:38:00: 🔔 Running reminder cron job
+2025-09-27T02:39:00: 🔔 Running reminder cron job
+2025-09-27T02:40:00: 🔔 Running reminder cron job
+2025-09-27T02:41:00: 🔔 Running reminder cron job
+2025-09-27T02:41:33: ❌ No token at all
+2025-09-27T02:41:33: ❌ No token at all
+2025-09-27T02:41:33: ❌ No token at all
+2025-09-27T02:41:33: ❌ No token at all
+2025-09-27T02:42:00: 🔔 Running reminder cron job
+2025-09-27T02:43:00: 🔔 Running reminder cron job
+2025-09-27T02:44:00: 🔔 Running reminder cron job
+2025-09-27T02:44:25: ❌ No token at all
+2025-09-27T02:44:38: ❌ No token at all
+2025-09-27T02:44:38: ❌ No token at all
+2025-09-27T02:45:00: 🔔 Running reminder cron job
+2025-09-27T02:46:00: 🔔 Running reminder cron job
+2025-09-27T02:47:00: 🔔 Running reminder cron job
+2025-09-27T02:48:00: 🔔 Running reminder cron job
+2025-09-27T02:49:00: 🔔 Running reminder cron job
+2025-09-27T02:50:00: 🔔 Running reminder cron job
+2025-09-27T02:51:00: 🔔 Running reminder cron job
+2025-09-27T02:52:00: 🔔 Running reminder cron job
+2025-09-27T02:53:00: 🔔 Running reminder cron job
+2025-09-27T02:54:00: 🔔 Running reminder cron job
+2025-09-27T02:55:00: 🔔 Running reminder cron job
+2025-09-27T02:56:00: 🔔 Running reminder cron job
+2025-09-27T02:57:00: 🔔 Running reminder cron job
+2025-09-27T02:58:00: 🔔 Running reminder cron job
+2025-09-27T02:58:16: ❌ No token at all
+2025-09-27T02:58:16: ❌ No token at all
+2025-09-27T02:58:16: ❌ No token at all
+2025-09-27T02:58:16: ❌ No token at all
+2025-09-27T02:59:00: 🔔 Running reminder cron job
+2025-09-27T03:00:00: 🔔 Running reminder cron job
+2025-09-27T03:01:00: 🔔 Running reminder cron job
+2025-09-27T03:02:00: 🔔 Running reminder cron job
+2025-09-27T03:02:54: ❌ No token at all
+2025-09-27T03:03:00: 🔔 Running reminder cron job
+2025-09-27T03:04:00: 🔔 Running reminder cron job
+2025-09-27T03:05:00: 🔔 Running reminder cron job
+2025-09-27T03:06:00: 🔔 Running reminder cron job

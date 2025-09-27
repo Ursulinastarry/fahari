@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOwnerServices = exports.removeSalonService = exports.updateSalonService = exports.addSalonService = void 0;
+exports.getSalonServices = exports.getOwnerServices = exports.removeSalonService = exports.updateSalonService = exports.addSalonService = void 0;
 const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
 const prisma_1 = __importDefault(require("../config/prisma"));
 exports.addSalonService = (0, asyncHandler_1.default)(async (req, res) => {
@@ -109,3 +109,24 @@ exports.getOwnerServices = (0, asyncHandler_1.default)(async (req, res) => {
     })));
     res.json(services);
 });
+const getSalonServices = async (req, res) => {
+    try {
+        const { salonId } = req.params;
+        if (!salonId) {
+            return res.status(400).json({ message: "Salon ID is required" });
+        }
+        const salon = await prisma_1.default.salon.findUnique({
+            where: { id: salonId },
+            include: { salonServices: { include: { service: true } } }, // assuming relation: Salon -> Services
+        });
+        if (!salon) {
+            return res.status(404).json({ message: "Salon not found" });
+        }
+        return res.json(salon.salonServices);
+    }
+    catch (error) {
+        console.error("Error fetching salon services:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+exports.getSalonServices = getSalonServices;

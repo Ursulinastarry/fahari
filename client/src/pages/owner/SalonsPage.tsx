@@ -157,6 +157,7 @@ const SalonOwnerSalons: React.FC = () => {
                 alt={salon.name}
                 className="w-full h-40 object-cover rounded-lg mb-3"
                 fallback="/images/default-salon.jpg"
+onClick={() => navigate(`/salon-services/${salon.id}`)}
               />
               <h2 className="font-semibold text-lg">{salon.name}</h2>
               <p className="text-sm text-gray-600 mb-2">{salon.city}</p>

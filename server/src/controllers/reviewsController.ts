@@ -71,7 +71,9 @@ export const createReview = asyncHandler(async (req: UserRequest, res: Response)
     let images: string[] = [];
     if (req.files) {
       const files = req.files as unknown as Express.Multer.File[];
+      console.log("Uploaded files:", files);
       images = files.map(file => file.filename);
+      console.log("Image filenames:", images);
     }
 
     const review = await prisma.review.create({

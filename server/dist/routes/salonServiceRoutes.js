@@ -6,6 +6,7 @@ const salonServicesController_1 = require("../controllers/salonServicesControlle
 const router = (0, express_1.Router)();
 router.post("/", protect_1.protect, salonServicesController_1.addSalonService);
 router.get("/owner", protect_1.protect, salonServicesController_1.getOwnerServices);
+router.get("/:salonId", protect_1.protect, salonServicesController_1.getSalonServices);
 router.put("/:id", protect_1.protect, salonServicesController_1.updateSalonService);
 router.delete("/:id", protect_1.protect, salonServicesController_1.removeSalonService);
 exports.default = router;

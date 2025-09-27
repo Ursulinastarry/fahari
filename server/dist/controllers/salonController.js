@@ -56,6 +56,7 @@ const createSalon = async (req, res) => {
         }
         // Files come through req.files (handled by multer)
         const files = req.files;
+        console.log("files received", files);
         const profileImage = files?.profileImage?.[0]?.filename || null;
         const coverImage = files?.coverImage?.[0]?.filename || null;
         const gallery = files?.gallery?.map(file => file.filename) || [];
@@ -219,6 +220,7 @@ const updateSalon = async (req, res) => {
         const { name, description, email, phone, address, city, location, businessHours, } = req.body;
         // Handle uploaded files
         const files = req.files;
+        console.log("files", files);
         // Initialize with existing values
         let profileImage = salon.profileImage;
         let coverImage = salon.coverImage;
@@ -239,6 +241,7 @@ const updateSalon = async (req, res) => {
             if (salon.coverImage) {
                 (0, exports.deleteFileIfExists)(path_1.default.join(__dirname, "../../uploads/salons", salon.coverImage));
             }
+            console.log("deleted a file", salon.coverImage);
             coverImage = newCoverImage;
         }
         // Handle gallery images update

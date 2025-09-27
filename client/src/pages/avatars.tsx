@@ -27,7 +27,7 @@ const Avatar: React.FC<AvatarProps> = ({
 
   const handleError = () => {
     if (!hasError) {
-      console.log(`Failed to load salon image: ${imgSrc}`);
+      console.log(`Failed to load profile image: ${imgSrc}`);
       setHasError(true);
       setImgSrc(fallback);
     }

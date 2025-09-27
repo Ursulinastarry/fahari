@@ -88,6 +88,20 @@ const AppointmentsPage: React.FC = () => {
   }
 };
 
+
+  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      const newFiles = [...images, ...files].slice(0, 5);
+      setImages(prev => ({ ...prev, images: newFiles }));
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload
+        reader.readAsDataURL(file);
+      });
+    }
+  };
   const formatEAT = (utcDate: string) => {
     return DateTime.fromISO(utcDate, { zone: "utc" })
       .setZone("Africa/Nairobi")
@@ -277,13 +291,27 @@ const AppointmentsPage: React.FC = () => {
             />
 
             {/* File upload */}
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(e) => setImages(Array.from(e.target.files || []))}
-              className="mb-4"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Images (Max 5)
+                </label>
+            <div>
+                    <label htmlFor="images" className="cursor-pointer bg-indigo-50 text-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-100 transition-colors inline-flex items-center space-x-2 font-medium">
+                      <span>Attach Images</span>
+                    </label>
+                    <input
+                      type="file"
+                      id="images"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImagesChange}
+                      className="hidden"
+                      disabled={images.length >= 5}
+
+                    />
+                    <p className="text-sm text-gray-500 mt-2">
+                      Upload multiple images ({images.length}/5 uploaded)
+                    </p>
+                  </div>
 
             {/* Actions */}
             <div className="flex justify-end gap-3">

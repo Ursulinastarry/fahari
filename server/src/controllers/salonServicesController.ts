@@ -132,3 +132,27 @@ export const getOwnerServices = asyncHandler(async (req: UserRequest, res: Respo
 });
 
 
+export const getSalonServices = async (req: Request, res: Response) => {
+  try {
+    const { salonId } = req.params;
+
+    if (!salonId) {
+      return res.status(400).json({ message: "Salon ID is required" });
+    }
+
+    const salon = await prisma.salon.findUnique({
+      where: { id: salonId },
+      include: { salonServices: { include: { service: true } } }, // assuming relation: Salon -> Services
+    });
+
+    if (!salon) {
+      return res.status(404).json({ message: "Salon not found" });
+    }
+
+    return res.json(salon.salonServices);
+  } catch (error) {
+    console.error("Error fetching salon services:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+

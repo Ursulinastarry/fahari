@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Star } from "lucide-react"; // star icon
-
+import Review from "../Review";
 interface Review {
   id: string;
   clientName: string;
   rating: number; // 1-5
   comment: string;
   createdAt: string;
+  images?: string | string[]; // image filenames
 }
 
 const ReviewsPage: React.FC = () => {
@@ -61,11 +62,12 @@ const ReviewsPage: React.FC = () => {
     >
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-3">
-          <img
-            // src={review.client.avatar || "/default-avatar.png"}
-            alt={review.clientName}
-            className="w-10 h-10 rounded-full object-cover"
-          />
+          <Review
+                filename={typeof review.images === 'string' ? review.images : undefined}
+                alt={review.clientName}
+                className="w-full h-40 object-cover rounded-lg mb-3"
+                fallback="/images/default-salon.jpg"
+              />
           <p className="font-semibold">{review.clientName}</p>
         </div>
 

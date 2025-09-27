@@ -34,6 +34,9 @@ const app = (0, express_1.default)();
 const PORT = process.env.PORT || 4000;
 const server = http_1.default.createServer(app);
 (0, socket_1.initSocket)(server);
+const reminder_1 = require("./cron/reminder");
+// Start reminder cron
+(0, reminder_1.startReminderCron)();
 app.use((0, cors_1.default)({
     origin: ["http://localhost:5173", "https://fahari.vercel.app"],
     methods: "GET, POST, PUT, PATCH, DELETE",

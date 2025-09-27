@@ -3,13 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.getUserById = exports.getAllUsers = exports.suspendUser = exports.approveUser = exports.logoutUser = exports.getMe = exports.loginUser = exports.createUser = void 0;
+exports.deleteUser = exports.updateUser = exports.uploadUserAvatar = exports.getUserById = exports.getAllUsers = exports.suspendUser = exports.approveUser = exports.logoutUser = exports.getMe = exports.loginUser = exports.createUser = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const index_1 = require("../index");
 const notificationService_1 = require("../services/notificationService");
+const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const prisma_1 = __importDefault(require("../config/prisma"));
@@ -183,6 +184,38 @@ exports.getUserById = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+const uploadDirUser = "uploads/users";
+if (!fs_1.default.existsSync(uploadDirUser)) {
+    fs_1.default.mkdirSync(uploadDirUser, { recursive: true });
+}
+const userStorage = multer_1.default.diskStorage({
+    destination: (_req, _file, cb) => {
+        cb(null, uploadDirUser);
+    },
+    filename: (_req, file, cb) => {
+        // Create unique filename: timestamp-random-originalname
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const extension = path_1.default.extname(file.originalname);
+        const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
+        cb(null, filename);
+    }
+});
+const fileFilter = (_req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+    }
+    else {
+        cb(new Error('Only image files are allowed'));
+    }
+};
+exports.uploadUserAvatar = (0, multer_1.default)({
+    storage: userStorage,
+    limits: {
+        fileSize: 10 * 1024 * 1024, // 10MB limit per file
+        files: 1 // Max 12 files total (1 profile + 1 cover + 10 gallery)
+    },
+    fileFilter
+});
 // Controller to update user
 exports.updateUser = (0, asyncHandler_1.default)(async (req, res) => {
     const user = req.user;
@@ -198,72 +231,40 @@ exports.updateUser = (0, asyncHandler_1.default)(async (req, res) => {
     console.log("🔥 Current user:", user);
     try {
         const { firstName, lastName, email, phone } = req.body;
-        const files = req.files;
-        console.log("🔥 Files received:", files);
-        // Initialize with existing values
-        let avatar = user.avatar;
-        // Handle avatar/profileImage update
-        if (files?.avatar?.[0]) {
-            const newAvatarFilename = files.avatar[0].filename;
-            console.log("🔥 New avatar filename:", newAvatarFilename);
-            // Delete old avatar if it exists
-            if (user.avatar) {
-                // Extract just the filename from the stored path if it's a full path
-                const oldAvatarFilename = user.avatar.startsWith('/uploads/users/')
-                    ? path_1.default.basename(user.avatar)
-                    : user.avatar;
-                const oldAvatarPath = path_1.default.join(__dirname, "../../uploads/users", oldAvatarFilename);
-                deleteFileIfExists(oldAvatarPath);
-                console.log("🔥 Attempted to delete old avatar:", oldAvatarPath);
-            }
-            // Store the full path consistently
-            avatar = `/uploads/users/${newAvatarFilename}`;
-            console.log("🔥 New avatar path to store:", avatar);
+        const avatar = req.file;
+        console.log("🔥 File received:", avatar);
+        // Delete old avatar if it exists
+        if (user.avatar) {
+            // Extract just the filename from the stored path if it's a full path
+            const oldAvatarFilename = user.avatar.startsWith('/uploads/users/')
+                ? path_1.default.basename(user.avatar)
+                : user.avatar;
+            console.log("found olf file", oldAvatarFilename);
+            const oldAvatarPath = path_1.default.join(__dirname, "..\\..\\uploads\\users", oldAvatarFilename);
+            deleteFileIfExists(oldAvatarPath);
+            console.log("🔥 Attempted to delete old avatar:", oldAvatarPath);
         }
-        else if (files?.profileImage?.[0]) {
-            const newAvatarFilename = files.profileImage[0].filename;
-            console.log("🔥 New profile image filename:", newAvatarFilename);
-            if (user.avatar) {
-                const oldAvatarFilename = user.avatar.startsWith('/uploads/users/')
-                    ? path_1.default.basename(user.avatar)
-                    : user.avatar;
-                const oldAvatarPath = path_1.default.join(__dirname, "../../uploads/users", oldAvatarFilename);
-                deleteFileIfExists(oldAvatarPath);
-            }
-            // Store the full path consistently
-            avatar = `/uploads/users/${newAvatarFilename}`;
-            console.log("🔥 New profile image path to store:", avatar);
-        }
-        // Prepare update data
-        const updateData = {
-            avatar, // This will now be the correct path
-        };
+        // Store the full path consistently
+        console.log("🔥 New avatar path to store:", avatar);
         if (firstName !== undefined && firstName !== null) {
-            updateData.firstName = firstName.trim();
+            user.firstName = firstName.trim();
         }
         if (lastName !== undefined && lastName !== null) {
-            updateData.lastName = lastName.trim();
+            user.lastName = lastName.trim();
         }
         if (email !== undefined && email !== null) {
-            updateData.email = email.trim().toLowerCase();
+            user.email = email.trim().toLowerCase();
         }
         if (phone !== undefined && phone !== null) {
-            updateData.phone = phone.trim();
+            user.phone = phone.trim();
         }
-        console.log("🔥 Update data:", updateData);
+        if (avatar !== undefined && avatar !== null) {
+            user.avatar = avatar.filename;
+        }
+        console.log("avatar string:", user.avatar);
         const updatedUser = await prisma_1.default.user.update({
             where: { id: userId },
-            data: updateData,
-            select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                email: true,
-                phone: true,
-                avatar: true,
-                role: true,
-                createdAt: true,
-            }
+            data: user,
         });
         console.log("🔥 User updated successfully:", updatedUser);
         res.json(updatedUser);

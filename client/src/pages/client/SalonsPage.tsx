@@ -4,10 +4,11 @@ import FullCalendar from "@fullcalendar/react";
 import { EventInput } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { Star } from "lucide-react";
+import { Images, Star } from "lucide-react";
 import { DateTime } from "luxon";
 import { useUser } from "../../contexts/UserContext";
 import SalonImage from "../SalonImage";
+import Review from "../Review";
 // Interfaces
 interface SalonService {
   id: string;
@@ -31,6 +32,7 @@ interface Salon {
   salonServices?: SalonService[];
   coverImage?: string;
   gallery?: string[]; // Array of image URLs
+  reviews?: Review[];
 }
 
 interface Slot {
@@ -46,6 +48,15 @@ interface BookingState {
   service: SalonService | null;
   slot: Slot | null;
   selectedTime: string | null;
+}
+
+interface Review {
+  id: string;
+  salonId: string;
+  clientName: string;
+  rating: number;
+  comment: string;
+  images: string[];
 }
 
 const SalonsPage: React.FC = () => {
@@ -397,6 +408,7 @@ const futureEvents = calendarEvents.filter((event) => {
             <h2 className="text-3xl font-bold mb-2">{selectedSalon.name}</h2>
             <p className="text-gray-600 mb-4">{selectedSalon.description}</p>
             <div className="flex items-center gap-2 mb-4">
+              
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -412,6 +424,7 @@ const futureEvents = calendarEvents.filter((event) => {
                   {(salonRatings[selectedSalon.id] || 0).toFixed(1)}
                 </span>
               </div>
+              
               <button
                 onClick={fetchSalonReviews}
                 className="ml-4 px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm"
@@ -562,9 +575,19 @@ const futureEvents = calendarEvents.filter((event) => {
                 {salonReviews.map((review) => (
                   <div key={review.id} className="border-b pb-4">
                     <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-3">
+          <Review
+                filename={typeof review.images === 'string' ? review.images : undefined}
+                alt={`${review.clientName} | ${review.rating} stars`}
+                className="w-full h-40 object-cover rounded-lg mb-3"
+                fallback="/images/default-salon.jpg"
+              />
+          <p className="font-semibold">{review.clientName}</p>
+        </div>
                       <p className="font-semibold">
                         {review.client?.firstName} {review.client?.lastName}
                       </p>
+                      
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <Star 

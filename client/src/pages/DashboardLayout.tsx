@@ -79,7 +79,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
   const handleLogout = async () => {
     try {
       await axios.post("http://localhost:4000/api/users/logout", {}, { withCredentials: true });
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       console.error("Logout failed:", err);
     }
@@ -87,7 +87,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
 
   // Handle login redirect
   const handleLogin = () => {
-    navigate("/");
+    navigate("/login");
   };
 
   // Chatbot send

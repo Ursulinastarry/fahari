@@ -5,12 +5,14 @@ import {
   updateSalonService,
   removeSalonService,
   getOwnerServices,
+  getSalonServices,
 } from "../controllers/salonServicesController";
 
 const router = Router();
 
 router.post("/", protect, addSalonService);
 router.get("/owner", protect, getOwnerServices);
+router.get("/:salonId", protect, getSalonServices);
 router.put("/:id", protect, updateSalonService);
 router.delete("/:id", protect, removeSalonService);
 

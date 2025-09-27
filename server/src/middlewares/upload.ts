@@ -96,40 +96,32 @@ export const uploadReviewImages = multer({
   },
   fileFilter
 }).array('reviewImages', 5);
+
 const uploadDirUser = "uploads/users";
 if (!fs.existsSync(uploadDirUser)) {
   fs.mkdirSync(uploadDirUser, { recursive: true });
 }
 
 const userStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPathUser = path.join(__dirname, '../../uploads/users');
-    cb(null, uploadPathUser);
+  destination: (_req, _file, cb) => {
+    cb(null, uploadDirUser);
   },
-  filename: (req, file, cb) => {
-    // Use UUID to avoid conflicts and route-like names
-    const fileExtension = path.extname(file.originalname);
-    const uniqueFilename = `avatar-${uuidv4()}${fileExtension}`;
-    
-    console.log('🔥 Original filename:', file.originalname);
-    console.log('🔥 Generated filename:', uniqueFilename);
-    
-    cb(null, uniqueFilename);
+  filename: (_req, file, cb) => {
+    // Create unique filename: timestamp-random-originalname
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const extension = path.extname(file.originalname);
+    const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
+    cb(null, filename);
   }
 });
 
 export const uploadUserAvatar = multer({
-  storage: userStorage,
-  fileFilter: (req, file, cb) => {
-    console.log('🔥 File being processed:', file.originalname, 'Type:', file.mimetype);
-    
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only image files are allowed!'));
-    }
-  },
+  storage:userStorage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
-  }
+    fileSize: 10 * 1024 * 1024, // 10MB limit per file
+    files: 1 // Max 12 files total (1 profile + 1 cover + 10 gallery)
+  },
+  fileFilter
 });
+
+// Export the specific middleware for salon creation

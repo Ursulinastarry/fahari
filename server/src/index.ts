@@ -17,7 +17,7 @@ import waitlistRoutes from './routes/waitlistRoutes';
 import searchRoutes from './routes/searchRoutes';
 import salonServiceRoutes from './routes/salonServiceRoutes';
 import serviceRoutes from './routes/serviceRoutes';
-import http from "http";
+import http,{Server} from "http";
 import { initSocket } from "./realtime/socket";
 import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
@@ -30,6 +30,11 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const server = http.createServer(app);
 initSocket(server);
+import { startReminderCron } from "./cron/reminder";
+
+
+// Start reminder cron
+startReminderCron();
 
 app.use(cors({
   origin: ["http://localhost:5173","https://fahari.vercel.app"],

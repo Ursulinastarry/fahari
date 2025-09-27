@@ -20,20 +20,25 @@ import Notifications from "./pages/Notifications";
 import CreateSalonForm from "./pages/owner/CreateSalonForm";
 import SalonOwnerSalons from "./pages/owner/SalonsPage";
 import { UserProvider } from './contexts/UserContext';
+import ServicesPage from "./pages/owner/ServicesPage";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <UserProvider>
     <BrowserRouter>
       <Routes>
+        {/* <Route path="/" element={<HomePage />} /> */}
         <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/create-salon" element={<CreateSalonForm />} />
-        <Route path="/client" element={<ClientDashboard />} />
+        <Route path="/" element={<ClientDashboard />} />
         <Route path="/owner" element={<OwnerDashboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/owner/salons" element={<SalonOwnerSalons />} />
+        <Route path="/salon-services/:salonId" element={<ServicesPage />} />
+        <Route path="/home" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
     </UserProvider>
