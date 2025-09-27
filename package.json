@@ -1,0 +1,23 @@
+{
+  "name": "fahari-ai",
+  "version": "1.0.0",
+  "description": "https://github.com/user-attachments/assets/f7e8cee2-47cf-477c-9f8f-b4898cfe3148",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd client && npm install && npm run build",
+    "start": "cd server && npm install && node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ursulinastarry/fahari.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Ursulinastarry/fahari/issues"
+  },
+  "homepage": "https://github.com/Ursulinastarry/fahari#readme"
+}
