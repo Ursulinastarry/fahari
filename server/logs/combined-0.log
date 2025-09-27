@@ -6993,3 +6993,228 @@ Unknown argument `user`. Available options are marked with ?.
 2025-09-27T03:04:00: 🔔 Running reminder cron job
 2025-09-27T03:05:00: 🔔 Running reminder cron job
 2025-09-27T03:06:00: 🔔 Running reminder cron job
+2025-09-27T17:15:10: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-27T17:15:10: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-27T17:15:10: ⏰ Current time: 9/27/2025, 5:15:10 PM
+2025-09-27T17:15:10: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+2025-09-27T17:15:11: 🚀 Server running on http://localhost:4000
+2025-09-27T17:15:11: ✅ Connected to the database.
+2025-09-27T17:15:42: ❌ No token at all
+2025-09-27T17:15:42: ❌ No token at all
+2025-09-27T17:15:46: ❌ No token at all
+2025-09-27T17:15:46: ❌ No token at all
+2025-09-27T17:15:50: ❌ No token at all
+2025-09-27T17:15:50: ❌ No token at all
+2025-09-27T19:52:56: ❌ No token at all
+2025-09-27T19:52:56: ❌ No token at all
+2025-09-27T19:56:49: ❌ No token at all
+2025-09-27T19:56:49: ❌ No token at all
+2025-09-27T19:56:59: ❌ No token at all
+2025-09-27T19:56:59: ❌ No token at all
+2025-09-27T19:58:12: ❌ No token at all
+2025-09-27T19:58:12: ❌ No token at all
+2025-09-27T19:58:51: ❌ No token at all
+2025-09-27T19:58:51: ❌ No token at all
+2025-09-27T21:01:00: [2025-09-27T18:01:00.103Z] [PID: 12300] [32m[NODE-CRON][32m [31m[ERROR][0m 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database. PrismaClientKnownRequestError: 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async file:///C:/Users/user/Documents/Fahari-AI/server/dist/cron/reminder.js:11:26
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\esm\scheduler\runner.js:70:44) {
+  code: 'P2021',
+  meta: { modelName: 'Booking', table: 'public.bookings' },
+  clientVersion: '6.15.0'
+}
+2025-09-27T21:02:00: [2025-09-27T18:02:00.064Z] [PID: 12300] [32m[NODE-CRON][32m [31m[ERROR][0m 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database. PrismaClientKnownRequestError: 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async file:///C:/Users/user/Documents/Fahari-AI/server/dist/cron/reminder.js:11:26
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\esm\scheduler\runner.js:70:44) {
+  code: 'P2021',
+  meta: { modelName: 'Booking', table: 'public.bookings' },
+  clientVersion: '6.15.0'
+}
+2025-09-27T21:03:00: [2025-09-27T18:03:00.059Z] [PID: 12300] [32m[NODE-CRON][32m [31m[ERROR][0m 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database. PrismaClientKnownRequestError: 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async file:///C:/Users/user/Documents/Fahari-AI/server/dist/cron/reminder.js:11:26
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\esm\scheduler\runner.js:70:44) {
+  code: 'P2021',
+  meta: { modelName: 'Booking', table: 'public.bookings' },
+  clientVersion: '6.15.0'
+}
+2025-09-27T21:04:00: [2025-09-27T18:04:00.193Z] [PID: 12300] [32m[NODE-CRON][32m [31m[ERROR][0m 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database. PrismaClientKnownRequestError: 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async file:///C:/Users/user/Documents/Fahari-AI/server/dist/cron/reminder.js:11:26
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\esm\scheduler\runner.js:70:44) {
+  code: 'P2021',
+  meta: { modelName: 'Booking', table: 'public.bookings' },
+  clientVersion: '6.15.0'
+}
+2025-09-27T21:05:00: [2025-09-27T18:05:00.096Z] [PID: 12300] [32m[NODE-CRON][32m [31m[ERROR][0m 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database. PrismaClientKnownRequestError: 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async file:///C:/Users/user/Documents/Fahari-AI/server/dist/cron/reminder.js:11:26
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\esm\scheduler\runner.js:70:44) {
+  code: 'P2021',
+  meta: { modelName: 'Booking', table: 'public.bookings' },
+  clientVersion: '6.15.0'
+}
+2025-09-27T21:06:00: [2025-09-27T18:06:00.058Z] [PID: 12300] [32m[NODE-CRON][32m [31m[ERROR][0m 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database. PrismaClientKnownRequestError: 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async file:///C:/Users/user/Documents/Fahari-AI/server/dist/cron/reminder.js:11:26
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\esm\scheduler\runner.js:70:44) {
+  code: 'P2021',
+  meta: { modelName: 'Booking', table: 'public.bookings' },
+  clientVersion: '6.15.0'
+}
+2025-09-27T21:07:00: [2025-09-27T18:07:00.048Z] [PID: 12300] [32m[NODE-CRON][32m [31m[ERROR][0m 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database. PrismaClientKnownRequestError: 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async file:///C:/Users/user/Documents/Fahari-AI/server/dist/cron/reminder.js:11:26
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\esm\scheduler\runner.js:70:44) {
+  code: 'P2021',
+  meta: { modelName: 'Booking', table: 'public.bookings' },
+  clientVersion: '6.15.0'
+}
+2025-09-27T21:08:00: [2025-09-27T18:08:00.063Z] [PID: 12300] [32m[NODE-CRON][32m [31m[ERROR][0m 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database. PrismaClientKnownRequestError: 
+Invalid `prisma.booking.findMany()` invocation:
+
+
+The table `public.bookings` does not exist in the current database.
+    at ei.handleRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:7283)
+    at ei.handleAndLogRequestError (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6608)
+    at ei.request (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:121:6315)
+    at async a (C:\Users\user\Documents\Fahari-AI\server\node_modules\@prisma\client\runtime\library.js:130:9551)
+    at async file:///C:/Users/user/Documents/Fahari-AI/server/dist/cron/reminder.js:11:26
+    at async Timeout._onTimeout (C:\Users\user\Documents\Fahari-AI\server\node_modules\node-cron\dist\esm\scheduler\runner.js:70:44) {
+  code: 'P2021',
+  meta: { modelName: 'Booking', table: 'public.bookings' },
+  clientVersion: '6.15.0'
+}
+2025-09-27T23:10:15: ❌ No token at all
+2025-09-27T23:10:15: ❌ No token at all
+2025-09-27T23:11:55: ❌ No token at all
+2025-09-27T23:11:55: ❌ No token at all
+2025-09-27T23:12:29: ❌ No token at all
+2025-09-27T23:12:29: ❌ No token at all
+2025-09-27T23:12:39: ❌ No token at all
+2025-09-27T23:12:39: ❌ No token at all
+2025-09-27T23:16:35: ❌ No token at all
+2025-09-27T23:16:35: ❌ No token at all
+2025-09-27T23:17:05: ❌ No token at all
+2025-09-27T23:17:05: ❌ No token at all
+2025-09-27T23:20:11: ❌ No token at all
+2025-09-27T23:20:11: ❌ No token at all
+2025-09-27T23:25:21: ❌ No token at all
+2025-09-27T23:25:21: ❌ No token at all
+2025-09-27T23:27:25: ❌ No token at all
+2025-09-27T23:27:25: ❌ No token at all
+2025-09-27T23:28:48: ❌ No token at all
+2025-09-27T23:28:48: ❌ No token at all
+2025-09-27T23:37:26: ❌ No token at all
+2025-09-27T23:37:26: ❌ No token at all
+2025-09-28T01:20:51: [2025-09-27T22:20:48.861Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 00:52:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.470Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 00:53:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.476Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 00:54:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.482Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 00:55:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.490Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 00:56:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.579Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 00:57:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.590Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 00:58:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.598Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 00:59:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.614Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:00:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.620Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:01:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.699Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:02:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.707Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:03:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.714Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:04:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.721Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:05:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.731Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:06:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.737Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:07:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.984Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:08:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:51: [2025-09-27T22:20:51.994Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:09:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.003Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:10:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.010Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:11:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.115Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:12:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.121Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:13:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.127Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:14:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.135Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:15:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.142Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:16:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.147Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:17:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.232Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:18:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.280Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:19:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2025-09-28T01:20:52: [2025-09-27T22:20:52.296Z] [PID: 12300] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Sun Sep 28 2025 01:20:00 GMT+0300 (East Africa Time)! Possible blocking IO or high CPU user at the same process used by node-cron.

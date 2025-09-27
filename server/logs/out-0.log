@@ -2663,3 +2663,47 @@
 2025-09-27T03:04:00: 🔔 Running reminder cron job
 2025-09-27T03:05:00: 🔔 Running reminder cron job
 2025-09-27T03:06:00: 🔔 Running reminder cron job
+2025-09-27T17:15:10: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+2025-09-27T17:15:10: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-27T17:15:10: ⏰ Current time: 9/27/2025, 5:15:10 PM
+2025-09-27T17:15:10: [dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+2025-09-27T17:15:11: 🚀 Server running on http://localhost:4000
+2025-09-27T17:15:11: ✅ Connected to the database.
+2025-09-27T17:15:42: ❌ No token at all
+2025-09-27T17:15:42: ❌ No token at all
+2025-09-27T17:15:46: ❌ No token at all
+2025-09-27T17:15:46: ❌ No token at all
+2025-09-27T17:15:50: ❌ No token at all
+2025-09-27T17:15:50: ❌ No token at all
+2025-09-27T19:52:56: ❌ No token at all
+2025-09-27T19:52:56: ❌ No token at all
+2025-09-27T19:56:49: ❌ No token at all
+2025-09-27T19:56:49: ❌ No token at all
+2025-09-27T19:56:59: ❌ No token at all
+2025-09-27T19:56:59: ❌ No token at all
+2025-09-27T19:58:12: ❌ No token at all
+2025-09-27T19:58:12: ❌ No token at all
+2025-09-27T19:58:51: ❌ No token at all
+2025-09-27T19:58:51: ❌ No token at all
+2025-09-27T23:10:15: ❌ No token at all
+2025-09-27T23:10:15: ❌ No token at all
+2025-09-27T23:11:55: ❌ No token at all
+2025-09-27T23:11:55: ❌ No token at all
+2025-09-27T23:12:29: ❌ No token at all
+2025-09-27T23:12:29: ❌ No token at all
+2025-09-27T23:12:39: ❌ No token at all
+2025-09-27T23:12:39: ❌ No token at all
+2025-09-27T23:16:35: ❌ No token at all
+2025-09-27T23:16:35: ❌ No token at all
+2025-09-27T23:17:05: ❌ No token at all
+2025-09-27T23:17:05: ❌ No token at all
+2025-09-27T23:20:11: ❌ No token at all
+2025-09-27T23:20:11: ❌ No token at all
+2025-09-27T23:25:21: ❌ No token at all
+2025-09-27T23:25:21: ❌ No token at all
+2025-09-27T23:27:25: ❌ No token at all
+2025-09-27T23:27:25: ❌ No token at all
+2025-09-27T23:28:48: ❌ No token at all
+2025-09-27T23:28:48: ❌ No token at all
+2025-09-27T23:37:26: ❌ No token at all
+2025-09-27T23:37:26: ❌ No token at all
