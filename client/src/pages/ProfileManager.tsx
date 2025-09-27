@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Edit3, Camera, X, Save, Mail, Phone, MapPin, User } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
-import Avatar from './Avatars';
+import Avatar from './avatars';
 const ProfileComponent = ({ user = useUser().user, onClose }: { user: any; onClose: any; }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
