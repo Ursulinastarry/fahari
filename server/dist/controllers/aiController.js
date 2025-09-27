@@ -1,6 +1,6 @@
 "use strict";
 // import { Request, Response } from 'express';
-// import { handleAiChat } from '../services/aiService';
+// import { handleAiChat } from '../services/aiService.js';
 // export const askFahariAI = async (req: Request, res: Response) => {
 //   try {
 //     const { message } = req.body || {};

@@ -1,6 +1,6 @@
 // src/services/notificationService.ts
-import { pool } from "../index";
-import { io } from "../realtime/socket";
+import { pool } from "../index.js";
+import { io } from "../realtime/socket.js";
 export async function createAndSendNotification(payload) {
     if (payload.role) {
         // 🔹 Get all users with that role

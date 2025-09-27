@@ -1,6 +1,6 @@
 // At the top of your file
 import { PrismaClient } from '@prisma/client';
-import { pool } from "../index";
+import { pool } from "../index.js";
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';

@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOwnerServices = exports.removeSalonService = exports.updateSalonService = exports.addSalonService = void 0;
-const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
-const prisma_1 = __importDefault(require("../config/prisma"));
+const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler.js"));
+const prisma_1 = __importDefault(require("../config/prisma.js"));
 exports.addSalonService = (0, asyncHandler_1.default)(async (req, res) => {
     try {
         const { salonId, serviceId, price, duration } = req.body;

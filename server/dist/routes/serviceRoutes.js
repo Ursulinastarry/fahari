@@ -1,6 +1,6 @@
 import express from "express";
-import { getAllServices, createService, updateService, deleteService, } from "../controllers/servicesContoller";
-import { protect } from "../middlewares/protect";
+import { getAllServices, createService, updateService, deleteService, } from "../controllers/servicesContoller.js";
+import { protect } from "../middlewares/protect.js";
 const router = express.Router();
 // Public - anyone can see services
 router.get("/", getAllServices);

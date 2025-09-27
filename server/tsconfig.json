@@ -10,10 +10,17 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "noEmit": false
+    "noEmit": false,
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
-  "ts-node": {
-    "esm": true
+  "tsc-alias": {
+    "resolveFullPaths": true,
+    "replacerOptions": {
+      "extension": ".js"
+    }
   },
 
   "include": [

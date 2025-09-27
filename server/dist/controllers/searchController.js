@@ -1,5 +1,5 @@
-import asyncHandler from "../middlewares/asyncHandler";
-import prisma from "../config/prisma";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import prisma from "../config/prisma.js";
 export const searchSalons = asyncHandler(async (req, res) => {
     try {
         const { query, city, location, service, minRating, maxPrice, sortBy = 'rating', page = 1, limit = 10 } = req.query;

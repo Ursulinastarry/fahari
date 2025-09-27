@@ -1,8 +1,8 @@
-import asyncHandler from "../middlewares/asyncHandler";
-import { pool } from "../index";
-import prisma from "../config/prisma";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import { pool } from "../index.js";
+import prisma from "../config/prisma.js";
 import { DateTime } from "luxon";
-import { createAndSendNotification } from "../services/notificationService";
+import { createAndSendNotification } from "../services/notificationService.js";
 export const createBooking = asyncHandler(async (req, res) => {
     const { salonId, salonServiceId, slotDate, slotStartTime } = req.body;
     // slotDate = "2025-08-28", slotStartTime = "06:00"

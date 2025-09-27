@@ -1,5 +1,5 @@
-import asyncHandler from "../middlewares/asyncHandler";
-import { pool } from "../index";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import { pool } from "../index.js";
 // ✅ Get all notifications
 export const getMyNotifications = asyncHandler(async (req, res) => {
     if (!req.user)

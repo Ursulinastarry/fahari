@@ -1,6 +1,6 @@
-import asyncHandler from "../middlewares/asyncHandler";
-import prisma from "../config/prisma";
-// import { FileUploadUserRequest } from "../utils/types/userTypes";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import prisma from "../config/prisma.js";
+// import { FileUploadUserRequest } from "../utils/types/userTypes.js";
 import path from 'path';
 import fs from "fs";
 import multer from "multer";

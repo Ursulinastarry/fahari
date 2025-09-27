@@ -1,4 +1,4 @@
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 import { DateTime } from "luxon";
 export async function generateSlotsForDay(salonId, date, openHour, closeHour) {
     const slots = [];

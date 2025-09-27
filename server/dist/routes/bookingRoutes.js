@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { protect } from "../middlewares/protect";
-import { createBooking, getBookings, rescheduleBooking, getOwnerBookings, getMyBookings, cancelBooking } from "../controllers/bookingController";
+import { protect } from "../middlewares/protect.js";
+import { createBooking, getBookings, rescheduleBooking, getOwnerBookings, getMyBookings, cancelBooking } from "../controllers/bookingController.js";
 const router = Router();
 router.post("/", protect, createBooking);
 router.get("/", protect, getBookings);

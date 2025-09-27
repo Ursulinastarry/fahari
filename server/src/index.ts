@@ -23,6 +23,11 @@ import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
 import "./cron/slotScheduler";
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 
 dotenv.config();
@@ -52,7 +57,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 const { Pool } = pkg;
 

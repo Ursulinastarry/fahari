@@ -1,5 +1,5 @@
-import asyncHandler from "../middlewares/asyncHandler";
-import prisma from "../config/prisma";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import prisma from "../config/prisma.js";
 export const addToWaitlist = asyncHandler(async (req, res) => {
     try {
         const { salonId, date, timeSlot } = req.body;

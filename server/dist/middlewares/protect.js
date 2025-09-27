@@ -1,7 +1,7 @@
 // src/middlewares/authMiddleware.ts
-import asyncHandler from "./asyncHandler";
+import asyncHandler from "./asyncHandler.js";
 import jwt from "jsonwebtoken";
-import { pool } from "../index";
+import { pool } from "../index.js";
 export const protect = asyncHandler(async (req, res, next) => {
     let token;
     // 1. Try Authorization header

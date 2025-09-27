@@ -1,7 +1,7 @@
 import express from "express";
-import { createUser, getAllUsers, getUserById, updateUser, deleteUser, loginUser, logoutUser, approveUser, getMe, suspendUser } from "../controllers/userController";
-import { protect } from "../middlewares/protect";
-import { uploadUserAvatar } from "../middlewares/upload";
+import { createUser, getAllUsers, getUserById, updateUser, deleteUser, loginUser, logoutUser, approveUser, getMe, suspendUser } from "../controllers/userController.js";
+import { protect } from "../middlewares/protect.js";
+import { uploadUserAvatar } from "../middlewares/upload.js";
 const router = express.Router();
 router.get("/me", protect, getMe);
 router.post("/register", createUser);

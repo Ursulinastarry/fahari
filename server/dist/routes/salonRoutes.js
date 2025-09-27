@@ -1,8 +1,8 @@
 import express from 'express';
-import { getSalons, getSalon, createSalon, updateSalon, deleteSalon, getMySalon, getSalonServices } from '../controllers/salonController';
-import { protect } from '../middlewares/protect';
-import { uploadSalonImages, handleUploadError } from '../middlewares/upload'; // Add this line to import the upload middleware
-import { uploadSalonMedia } from '../controllers/salonController';
+import { getSalons, getSalon, createSalon, updateSalon, deleteSalon, getMySalon, getSalonServices } from '../controllers/salonController.js';
+import { protect } from '../middlewares/protect.js';
+import { uploadSalonImages, handleUploadError } from '../middlewares/upload.js'; // Add this line to import the upload middleware
+import { uploadSalonMedia } from '../controllers/salonController.js';
 const router = express.Router();
 router.get('/', getSalons);
 router.post("/", protect, (req, res, next) => {

@@ -1,7 +1,7 @@
 // src/cron/reminderCron.ts
 import cron from "node-cron";
-import prisma from "../config/prisma";
-import { getIO } from "../realtime/socket";
+import prisma from "../config/prisma.js";
+import { getIO } from "../realtime/socket.js";
 export const startReminderCron = () => {
     // run every minute
     cron.schedule("* * * * *", async () => {

@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { protect } from "../middlewares/protect";
-import { createReview, deleteReview, getSalonRating, getOwnerReviews, getBookingReview, getReviewsBySalon } from "../controllers/reviewsController";
-import { uploadReviewImages, handleUploadError } from "../middlewares/upload";
+import { protect } from "../middlewares/protect.js";
+import { createReview, deleteReview, getSalonRating, getOwnerReviews, getBookingReview, getReviewsBySalon } from "../controllers/reviewsController.js";
+import { uploadReviewImages, handleUploadError } from "../middlewares/upload.js";
 const router = Router();
 router.post("/", protect, uploadReviewImages, handleUploadError, createReview);
 // router.get("/", getReviews);

@@ -1,5 +1,5 @@
-import asyncHandler from "../middlewares/asyncHandler";
-import prisma from "../config/prisma";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import prisma from "../config/prisma.js";
 import { DateTime } from 'luxon';
 export const createSlot = asyncHandler(async (req, res) => {
     try {

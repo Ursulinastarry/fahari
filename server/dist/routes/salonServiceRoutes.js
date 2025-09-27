@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { protect } from "../middlewares/protect";
-import { addSalonService, updateSalonService, removeSalonService, getOwnerServices, getSalonServices, } from "../controllers/salonServicesController";
+import { protect } from "../middlewares/protect.js";
+import { addSalonService, updateSalonService, removeSalonService, getOwnerServices, getSalonServices, } from "../controllers/salonServicesController.js";
 const router = Router();
 router.post("/", protect, addSalonService);
 router.get("/owner", protect, getOwnerServices);

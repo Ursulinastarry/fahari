@@ -1,6 +1,6 @@
 import cron from "node-cron";
-import prisma from "../config/prisma";
-import { generateSlotsForDay } from "../utils/slotGenerator";
+import prisma from "../config/prisma.js";
+import { generateSlotsForDay } from "../utils/slotGenerator.js";
 /**
  * Cron job to delete expired slots (where end time is less than now)
  * Runs every minute (Africa/Nairobi).

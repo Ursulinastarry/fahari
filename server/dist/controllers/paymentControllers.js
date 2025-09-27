@@ -1,5 +1,5 @@
-import asyncHandler from "../middlewares/asyncHandler";
-import prisma from "../config/prisma";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import prisma from "../config/prisma.js";
 export const createPayment = asyncHandler(async (req, res) => {
     try {
         const { bookingId, amount, method, transactionId, mpesaReceiptNumber } = req.body;

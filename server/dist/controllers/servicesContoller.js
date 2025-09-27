@@ -1,5 +1,5 @@
-import asyncHandler from "../middlewares/asyncHandler";
-import prisma from "../config/prisma";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import prisma from "../config/prisma.js";
 export const createService = asyncHandler(async (req, res) => {
     const { name, description, category, isActive } = req.body;
     if (!name) {

@@ -1,5 +1,5 @@
-import asyncHandler from "../middlewares/asyncHandler";
-import prisma from "../config/prisma";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import prisma from "../config/prisma.js";
 export const addSalonService = asyncHandler(async (req, res) => {
     const { serviceId, price, duration } = req.body;
     const userId = req.user.userId;

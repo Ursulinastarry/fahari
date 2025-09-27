@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { protect } from "../middlewares/protect";
-import { createSlot, getSlots, getSalonSlots, updateSlot, deleteSlot, } from "../controllers/slotsController";
+import { protect } from "../middlewares/protect.js";
+import { createSlot, getSlots, getSalonSlots, updateSlot, deleteSlot, } from "../controllers/slotsController.js";
 const router = Router();
 router.post("/", protect, createSlot);
 router.get("/", getSlots);

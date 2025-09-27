@@ -1,8 +1,8 @@
 "use strict";
 // import { Request, Response } from 'express';
-// import { sendSTKPush } from '../services/mpesaService';
-// import { generateConfirmationMessage } from '../services/aiService';
-// import prisma from '../config/prisma';
+// import { sendSTKPush } from '../services/mpesaService.js';
+// import { generateConfirmationMessage } from '../services/aiService.js';
+// import prisma from '../config/prisma.js';
 // export const initiateSTKPush = async (req: Request, res: Response) => {
 //   const { phone, amount } = req.body;
 //   try {

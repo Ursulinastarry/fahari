@@ -1,6 +1,6 @@
 "use strict";
 // import express from 'express';
-// import { initiateSTKPush, handleCallback } from '../controllers/mpesaController';
+// import { initiateSTKPush, handleCallback } from '../controllers/mpesaController.js';
 // const router = express.Router();
 // router.post('/stkpush', initiateSTKPush);
 // router.post('/callback', handleCallback); // Safaricom sends response here

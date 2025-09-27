@@ -1,13 +1,13 @@
 import dotenv from "dotenv";
-import asyncHandler from "../middlewares/asyncHandler";
+import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { pool } from "../index";
-import { createAndSendNotification } from "../services/notificationService";
+import { pool } from "../index.js";
+import { createAndSendNotification } from "../services/notificationService.js";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 dotenv.config();
 //Debugging  - check if env var are loaded correctly  
 const jwtSecret = process.env.ACCESS_TOKEN_SECRET;

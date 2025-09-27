@@ -1,5 +1,5 @@
-import asyncHandler from "../middlewares/asyncHandler";
-import prisma from "../config/prisma";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import prisma from "../config/prisma.js";
 export const createAppointment = asyncHandler(async (req, res) => {
     try {
         const { salonId, salonServiceId, slotId, notes } = req.body;
