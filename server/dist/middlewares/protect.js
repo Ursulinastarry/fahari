@@ -1,14 +1,8 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.protect = void 0;
 // src/middlewares/authMiddleware.ts
-const asyncHandler_1 = __importDefault(require("./asyncHandler"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const index_1 = require("../index");
-exports.protect = (0, asyncHandler_1.default)(async (req, res, next) => {
+import asyncHandler from "./asyncHandler";
+import jwt from "jsonwebtoken";
+import { pool } from "../index";
+export const protect = asyncHandler(async (req, res, next) => {
     let token;
     // 1. Try Authorization header
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
@@ -24,9 +18,9 @@ exports.protect = (0, asyncHandler_1.default)(async (req, res, next) => {
     }
     try {
         // console.log("🔑 Verifying token...");
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         // console.log("✅ Decoded JWT:", decoded);
-        const userQuery = await index_1.pool.query(`SELECT id, email, phone, "firstName", "lastName", avatar, role, "isActive", "isVerified"
+        const userQuery = await pool.query(`SELECT id, email, phone, "firstName", "lastName", avatar, role, "isActive", "isVerified"
        FROM users WHERE id = $1`, [decoded.id]);
         if (userQuery.rows.length === 0) {
             // console.log("❌ No user found in DB for id:", decoded.id);

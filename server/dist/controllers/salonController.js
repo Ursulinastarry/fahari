@@ -1,26 +1,20 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteSalon = exports.deleteFileIfExists = exports.updateSalon = exports.getSalonServices = exports.getMySalon = exports.getSalon = exports.getSalons = exports.createSalon = exports.uploadSalonMedia = void 0;
 // At the top of your file
-const client_1 = require("@prisma/client");
-const index_1 = require("../index");
-const multer_1 = __importDefault(require("multer"));
-const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
+import { PrismaClient } from '@prisma/client';
+import { pool } from "../index";
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 // Configure multer for file uploads
-const storage = multer_1.default.diskStorage({
+const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/salons/'); // Make sure this directory exists
     },
     filename: (req, file, cb) => {
-        const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path_1.default.extname(file.originalname)}`;
+        const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
         cb(null, uniqueName);
     }
 });
-const upload = (0, multer_1.default)({
+const upload = multer({
     storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
     fileFilter: (req, file, cb) => {
@@ -32,14 +26,14 @@ const upload = (0, multer_1.default)({
         }
     }
 });
-exports.uploadSalonMedia = (0, multer_1.default)({ storage });
-const prisma = new client_1.PrismaClient();
-const createSalon = async (req, res) => {
+export const uploadSalonMedia = multer({ storage });
+const prisma = new PrismaClient();
+export const createSalon = async (req, res) => {
     try {
         const userId = req.user.id;
         const userRole = req.user.role;
         if (userRole !== "SALON_OWNER" && userRole !== "ADMIN") {
-            return res.status(403).json({ message: "Only salon owners can create salons" });
+            return res.status(403).json({ message: "Only salon owners can create salons." });
         }
         // With FormData, text fields come through req.body
         const { name, description, email, phone, address, city, location, businessHours // This is a JSON string from FormData
@@ -85,8 +79,7 @@ const createSalon = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-exports.createSalon = createSalon;
-const getSalons = async (req, res) => {
+export const getSalons = async (req, res) => {
     try {
         const { city, location, isActive = true, page = 1, limit = 10 } = req.query;
         const skip = (Number(page) - 1) * Number(limit);
@@ -128,8 +121,7 @@ const getSalons = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-exports.getSalons = getSalons;
-const getSalon = async (req, res) => {
+export const getSalon = async (req, res) => {
     try {
         const { id } = req.params;
         const salon = await prisma.salon.findUnique({
@@ -167,13 +159,12 @@ const getSalon = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-exports.getSalon = getSalon;
-const getMySalon = async (req, res) => {
+export const getMySalon = async (req, res) => {
     if (!req.user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
     // Fetch salons where ownerId = logged-in user's id
-    const { rows } = await index_1.pool.query(`SELECT id, name, description, email, phone, address, city, location, latitude, longitude,
+    const { rows } = await pool.query(`SELECT id, name, description, email, phone, address, city, location, latitude, longitude,
             "businessHours", "isActive", "isVerified", "averageRating", "totalReviews",
             "profileImage", "coverImage", gallery, "createdAt", "updatedAt"
      FROM salons
@@ -183,8 +174,7 @@ const getMySalon = async (req, res) => {
     }
     res.json(rows);
 };
-exports.getMySalon = getMySalon;
-const getSalonServices = async (req, res) => {
+export const getSalonServices = async (req, res) => {
     const { salonId } = req.params;
     if (!salonId) {
         return res.status(400).json({ message: "Salon ID is required" });
@@ -200,8 +190,7 @@ const getSalonServices = async (req, res) => {
     }
     res.json(services);
 };
-exports.getSalonServices = getSalonServices;
-const updateSalon = async (req, res) => {
+export const updateSalon = async (req, res) => {
     try {
         const { id } = req.params;
         const userId = req.user.id;
@@ -230,7 +219,7 @@ const updateSalon = async (req, res) => {
             const newProfileImage = files.profileImage[0].filename;
             // Delete old profile image if it exists
             if (salon.profileImage) {
-                (0, exports.deleteFileIfExists)(path_1.default.join(__dirname, "../../uploads/salons", salon.profileImage));
+                deleteFileIfExists(path.join(__dirname, "../../uploads/salons", salon.profileImage));
             }
             profileImage = newProfileImage;
         }
@@ -239,7 +228,7 @@ const updateSalon = async (req, res) => {
             const newCoverImage = files.coverImage[0].filename;
             // Delete old cover image if it exists
             if (salon.coverImage) {
-                (0, exports.deleteFileIfExists)(path_1.default.join(__dirname, "../../uploads/salons", salon.coverImage));
+                deleteFileIfExists(path.join(__dirname, "../../uploads/salons", salon.coverImage));
             }
             console.log("deleted a file", salon.coverImage);
             coverImage = newCoverImage;
@@ -250,7 +239,7 @@ const updateSalon = async (req, res) => {
             // Delete old gallery images if they exist
             if (salon.gallery && salon.gallery.length > 0) {
                 salon.gallery.forEach((oldFile) => {
-                    (0, exports.deleteFileIfExists)(path_1.default.join(__dirname, "../../uploads/salons", oldFile));
+                    deleteFileIfExists(path.join(__dirname, "../../uploads/salons", oldFile));
                 });
             }
             gallery = newGalleryFiles;
@@ -279,12 +268,11 @@ const updateSalon = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-exports.updateSalon = updateSalon;
 // Helper function to safely delete files
-const deleteFileIfExists = (filePath) => {
+export const deleteFileIfExists = (filePath) => {
     try {
-        if (fs_1.default.existsSync(filePath)) {
-            fs_1.default.unlinkSync(filePath);
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
             console.log(`Deleted old file: ${filePath}`);
         }
     }
@@ -292,8 +280,7 @@ const deleteFileIfExists = (filePath) => {
         console.error(`Error deleting file ${filePath}:`, error);
     }
 };
-exports.deleteFileIfExists = deleteFileIfExists;
-const deleteSalon = async (req, res) => {
+export const deleteSalon = async (req, res) => {
     try {
         const { id } = req.params;
         const userId = req.user.id;
@@ -310,10 +297,9 @@ const deleteSalon = async (req, res) => {
         await prisma.salon.delete({
             where: { id }
         });
-        res.json({ message: 'Salon deleted successfully' });
+        res.json({ message: 'Salon deleted successfully.' });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
-exports.deleteSalon = deleteSalon;

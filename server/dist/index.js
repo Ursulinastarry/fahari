@@ -1,43 +1,36 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.pool = void 0;
-exports.connectClient = connectClient;
 // server/src/index.ts
-const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
-const dotenv_1 = __importDefault(require("dotenv"));
-const pg_1 = __importDefault(require("pg"));
-const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
-const salonRoutes_1 = __importDefault(require("./routes/salonRoutes"));
-const notificationRoutes_1 = __importDefault(require("./routes/notificationRoutes"));
-const appointmentRoutes_1 = __importDefault(require("./routes/appointmentRoutes"));
-const bookingRoutes_1 = __importDefault(require("./routes/bookingRoutes"));
-const paymentRoutes_1 = __importDefault(require("./routes/paymentRoutes"));
-const reminderRoutes_1 = __importDefault(require("./routes/reminderRoutes"));
-const reviewRoutes_1 = __importDefault(require("./routes/reviewRoutes"));
-const statisticRoutes_1 = __importDefault(require("./routes/statisticRoutes"));
-const slotRoutes_1 = __importDefault(require("./routes/slotRoutes"));
-const waitlistRoutes_1 = __importDefault(require("./routes/waitlistRoutes"));
-const searchRoutes_1 = __importDefault(require("./routes/searchRoutes"));
-const salonServiceRoutes_1 = __importDefault(require("./routes/salonServiceRoutes"));
-const serviceRoutes_1 = __importDefault(require("./routes/serviceRoutes"));
-const http_1 = __importDefault(require("http"));
-const socket_1 = require("./realtime/socket");
-const cookie_parser_1 = __importDefault(require("cookie-parser"));
-require("./cron/slotScheduler");
-const path_1 = __importDefault(require("path"));
-dotenv_1.default.config();
-const app = (0, express_1.default)();
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import pkg from 'pg';
+import userRoutes from './routes/userRoutes';
+import salonRoutes from './routes/salonRoutes';
+import notificationRoutes from './routes/notificationRoutes';
+import appointmentRoutes from './routes/appointmentRoutes';
+import bookingRoutes from './routes/bookingRoutes';
+import paymentRoutes from './routes/paymentRoutes';
+import reminderRoutes from './routes/reminderRoutes';
+import reviewRoutes from './routes/reviewRoutes';
+import statisticRoutes from './routes/statisticRoutes';
+import slotRoutes from './routes/slotRoutes';
+import waitlistRoutes from './routes/waitlistRoutes';
+import searchRoutes from './routes/searchRoutes';
+import salonServiceRoutes from './routes/salonServiceRoutes';
+import serviceRoutes from './routes/serviceRoutes';
+import http from "http";
+import { initSocket } from "./realtime/socket";
+import cookieParser from 'cookie-parser';
+import "./cron/slotScheduler";
+import path from 'path';
+dotenv.config();
+const app = express();
 const PORT = process.env.PORT || 4000;
-const server = http_1.default.createServer(app);
-(0, socket_1.initSocket)(server);
-const reminder_1 = require("./cron/reminder");
+const server = http.createServer(app);
+initSocket(server);
+import { startReminderCron } from "./cron/reminder";
 // Start reminder cron
-(0, reminder_1.startReminderCron)();
-app.use((0, cors_1.default)({
+startReminderCron();
+app.use(cors({
     origin: ["http://localhost:5173", "https://fahari.vercel.app"],
     methods: "GET, POST, PUT, PATCH, DELETE",
     credentials: true // allows cookies and auth headers
@@ -49,18 +42,18 @@ app.use((0, cors_1.default)({
 //     abortOnLimit: true,
 //   })
 // );
-app.use(express_1.default.json());
-app.use((0, cookie_parser_1.default)());
-app.use('/uploads', express_1.default.static('uploads'));
-const { Pool } = pg_1.default;
-exports.pool = new Pool({
+app.use(express.json());
+app.use(cookieParser());
+app.use('/uploads', express.static('uploads'));
+const { Pool } = pkg;
+export const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: false, // turn off SSL for local dev
 });
 // ✅ Database Connection Check
-async function connectClient() {
+export async function connectClient() {
     try {
-        const client = await exports.pool.connect();
+        const client = await pool.connect();
         console.log("✅ Connected to the database.");
         client.release();
     }
@@ -81,20 +74,20 @@ connectClient();
 //   next();
 // });
 // Routes
-app.use('/api/salons', salonRoutes_1.default);
-app.use('/api/users', userRoutes_1.default);
-app.use('/api/notifications', notificationRoutes_1.default);
-app.use('/api/appointments', appointmentRoutes_1.default);
-app.use('/api/bookings', bookingRoutes_1.default);
-app.use('/api/payments', paymentRoutes_1.default);
-app.use('/api/reminders', reminderRoutes_1.default);
-app.use('/api/reviews', reviewRoutes_1.default);
-app.use('/api/statistics', statisticRoutes_1.default);
-app.use('/api/slots', slotRoutes_1.default);
-app.use('/api/waitlist', waitlistRoutes_1.default);
-app.use('/api/search', searchRoutes_1.default);
-app.use('/api/salon-services', salonServiceRoutes_1.default);
-app.use('/api/services', serviceRoutes_1.default);
-app.use('/uploads', express_1.default.static(path_1.default.join(__dirname, '../uploads')));
+app.use('/api/salons', salonRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/appointments', appointmentRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/reminders', reminderRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/statistics', statisticRoutes);
+app.use('/api/slots', slotRoutes);
+app.use('/api/waitlist', waitlistRoutes);
+app.use('/api/search', searchRoutes);
+app.use('/api/salon-services', salonServiceRoutes);
+app.use('/api/services', serviceRoutes);
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.get('/', (_, res) => res.send('Fahari AI Backend is Live 🚀'));
 server.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));

@@ -1,12 +1,6 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchServices = exports.searchSalons = void 0;
-const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
-const prisma_1 = __importDefault(require("../config/prisma"));
-exports.searchSalons = (0, asyncHandler_1.default)(async (req, res) => {
+import asyncHandler from "../middlewares/asyncHandler";
+import prisma from "../config/prisma";
+export const searchSalons = asyncHandler(async (req, res) => {
     try {
         const { query, city, location, service, minRating, maxPrice, sortBy = 'rating', page = 1, limit = 10 } = req.query;
         const skip = (Number(page) - 1) * Number(limit);
@@ -59,7 +53,7 @@ exports.searchSalons = (0, asyncHandler_1.default)(async (req, res) => {
             default:
                 orderBy.averageRating = 'desc';
         }
-        const salons = await prisma_1.default.salon.findMany({
+        const salons = await prisma.salon.findMany({
             where,
             include: {
                 owner: { select: { firstName: true, lastName: true } },
@@ -79,7 +73,7 @@ exports.searchSalons = (0, asyncHandler_1.default)(async (req, res) => {
             skip,
             take: Number(limit)
         });
-        const total = await prisma_1.default.salon.count({ where });
+        const total = await prisma.salon.count({ where });
         res.json({
             salons,
             pagination: {
@@ -94,7 +88,7 @@ exports.searchSalons = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.searchServices = (0, asyncHandler_1.default)(async (req, res) => {
+export const searchServices = asyncHandler(async (req, res) => {
     try {
         const { query, category, city, maxPrice } = req.query;
         const where = { isActive: true };
@@ -106,7 +100,7 @@ exports.searchServices = (0, asyncHandler_1.default)(async (req, res) => {
         }
         if (category)
             where.category = category;
-        const services = await prisma_1.default.service.findMany({
+        const services = await prisma.service.findMany({
             where,
             include: {
                 salonServices: {

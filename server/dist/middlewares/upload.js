@@ -1,26 +1,20 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadUserAvatar = exports.uploadReviewImages = exports.handleUploadError = exports.uploadSalonImages = void 0;
-const multer_1 = __importDefault(require("multer"));
-const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 // Ensure upload directories exist
 const uploadDir = 'uploads/salons';
-if (!fs_1.default.existsSync(uploadDir)) {
-    fs_1.default.mkdirSync(uploadDir, { recursive: true });
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
 }
 // Configure storage
-const storage = multer_1.default.diskStorage({
+const storage = multer.diskStorage({
     destination: (_req, _file, cb) => {
         cb(null, uploadDir);
     },
     filename: (_req, file, cb) => {
         // Create unique filename: timestamp-random-originalname
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const extension = path_1.default.extname(file.originalname);
+        const extension = path.extname(file.originalname);
         const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
         cb(null, filename);
     }
@@ -35,7 +29,7 @@ const fileFilter = (_req, file, cb) => {
     }
 };
 // Create multer instance
-const upload = (0, multer_1.default)({
+const upload = multer({
     storage,
     limits: {
         fileSize: 10 * 1024 * 1024, // 10MB limit per file
@@ -44,14 +38,14 @@ const upload = (0, multer_1.default)({
     fileFilter
 });
 // Export the specific middleware for salon creation
-exports.uploadSalonImages = upload.fields([
+export const uploadSalonImages = upload.fields([
     { name: 'profileImage', maxCount: 1 },
     { name: 'coverImage', maxCount: 1 },
     { name: 'gallery', maxCount: 10 }
 ]);
 // Error handling middleware for multer
-const handleUploadError = (err, _req, res, next) => {
-    if (err instanceof multer_1.default.MulterError) {
+export const handleUploadError = (err, _req, res, next) => {
+    if (err instanceof multer.MulterError) {
         if (err.code === 'LIMIT_FILE_SIZE') {
             return res.status(400).json({ message: 'File size too large. Max 5MB per file.' });
         }
@@ -67,24 +61,23 @@ const handleUploadError = (err, _req, res, next) => {
     }
     next(err);
 };
-exports.handleUploadError = handleUploadError;
 // Middleware for uploading review images
 const reviewUploadDir = 'uploads/reviews';
-if (!fs_1.default.existsSync(reviewUploadDir)) {
-    fs_1.default.mkdirSync(reviewUploadDir, { recursive: true });
+if (!fs.existsSync(reviewUploadDir)) {
+    fs.mkdirSync(reviewUploadDir, { recursive: true });
 }
-const reviewStorage = multer_1.default.diskStorage({
+const reviewStorage = multer.diskStorage({
     destination: (_req, _file, cb) => {
         cb(null, reviewUploadDir);
     },
     filename: (_req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const extension = path_1.default.extname(file.originalname);
+        const extension = path.extname(file.originalname);
         const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
         cb(null, filename);
     }
 });
-exports.uploadReviewImages = (0, multer_1.default)({
+export const uploadReviewImages = multer({
     storage: reviewStorage,
     limits: {
         fileSize: 5 * 1024 * 1024, // 5MB per file
@@ -93,22 +86,22 @@ exports.uploadReviewImages = (0, multer_1.default)({
     fileFilter
 }).array('reviewImages', 5);
 const uploadDirUser = "uploads/users";
-if (!fs_1.default.existsSync(uploadDirUser)) {
-    fs_1.default.mkdirSync(uploadDirUser, { recursive: true });
+if (!fs.existsSync(uploadDirUser)) {
+    fs.mkdirSync(uploadDirUser, { recursive: true });
 }
-const userStorage = multer_1.default.diskStorage({
+const userStorage = multer.diskStorage({
     destination: (_req, _file, cb) => {
         cb(null, uploadDirUser);
     },
     filename: (_req, file, cb) => {
         // Create unique filename: timestamp-random-originalname
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const extension = path_1.default.extname(file.originalname);
+        const extension = path.extname(file.originalname);
         const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
         cb(null, filename);
     }
 });
-exports.uploadUserAvatar = (0, multer_1.default)({
+export const uploadUserAvatar = multer({
     storage: userStorage,
     limits: {
         fileSize: 10 * 1024 * 1024, // 10MB limit per file

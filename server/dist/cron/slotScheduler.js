@@ -1,12 +1,6 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.triggerSlotGeneration = void 0;
-const node_cron_1 = __importDefault(require("node-cron"));
-const prisma_1 = __importDefault(require("../config/prisma"));
-const slotGenerator_1 = require("../utils/slotGenerator");
+import cron from "node-cron";
+import prisma from "../config/prisma";
+import { generateSlotsForDay } from "../utils/slotGenerator";
 /**
  * Cron job to delete expired slots (where end time is less than now)
  * Runs every minute (Africa/Nairobi).
@@ -35,12 +29,12 @@ const slotGenerator_1 = require("../utils/slotGenerator");
 //   { timezone: "Africa/Nairobi" }
 // );
 // PRODUCTION CRON - Runs at 10am
-node_cron_1.default.schedule("0 10 * * *", // 10am daily
+cron.schedule("0 10 * * *", // 10am daily
 async () => {
     console.log("🕛 Running daily slot generator for day +7...");
     console.log("⏰ Current time:", new Date().toLocaleString("en-US", { timeZone: "Africa/Nairobi" }));
     try {
-        const salons = await prisma_1.default.salon.findMany();
+        const salons = await prisma.salon.findMany();
         console.log(`📍 Found ${salons.length} salons`);
         if (salons.length === 0) {
             console.log("⚠️ No salons found in database");
@@ -86,7 +80,7 @@ async () => {
                     continue;
                 }
                 console.log(`⏰ ${salon.name} hours: ${openHour}:00 - ${closeHour}:00`);
-                await (0, slotGenerator_1.generateSlotsForDay)(salon.id, targetDay, openHour, closeHour);
+                await generateSlotsForDay(salon.id, targetDay, openHour, closeHour);
                 console.log(`✅ Slots generated for ${salon.name} on ${targetDay.toDateString()}`);
             }
             catch (err) {
@@ -100,10 +94,9 @@ async () => {
     }
 }, { timezone: "Africa/Nairobi" });
 // Manual trigger function for testing
-const triggerSlotGeneration = async () => {
+export const triggerSlotGeneration = async () => {
     console.log("🔧 Manually triggering slot generation...");
     // Copy the same logic from the midnight cron here
 };
-exports.triggerSlotGeneration = triggerSlotGeneration;
 console.log("📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)");
 console.log("⏰ Current time:", new Date().toLocaleString("en-US", { timeZone: "Africa/Nairobi" }));

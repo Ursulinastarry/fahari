@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const protect_1 = require("../middlewares/protect");
-const waitlistController_1 = require("../controllers/waitlistController");
-const router = (0, express_1.Router)();
-router.post("/", protect_1.protect, waitlistController_1.addToWaitlist);
-router.get("/", protect_1.protect, waitlistController_1.getWaitlist);
-router.delete("/:id", protect_1.protect, waitlistController_1.removeFromWaitlist);
-exports.default = router;
+import { Router } from "express";
+import { protect } from "../middlewares/protect";
+import { addToWaitlist, getWaitlist, removeFromWaitlist, } from "../controllers/waitlistController";
+const router = Router();
+router.post("/", protect, addToWaitlist);
+router.get("/", protect, getWaitlist);
+router.delete("/:id", protect, removeFromWaitlist);
+export default router;

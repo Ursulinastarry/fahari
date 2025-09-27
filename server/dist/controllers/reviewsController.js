@@ -1,27 +1,21 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteReview = exports.updateReview = exports.getReviewsBySalon = exports.getBookingReview = exports.getOwnerReviews = exports.getReviews = exports.getSalonRating = exports.createReview = exports.uploadReviewImages = void 0;
-const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
-const prisma_1 = __importDefault(require("../config/prisma"));
+import asyncHandler from "../middlewares/asyncHandler";
+import prisma from "../config/prisma";
 // import { FileUploadUserRequest } from "../utils/types/userTypes";
-const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
-const multer_1 = __importDefault(require("multer"));
+import path from 'path';
+import fs from "fs";
+import multer from "multer";
 // Review image upload setup
 const reviewUploadDir = 'uploads/reviews';
-if (!fs_1.default.existsSync(reviewUploadDir)) {
-    fs_1.default.mkdirSync(reviewUploadDir, { recursive: true });
+if (!fs.existsSync(reviewUploadDir)) {
+    fs.mkdirSync(reviewUploadDir, { recursive: true });
 }
-const reviewStorage = multer_1.default.diskStorage({
+const reviewStorage = multer.diskStorage({
     destination: (_req, _file, cb) => {
         cb(null, reviewUploadDir);
     },
     filename: (_req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const extension = path_1.default.extname(file.originalname);
+        const extension = path.extname(file.originalname);
         const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
         cb(null, filename);
     }
@@ -35,7 +29,7 @@ const fileFilter = (_req, file, cb) => {
         cb(new Error('Only image files are allowed!'));
     }
 };
-exports.uploadReviewImages = (0, multer_1.default)({
+export const uploadReviewImages = multer({
     storage: reviewStorage,
     limits: {
         fileSize: 5 * 1024 * 1024, // 5MB per file
@@ -43,7 +37,7 @@ exports.uploadReviewImages = (0, multer_1.default)({
     },
     fileFilter
 }).array('reviewImages', 5);
-exports.createReview = (0, asyncHandler_1.default)(async (req, res) => {
+export const createReview = asyncHandler(async (req, res) => {
     try {
         console.log("---- Incoming Review Request ----");
         console.log("Body:", req.body);
@@ -53,7 +47,7 @@ exports.createReview = (0, asyncHandler_1.default)(async (req, res) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
         const userId = req.user.id;
-        const booking = await prisma_1.default.booking.findUnique({
+        const booking = await prisma.booking.findUnique({
             where: { id: bookingId },
             include: { review: true },
         });
@@ -71,7 +65,7 @@ exports.createReview = (0, asyncHandler_1.default)(async (req, res) => {
             images = files.map(file => file.filename);
             console.log("Image filenames:", images);
         }
-        const review = await prisma_1.default.review.create({
+        const review = await prisma.review.create({
             data: {
                 rating: Number(rating),
                 comment,
@@ -82,25 +76,25 @@ exports.createReview = (0, asyncHandler_1.default)(async (req, res) => {
             },
         });
         // Update salon average rating
-        const salonReviews = await prisma_1.default.review.findMany({ where: { salonId: booking.salonId } });
+        const salonReviews = await prisma.review.findMany({ where: { salonId: booking.salonId } });
         const averageRating = salonReviews.length > 0
             ? salonReviews.reduce((sum, r) => sum + r.rating, 0) / salonReviews.length
             : 0;
-        await prisma_1.default.salon.update({
+        await prisma.salon.update({
             where: { id: booking.salonId },
             data: { averageRating, totalReviews: salonReviews.length },
         });
         // Set booking status to REVIEWED only after successful review creation and salon update
-        await prisma_1.default.booking.update({ where: { id: bookingId }, data: { status: "REVIEWED" } });
+        await prisma.booking.update({ where: { id: bookingId }, data: { status: "REVIEWED" } });
         res.status(201).json(review);
     }
     catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
-exports.getSalonRating = (0, asyncHandler_1.default)(async (req, res) => {
+export const getSalonRating = asyncHandler(async (req, res) => {
     const { salonId } = req.params;
-    const reviews = await prisma_1.default.review.findMany({
+    const reviews = await prisma.review.findMany({
         where: { salonId },
         select: { rating: true },
     });
@@ -113,7 +107,7 @@ exports.getSalonRating = (0, asyncHandler_1.default)(async (req, res) => {
         totalReviews: reviews.length,
     });
 });
-exports.getReviews = (0, asyncHandler_1.default)(async (req, res) => {
+export const getReviews = asyncHandler(async (req, res) => {
     try {
         const { salonId, clientId, rating } = req.query;
         const where = {};
@@ -123,7 +117,7 @@ exports.getReviews = (0, asyncHandler_1.default)(async (req, res) => {
             where.clientId = clientId;
         if (rating)
             where.rating = { gte: Number(rating) };
-        const reviews = await prisma_1.default.review.findMany({
+        const reviews = await prisma.review.findMany({
             where,
             include: {
                 client: { select: { firstName: true, lastName: true, avatar: true } },
@@ -137,7 +131,7 @@ exports.getReviews = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.getOwnerReviews = (0, asyncHandler_1.default)(async (req, res) => {
+export const getOwnerReviews = asyncHandler(async (req, res) => {
     try {
         if (!req.user) {
             return res.status(401).json({ message: "Unauthorized" });
@@ -146,7 +140,7 @@ exports.getOwnerReviews = (0, asyncHandler_1.default)(async (req, res) => {
         if (!ownerId) {
             return res.status(400).json({ message: "Owner ID is required" });
         }
-        const reviews = await prisma_1.default.review.findMany({
+        const reviews = await prisma.review.findMany({
             where: {
                 salon: {
                     ownerId: ownerId,
@@ -164,13 +158,13 @@ exports.getOwnerReviews = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.getBookingReview = (0, asyncHandler_1.default)(async (req, res) => {
+export const getBookingReview = asyncHandler(async (req, res) => {
     try {
         const { bookingId } = req.params;
         if (!bookingId) {
             return res.status(400).json({ message: "Booking ID is required" });
         }
-        const review = await prisma_1.default.review.findUnique({
+        const review = await prisma.review.findUnique({
             where: { bookingId: bookingId },
             include: {
                 client: { select: { firstName: true, lastName: true, avatar: true } },
@@ -186,12 +180,12 @@ exports.getBookingReview = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.getReviewsBySalon = (0, asyncHandler_1.default)(async (req, res) => {
+export const getReviewsBySalon = asyncHandler(async (req, res) => {
     const { salonId } = req.params;
     if (!salonId) {
         return res.status(400).json({ message: "Salon ID is required" });
     }
-    const reviews = await prisma_1.default.review.findMany({
+    const reviews = await prisma.review.findMany({
         where: {
             booking: {
                 salonId: salonId, // filter by salon
@@ -212,12 +206,12 @@ exports.getReviewsBySalon = (0, asyncHandler_1.default)(async (req, res) => {
     });
     res.json(reviews);
 });
-exports.updateReview = (0, asyncHandler_1.default)(async (req, res) => {
+export const updateReview = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const { rating, comment, images } = req.body;
         const userId = req.user.userId;
-        const review = await prisma_1.default.review.findUnique({
+        const review = await prisma.review.findUnique({
             where: { id }
         });
         if (!review) {
@@ -226,16 +220,16 @@ exports.updateReview = (0, asyncHandler_1.default)(async (req, res) => {
         if (review.clientId !== userId) {
             return res.status(403).json({ message: 'Not authorized to update this review' });
         }
-        const updatedReview = await prisma_1.default.review.update({
+        const updatedReview = await prisma.review.update({
             where: { id },
             data: { rating, comment, images }
         });
         // Recalculate salon's average rating
-        const salonReviews = await prisma_1.default.review.findMany({
+        const salonReviews = await prisma.review.findMany({
             where: { salonId: review.salonId }
         });
         const averageRating = salonReviews.reduce((sum, r) => sum + r.rating, 0) / salonReviews.length;
-        await prisma_1.default.salon.update({
+        await prisma.salon.update({
             where: { id: review.salonId },
             data: { averageRating }
         });
@@ -245,12 +239,12 @@ exports.updateReview = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.deleteReview = (0, asyncHandler_1.default)(async (req, res) => {
+export const deleteReview = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const userId = req.user.userId;
         const userRole = req.user.role;
-        const review = await prisma_1.default.review.findUnique({
+        const review = await prisma.review.findUnique({
             where: { id }
         });
         if (!review) {
@@ -259,17 +253,17 @@ exports.deleteReview = (0, asyncHandler_1.default)(async (req, res) => {
         if (review.clientId !== userId && userRole !== 'ADMIN') {
             return res.status(403).json({ message: 'Not authorized to delete this review' });
         }
-        await prisma_1.default.review.delete({
+        await prisma.review.delete({
             where: { id }
         });
         // Recalculate salon's average rating
-        const salonReviews = await prisma_1.default.review.findMany({
+        const salonReviews = await prisma.review.findMany({
             where: { salonId: review.salonId }
         });
         const averageRating = salonReviews.length > 0
             ? salonReviews.reduce((sum, r) => sum + r.rating, 0) / salonReviews.length
             : 0;
-        await prisma_1.default.salon.update({
+        await prisma.salon.update({
             where: { id: review.salonId },
             data: {
                 averageRating,

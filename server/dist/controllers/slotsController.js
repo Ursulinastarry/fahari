@@ -1,17 +1,11 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteSlot = exports.updateSlot = exports.getSalonSlots = exports.getSlots = exports.createSlot = void 0;
-const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
-const prisma_1 = __importDefault(require("../config/prisma"));
-const luxon_1 = require("luxon");
-exports.createSlot = (0, asyncHandler_1.default)(async (req, res) => {
+import asyncHandler from "../middlewares/asyncHandler";
+import prisma from "../config/prisma";
+import { DateTime } from 'luxon';
+export const createSlot = asyncHandler(async (req, res) => {
     try {
         const { salonId, serviceId, date, startTime, endTime, isRecurring } = req.body;
         // Parse the date in EAT timezone
-        const day = luxon_1.DateTime.fromISO(date, { zone: "Africa/Nairobi" }).startOf("day");
+        const day = DateTime.fromISO(date, { zone: "Africa/Nairobi" }).startOf("day");
         // Combine day + startTime/endTime in EAT
         const start = day.plus({
             hours: Number(startTime.split(":")[0]),
@@ -22,7 +16,7 @@ exports.createSlot = (0, asyncHandler_1.default)(async (req, res) => {
             minutes: Number(endTime.split(":")[1] || 0),
         }).toJSDate();
         console.log("DEBUG start:", start, "end:", end);
-        const slot = await prisma_1.default.slot.create({
+        const slot = await prisma.slot.create({
             data: {
                 salonId,
                 serviceId,
@@ -40,7 +34,7 @@ exports.createSlot = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ error: "Failed to create slot" });
     }
 });
-exports.getSlots = (0, asyncHandler_1.default)(async (req, res) => {
+export const getSlots = asyncHandler(async (req, res) => {
     try {
         const { salonId, date, serviceId, isAvailable } = req.query;
         const where = {};
@@ -52,7 +46,7 @@ exports.getSlots = (0, asyncHandler_1.default)(async (req, res) => {
             where.serviceId = serviceId;
         if (isAvailable !== undefined)
             where.isAvailable = Boolean(isAvailable);
-        const slots = await prisma_1.default.slot.findMany({
+        const slots = await prisma.slot.findMany({
             where,
             include: {
                 salon: {
@@ -70,9 +64,9 @@ exports.getSlots = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.getSalonSlots = (0, asyncHandler_1.default)(async (req, res) => {
+export const getSalonSlots = asyncHandler(async (req, res) => {
     const { salonId } = req.params;
-    const slots = await prisma_1.default.slot.findMany({
+    const slots = await prisma.slot.findMany({
         where: { salonId },
         orderBy: { startTime: "asc" },
         select: {
@@ -85,12 +79,12 @@ exports.getSalonSlots = (0, asyncHandler_1.default)(async (req, res) => {
     });
     res.json(slots);
 });
-exports.updateSlot = (0, asyncHandler_1.default)(async (req, res) => {
+export const updateSlot = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const userId = req.user.userId;
         const userRole = req.user.role;
-        const slot = await prisma_1.default.slot.findUnique({
+        const slot = await prisma.slot.findUnique({
             where: { id },
             include: { salon: true }
         });
@@ -100,7 +94,7 @@ exports.updateSlot = (0, asyncHandler_1.default)(async (req, res) => {
         if (slot.salon.ownerId !== userId && userRole !== 'ADMIN') {
             return res.status(403).json({ message: 'Not authorized to update this slot' });
         }
-        const updatedSlot = await prisma_1.default.slot.update({
+        const updatedSlot = await prisma.slot.update({
             where: { id },
             data: req.body
         });
@@ -110,12 +104,12 @@ exports.updateSlot = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.deleteSlot = (0, asyncHandler_1.default)(async (req, res) => {
+export const deleteSlot = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const userId = req.user.userId;
         const userRole = req.user.role;
-        const slot = await prisma_1.default.slot.findUnique({
+        const slot = await prisma.slot.findUnique({
             where: { id },
             include: { salon: true }
         });
@@ -125,7 +119,7 @@ exports.deleteSlot = (0, asyncHandler_1.default)(async (req, res) => {
         if (slot.salon.ownerId !== userId && userRole !== 'ADMIN') {
             return res.status(403).json({ message: 'Not authorized to delete this slot' });
         }
-        await prisma_1.default.slot.delete({
+        await prisma.slot.delete({
             where: { id }
         });
         res.json({ message: 'Slot deleted successfully' });

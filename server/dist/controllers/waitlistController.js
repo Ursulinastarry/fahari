@@ -1,12 +1,6 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeFromWaitlist = exports.getWaitlist = exports.addToWaitlist = void 0;
-const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
-const prisma_1 = __importDefault(require("../config/prisma"));
-exports.addToWaitlist = (0, asyncHandler_1.default)(async (req, res) => {
+import asyncHandler from "../middlewares/asyncHandler";
+import prisma from "../config/prisma";
+export const addToWaitlist = asyncHandler(async (req, res) => {
     try {
         const { salonId, date, timeSlot } = req.body;
         const userId = req.user.userId;
@@ -14,13 +8,13 @@ exports.addToWaitlist = (0, asyncHandler_1.default)(async (req, res) => {
         if (userRole !== 'CLIENT') {
             return res.status(403).json({ message: 'Only clients can join waitlist' });
         }
-        const salon = await prisma_1.default.salon.findUnique({
+        const salon = await prisma.salon.findUnique({
             where: { id: salonId }
         });
         if (!salon) {
             return res.status(404).json({ message: 'Salon not found' });
         }
-        const waitlistEntry = await prisma_1.default.waitlistEntry.create({
+        const waitlistEntry = await prisma.waitlistEntry.create({
             data: {
                 clientId: userId,
                 salonId,
@@ -34,14 +28,14 @@ exports.addToWaitlist = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.getWaitlist = (0, asyncHandler_1.default)(async (req, res) => {
+export const getWaitlist = asyncHandler(async (req, res) => {
     try {
         const { salonId, date } = req.query;
         const userId = req.user.userId;
         const userRole = req.user.role;
         // Only salon owners can view their salon's waitlist
         if (userRole === 'SALON_OWNER') {
-            const salon = await prisma_1.default.salon.findFirst({
+            const salon = await prisma.salon.findFirst({
                 where: { id: salonId, ownerId: userId }
             });
             if (!salon) {
@@ -50,7 +44,7 @@ exports.getWaitlist = (0, asyncHandler_1.default)(async (req, res) => {
         }
         else if (userRole === 'CLIENT') {
             // Clients can only see their own waitlist entries
-            const waitlistEntries = await prisma_1.default.waitlistEntry.findMany({
+            const waitlistEntries = await prisma.waitlistEntry.findMany({
                 where: {
                     clientId: userId,
                     ...(salonId && { salonId: salonId }),
@@ -71,7 +65,7 @@ exports.getWaitlist = (0, asyncHandler_1.default)(async (req, res) => {
             where.salonId = salonId;
         if (date)
             where.date = new Date(date);
-        const waitlistEntries = await prisma_1.default.waitlistEntry.findMany({
+        const waitlistEntries = await prisma.waitlistEntry.findMany({
             where,
             include: {
                 client: { select: { firstName: true, lastName: true, phone: true } },
@@ -85,12 +79,12 @@ exports.getWaitlist = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.removeFromWaitlist = (0, asyncHandler_1.default)(async (req, res) => {
+export const removeFromWaitlist = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const userId = req.user.userId;
         const userRole = req.user.role;
-        const waitlistEntry = await prisma_1.default.waitlistEntry.findUnique({
+        const waitlistEntry = await prisma.waitlistEntry.findUnique({
             where: { id },
             include: { salon: true }
         });
@@ -104,7 +98,7 @@ exports.removeFromWaitlist = (0, asyncHandler_1.default)(async (req, res) => {
         if (!canRemove) {
             return res.status(403).json({ message: 'Not authorized to remove this waitlist entry' });
         }
-        await prisma_1.default.waitlistEntry.delete({
+        await prisma.waitlistEntry.delete({
             where: { id }
         });
         res.json({ message: 'Removed from waitlist successfully' });

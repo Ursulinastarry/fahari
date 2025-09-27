@@ -1,22 +1,16 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSalonServices = exports.getOwnerServices = exports.removeSalonService = exports.updateSalonService = exports.addSalonService = void 0;
-const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
-const prisma_1 = __importDefault(require("../config/prisma"));
-exports.addSalonService = (0, asyncHandler_1.default)(async (req, res) => {
+import asyncHandler from "../middlewares/asyncHandler";
+import prisma from "../config/prisma";
+export const addSalonService = asyncHandler(async (req, res) => {
     const { serviceId, price, duration } = req.body;
     const userId = req.user.userId;
     // Find the salon belonging to this owner
-    const salon = await prisma_1.default.salon.findFirst({
+    const salon = await prisma.salon.findFirst({
         where: { ownerId: userId },
     });
     if (!salon) {
         return res.status(404).json({ message: "Salon not found for this owner" });
     }
-    const salonService = await prisma_1.default.salonService.create({
+    const salonService = await prisma.salonService.create({
         data: {
             serviceId,
             salonId: salon.id, // automatically bound to owner’s salon
@@ -27,13 +21,13 @@ exports.addSalonService = (0, asyncHandler_1.default)(async (req, res) => {
     });
     res.status(201).json(salonService);
 });
-exports.updateSalonService = (0, asyncHandler_1.default)(async (req, res) => {
+export const updateSalonService = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const { price, duration } = req.body;
         const userId = req.user.id;
         const userRole = req.user.role;
-        const salonService = await prisma_1.default.salonService.findUnique({
+        const salonService = await prisma.salonService.findUnique({
             where: { id },
             include: { salon: true }
         });
@@ -43,7 +37,7 @@ exports.updateSalonService = (0, asyncHandler_1.default)(async (req, res) => {
         if (salonService.salon.ownerId !== userId && userRole !== 'ADMIN') {
             return res.status(403).json({ message: 'Not authorized to update this salon service' });
         }
-        const updatedSalonService = await prisma_1.default.salonService.update({
+        const updatedSalonService = await prisma.salonService.update({
             where: { id },
             data: { price, duration },
             include: { service: true }
@@ -54,12 +48,12 @@ exports.updateSalonService = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.removeSalonService = (0, asyncHandler_1.default)(async (req, res) => {
+export const removeSalonService = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const userId = req.user.id;
         const userRole = req.user.role;
-        const salonService = await prisma_1.default.salonService.findUnique({
+        const salonService = await prisma.salonService.findUnique({
             where: { id },
             include: { salon: true }
         });
@@ -69,7 +63,7 @@ exports.removeSalonService = (0, asyncHandler_1.default)(async (req, res) => {
         if (salonService.salon.ownerId !== userId && userRole !== 'ADMIN') {
             return res.status(403).json({ message: 'Not authorized to remove this salon service' });
         }
-        await prisma_1.default.salonService.delete({
+        await prisma.salonService.delete({
             where: { id }
         });
         res.json({ message: 'Salon service removed successfully' });
@@ -78,14 +72,14 @@ exports.removeSalonService = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.getOwnerServices = (0, asyncHandler_1.default)(async (req, res) => {
+export const getOwnerServices = asyncHandler(async (req, res) => {
     if (!req.user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
     if (req.user.role !== "SALON_OWNER" && req.user.role !== "ADMIN") {
         return res.status(403).json({ message: "Forbidden: only salon owners or admins can view this" });
     }
-    const salons = await prisma_1.default.salon.findMany({
+    const salons = await prisma.salon.findMany({
         where: { ownerId: req.user.id },
         include: {
             salonServices: {
@@ -109,13 +103,13 @@ exports.getOwnerServices = (0, asyncHandler_1.default)(async (req, res) => {
     })));
     res.json(services);
 });
-const getSalonServices = async (req, res) => {
+export const getSalonServices = async (req, res) => {
     try {
         const { salonId } = req.params;
         if (!salonId) {
             return res.status(400).json({ message: "Salon ID is required" });
         }
-        const salon = await prisma_1.default.salon.findUnique({
+        const salon = await prisma.salon.findUnique({
             where: { id: salonId },
             include: { salonServices: { include: { service: true } } }, // assuming relation: Salon -> Services
         });
@@ -129,4 +123,3 @@ const getSalonServices = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
-exports.getSalonServices = getSalonServices;

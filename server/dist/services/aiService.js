@@ -1,17 +1,11 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateConfirmationMessage = exports.handleAiChat = void 0;
-const axios_1 = __importDefault(require("axios"));
-const handleAiChat = async (userInput) => {
+import axios from 'axios';
+export const handleAiChat = async (userInput) => {
     const prompt = `
 You're a salon AI assistant. Help the user choose a service time, salon, and confirm if they want home or salon service. Be friendly and helpful.
 
 User: "${userInput}"
 `;
-    const response = await axios_1.default.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
+    const response = await axios.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
         contents: [
             {
                 parts: [{ text: prompt }]
@@ -27,8 +21,7 @@ User: "${userInput}"
     });
     return response.data.candidates[0].content.parts[0].text;
 };
-exports.handleAiChat = handleAiChat;
-const generateConfirmationMessage = async (booking) => {
+export const generateConfirmationMessage = async (booking) => {
     const date = new Date(booking.startTime).toLocaleDateString();
     const time = new Date(booking.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const service = booking.service.name;
@@ -45,7 +38,7 @@ Time: ${time}
 
 Write a friendly confirmation message as Fahari AI.
 `;
-    const response = await axios_1.default.post('https://api.openai.com/v1/chat/completions', {
+    const response = await axios.post('https://api.openai.com/v1/chat/completions', {
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: prompt }],
     }, {
@@ -56,4 +49,3 @@ Write a friendly confirmation message as Fahari AI.
     });
     return response.data.choices[0].message.content;
 };
-exports.generateConfirmationMessage = generateConfirmationMessage;

@@ -1,16 +1,10 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePaymentStatus = exports.createPayment = void 0;
-const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
-const prisma_1 = __importDefault(require("../config/prisma"));
-exports.createPayment = (0, asyncHandler_1.default)(async (req, res) => {
+import asyncHandler from "../middlewares/asyncHandler";
+import prisma from "../config/prisma";
+export const createPayment = asyncHandler(async (req, res) => {
     try {
         const { bookingId, amount, method, transactionId, mpesaReceiptNumber } = req.body;
         const userId = req.user.userId;
-        const booking = await prisma_1.default.booking.findUnique({
+        const booking = await prisma.booking.findUnique({
             where: { id: bookingId },
             include: { salon: true }
         });
@@ -21,7 +15,7 @@ exports.createPayment = (0, asyncHandler_1.default)(async (req, res) => {
         if (booking.clientId !== userId) {
             return res.status(403).json({ message: 'Not authorized to make payment for this booking' });
         }
-        const payment = await prisma_1.default.payment.create({
+        const payment = await prisma.payment.create({
             data: {
                 bookingId,
                 amount,
@@ -37,7 +31,7 @@ exports.createPayment = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.updatePaymentStatus = (0, asyncHandler_1.default)(async (req, res) => {
+export const updatePaymentStatus = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const { status, failureReason } = req.body;
@@ -46,7 +40,7 @@ exports.updatePaymentStatus = (0, asyncHandler_1.default)(async (req, res) => {
         if (userRole !== 'ADMIN') {
             return res.status(403).json({ message: 'Not authorized to update payment status' });
         }
-        const payment = await prisma_1.default.payment.update({
+        const payment = await prisma.payment.update({
             where: { id },
             data: {
                 status,
@@ -56,12 +50,12 @@ exports.updatePaymentStatus = (0, asyncHandler_1.default)(async (req, res) => {
         });
         // If payment is completed, update booking status
         if (status === 'COMPLETED') {
-            await prisma_1.default.booking.update({
+            await prisma.booking.update({
                 where: { id: payment.bookingId },
                 data: { status: 'CONFIRMED' }
             });
-            await prisma_1.default.appointment.update({
-                where: { id: (await prisma_1.default.booking.findUnique({
+            await prisma.appointment.update({
+                where: { id: (await prisma.booking.findUnique({
                         where: { id: payment.bookingId }
                     }))?.appointmentId },
                 data: { status: 'CONFIRMED' }

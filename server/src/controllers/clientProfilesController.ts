@@ -1,4 +1,4 @@
-import asyncHandler from "@app/middlewares/asyncHandler";
+import asyncHandler from "../middlewares/asyncHandler";
 import { UserRequest } from "../utils/types/userTypes";
 import prisma from "../config/prisma";
 

@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const protect_1 = require("../middlewares/protect");
-const statisticsController_1 = require("../controllers/statisticsController");
-const router = (0, express_1.Router)();
-router.get("/salon/:id", protect_1.protect, statisticsController_1.getSalonStatistics);
-router.get("/platform", protect_1.protect, statisticsController_1.getPlatformStatistics);
-exports.default = router;
+import { Router } from "express";
+import { protect } from "../middlewares/protect";
+import { getSalonStatistics, getPlatformStatistics } from "../controllers/statisticsController";
+const router = Router();
+router.get("/salon/:id", protect, getSalonStatistics);
+router.get("/platform", protect, getPlatformStatistics);
+export default router;

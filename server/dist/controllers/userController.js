@@ -1,20 +1,14 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.uploadUserAvatar = exports.getUserById = exports.getAllUsers = exports.suspendUser = exports.approveUser = exports.logoutUser = exports.getMe = exports.loginUser = exports.createUser = void 0;
-const dotenv_1 = __importDefault(require("dotenv"));
-const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const index_1 = require("../index");
-const notificationService_1 = require("../services/notificationService");
-const multer_1 = __importDefault(require("multer"));
-const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
-const prisma_1 = __importDefault(require("../config/prisma"));
-dotenv_1.default.config();
+import dotenv from "dotenv";
+import asyncHandler from "../middlewares/asyncHandler";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { pool } from "../index";
+import { createAndSendNotification } from "../services/notificationService";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+import prisma from "../config/prisma";
+dotenv.config();
 //Debugging  - check if env var are loaded correctly  
 const jwtSecret = process.env.ACCESS_TOKEN_SECRET;
 const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
@@ -23,8 +17,8 @@ const generateToken = (res, id, role) => {
         throw new Error("ACCESS_TOKEN_SECRET or REFRESH_TOKEN_SECRET is not defined in environment variables");
     }
     try {
-        const accessToken = jsonwebtoken_1.default.sign({ id, role }, jwtSecret, { expiresIn: "1d" });
-        const refreshToken = jsonwebtoken_1.default.sign({ id }, refreshSecret, { expiresIn: "30d" });
+        const accessToken = jwt.sign({ id, role }, jwtSecret, { expiresIn: "1d" });
+        const refreshToken = jwt.sign({ id }, refreshSecret, { expiresIn: "30d" });
         res.cookie("access_token", accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV !== "production",
@@ -45,16 +39,16 @@ const generateToken = (res, id, role) => {
     }
 };
 /** Create a new user */
-exports.createUser = (0, asyncHandler_1.default)(async (req, res) => {
+export const createUser = asyncHandler(async (req, res) => {
     const { email, phone, password, firstName, lastName, role } = req.body;
-    const salt = await bcryptjs_1.default.genSalt(10);
-    const hashedPassword = await bcryptjs_1.default.hash(password, salt);
-    const { rows } = await index_1.pool.query(`INSERT INTO users (email, phone, password, "firstName", "lastName", role)
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const { rows } = await pool.query(`INSERT INTO users (email, phone, password, "firstName", "lastName", role)
      VALUES ($1, $2, $3, $4, $5, $6)
      RETURNING id, email, "firstName", "lastName", role, "isActive"`, [email, phone, hashedPassword, firstName, lastName, role.toUpperCase()]);
     const user = rows[0];
     // Notify all admins
-    await (0, notificationService_1.createAndSendNotification)({
+    await createAndSendNotification({
         role: "ADMIN",
         title: "New user registration",
         message: `New user ${user.email} registered and is awaiting approval.`,
@@ -62,7 +56,7 @@ exports.createUser = (0, asyncHandler_1.default)(async (req, res) => {
         data: { id: user.id, email: user.email },
     });
     // Notify the user
-    await (0, notificationService_1.createAndSendNotification)({
+    await createAndSendNotification({
         userId: user.id,
         title: "Account pending approval",
         message: "Thanks for signing up! An admin will review your account shortly.",
@@ -74,9 +68,9 @@ exports.createUser = (0, asyncHandler_1.default)(async (req, res) => {
     });
 });
 /** Login user and return JWT */
-exports.loginUser = (0, asyncHandler_1.default)(async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    const { rows } = await index_1.pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
+    const { rows } = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
     if (!rows.length)
         return res.status(401).json({ message: "Invalid email or password" });
     const user = rows[0];
@@ -85,7 +79,7 @@ exports.loginUser = (0, asyncHandler_1.default)(async (req, res) => {
             message: "Your account is pending admin approval. Please wait before logging in.",
         });
     }
-    const isMatch = await bcryptjs_1.default.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
         return res.status(401).json({ message: "Invalid email or password" });
     const tokens = await generateToken(res, user.id, user.role);
@@ -95,13 +89,13 @@ exports.loginUser = (0, asyncHandler_1.default)(async (req, res) => {
         user: { id: user.id, email: user.email, role: user.role },
     });
 });
-exports.getMe = (0, asyncHandler_1.default)(async (req, res) => {
+export const getMe = asyncHandler(async (req, res) => {
     // console.log("🔥 getMe endpoint hit");
     if (!req.user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
     // Fetch the user from DB to get the latest info
-    const { rows } = await index_1.pool.query(`SELECT id, email, phone, "firstName", "lastName", avatar, role, "isActive", "isVerified", "createdAt", "updatedAt"
+    const { rows } = await pool.query(`SELECT id, email, phone, "firstName", "lastName", avatar, role, "isActive", "isVerified", "createdAt", "updatedAt"
      FROM users
      WHERE id = $1`, [req.user.id]);
     if (!rows.length) {
@@ -109,7 +103,7 @@ exports.getMe = (0, asyncHandler_1.default)(async (req, res) => {
     }
     res.json(rows[0]);
 });
-exports.logoutUser = (0, asyncHandler_1.default)(async (req, res, next) => {
+export const logoutUser = asyncHandler(async (req, res, next) => {
     //We need to immedietly invalidate the access token and the refreh token 
     res.cookie("access_token", "", {
         httpOnly: true,
@@ -125,16 +119,16 @@ exports.logoutUser = (0, asyncHandler_1.default)(async (req, res, next) => {
     });
     res.status(200).json({ message: "User logged out successfully" });
 });
-exports.approveUser = (0, asyncHandler_1.default)(async (req, res) => {
+export const approveUser = asyncHandler(async (req, res) => {
     if (!req.user || req.user.role !== "ADMIN") {
         return res.status(403).json({ message: "Only admins can approve users" });
     }
     const { id } = req.params;
-    const { rows } = await index_1.pool.query(`UPDATE users SET "isActive" = true WHERE id = $1 RETURNING *`, [id]);
+    const { rows } = await pool.query(`UPDATE users SET "isActive" = true WHERE id = $1 RETURNING *`, [id]);
     if (!rows.length)
         return res.status(404).json({ message: "User not found" });
     const user = rows[0];
-    await (0, notificationService_1.createAndSendNotification)({
+    await createAndSendNotification({
         userId: user.id,
         title: "Account approved 🎉",
         message: "Your account has been approved! You can now log in.",
@@ -145,16 +139,16 @@ exports.approveUser = (0, asyncHandler_1.default)(async (req, res) => {
 /**
  * Suspend a user (Admins only)
  */
-exports.suspendUser = (0, asyncHandler_1.default)(async (req, res) => {
+export const suspendUser = asyncHandler(async (req, res) => {
     if (!req.user || req.user.role !== "ADMIN") {
         return res.status(403).json({ message: "Only admins can suspend users" });
     }
     const { id } = req.params;
-    const { rows } = await index_1.pool.query(`UPDATE users SET "isActive" = false WHERE id = $1 RETURNING *`, [id]);
+    const { rows } = await pool.query(`UPDATE users SET "isActive" = false WHERE id = $1 RETURNING *`, [id]);
     if (!rows.length)
         return res.status(404).json({ message: "User not found" });
     const user = rows[0];
-    await (0, notificationService_1.createAndSendNotification)({
+    await createAndSendNotification({
         userId: user.id,
         title: "Account suspended ⛔",
         message: "Your account has been suspended. Please contact support.",
@@ -163,9 +157,9 @@ exports.suspendUser = (0, asyncHandler_1.default)(async (req, res) => {
     res.json({ message: "User suspended successfully", user });
 });
 /** Get all users */
-exports.getAllUsers = (0, asyncHandler_1.default)(async (req, res) => {
+export const getAllUsers = asyncHandler(async (req, res) => {
     try {
-        const { rows } = await index_1.pool.query(`SELECT * FROM users`);
+        const { rows } = await pool.query(`SELECT * FROM users`);
         res.json(rows);
     }
     catch (error) {
@@ -173,9 +167,9 @@ exports.getAllUsers = (0, asyncHandler_1.default)(async (req, res) => {
     }
 });
 /** Get user by ID */
-exports.getUserById = (0, asyncHandler_1.default)(async (req, res) => {
+export const getUserById = asyncHandler(async (req, res) => {
     try {
-        const { rows } = await index_1.pool.query(`SELECT * FROM users WHERE id = $1`, [req.params.id]);
+        const { rows } = await pool.query(`SELECT * FROM users WHERE id = $1`, [req.params.id]);
         if (!rows.length)
             return res.status(404).json({ message: "User not found" });
         res.json(rows[0]);
@@ -185,17 +179,17 @@ exports.getUserById = (0, asyncHandler_1.default)(async (req, res) => {
     }
 });
 const uploadDirUser = "uploads/users";
-if (!fs_1.default.existsSync(uploadDirUser)) {
-    fs_1.default.mkdirSync(uploadDirUser, { recursive: true });
+if (!fs.existsSync(uploadDirUser)) {
+    fs.mkdirSync(uploadDirUser, { recursive: true });
 }
-const userStorage = multer_1.default.diskStorage({
+const userStorage = multer.diskStorage({
     destination: (_req, _file, cb) => {
         cb(null, uploadDirUser);
     },
     filename: (_req, file, cb) => {
         // Create unique filename: timestamp-random-originalname
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const extension = path_1.default.extname(file.originalname);
+        const extension = path.extname(file.originalname);
         const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
         cb(null, filename);
     }
@@ -208,7 +202,7 @@ const fileFilter = (_req, file, cb) => {
         cb(new Error('Only image files are allowed'));
     }
 };
-exports.uploadUserAvatar = (0, multer_1.default)({
+export const uploadUserAvatar = multer({
     storage: userStorage,
     limits: {
         fileSize: 10 * 1024 * 1024, // 10MB limit per file
@@ -217,7 +211,7 @@ exports.uploadUserAvatar = (0, multer_1.default)({
     fileFilter
 });
 // Controller to update user
-exports.updateUser = (0, asyncHandler_1.default)(async (req, res) => {
+export const updateUser = asyncHandler(async (req, res) => {
     const user = req.user;
     if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
@@ -237,10 +231,10 @@ exports.updateUser = (0, asyncHandler_1.default)(async (req, res) => {
         if (user.avatar) {
             // Extract just the filename from the stored path if it's a full path
             const oldAvatarFilename = user.avatar.startsWith('/uploads/users/')
-                ? path_1.default.basename(user.avatar)
+                ? path.basename(user.avatar)
                 : user.avatar;
             console.log("found olf file", oldAvatarFilename);
-            const oldAvatarPath = path_1.default.join(__dirname, "..\\..\\uploads\\users", oldAvatarFilename);
+            const oldAvatarPath = path.join(__dirname, "..\\..\\uploads\\users", oldAvatarFilename);
             deleteFileIfExists(oldAvatarPath);
             console.log("🔥 Attempted to delete old avatar:", oldAvatarPath);
         }
@@ -262,7 +256,7 @@ exports.updateUser = (0, asyncHandler_1.default)(async (req, res) => {
             user.avatar = avatar.filename;
         }
         console.log("avatar string:", user.avatar);
-        const updatedUser = await prisma_1.default.user.update({
+        const updatedUser = await prisma.user.update({
             where: { id: userId },
             data: user,
         });
@@ -289,8 +283,8 @@ exports.updateUser = (0, asyncHandler_1.default)(async (req, res) => {
 });
 const deleteFileIfExists = (filePath) => {
     try {
-        if (fs_1.default.existsSync(filePath)) {
-            fs_1.default.unlinkSync(filePath);
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
             console.log(`🔥 Successfully deleted file: ${filePath}`);
             return true;
         }
@@ -305,9 +299,9 @@ const deleteFileIfExists = (filePath) => {
     }
 };
 /** Delete user */
-exports.deleteUser = (0, asyncHandler_1.default)(async (req, res) => {
+export const deleteUser = asyncHandler(async (req, res) => {
     try {
-        const { rowCount } = await index_1.pool.query(`DELETE FROM users WHERE id = $1`, [req.params.id]);
+        const { rowCount } = await pool.query(`DELETE FROM users WHERE id = $1`, [req.params.id]);
         if (!rowCount)
             return res.status(404).json({ message: "User not found" });
         res.json({ message: "User deleted successfully" });

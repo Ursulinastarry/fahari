@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const protect_1 = require("../middlewares/protect");
-const appointmentController_1 = require("../controllers/appointmentController");
-const router = (0, express_1.Router)();
-router.post("/", protect_1.protect, appointmentController_1.createAppointment);
-router.get("/", protect_1.protect, appointmentController_1.getAppointments);
-router.put("/:id", protect_1.protect, appointmentController_1.updateAppointment);
-exports.default = router;
+import { Router } from "express";
+import { protect } from "../middlewares/protect";
+import { createAppointment, getAppointments, updateAppointment, } from "../controllers/appointmentController";
+const router = Router();
+router.post("/", protect, createAppointment);
+router.get("/", protect, getAppointments);
+router.put("/:id", protect, updateAppointment);
+export default router;

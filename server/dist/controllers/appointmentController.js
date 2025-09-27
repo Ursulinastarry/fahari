@@ -1,18 +1,12 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateAppointment = exports.getAppointments = exports.createAppointment = void 0;
-const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
-const prisma_1 = __importDefault(require("../config/prisma"));
-exports.createAppointment = (0, asyncHandler_1.default)(async (req, res) => {
+import asyncHandler from "../middlewares/asyncHandler";
+import prisma from "../config/prisma";
+export const createAppointment = asyncHandler(async (req, res) => {
     try {
         const { salonId, salonServiceId, slotId, notes } = req.body;
         const userId = req.user.id;
         const userRole = req.user.role;
         // Check if slot exists and is available
-        const slot = await prisma_1.default.slot.findUnique({
+        const slot = await prisma.slot.findUnique({
             where: { id: slotId },
             include: { salon: true, service: true }
         });
@@ -23,7 +17,7 @@ exports.createAppointment = (0, asyncHandler_1.default)(async (req, res) => {
         if (slot.salon.ownerId !== userId && userRole !== 'ADMIN') {
             return res.status(403).json({ message: 'Not authorized to create appointments for this salon' });
         }
-        const appointment = await prisma_1.default.appointment.create({
+        const appointment = await prisma.appointment.create({
             data: {
                 date: slot.date,
                 startTime: slot.startTime,
@@ -40,7 +34,7 @@ exports.createAppointment = (0, asyncHandler_1.default)(async (req, res) => {
             }
         });
         // Mark slot as unavailable
-        await prisma_1.default.slot.update({
+        await prisma.slot.update({
             where: { id: slotId },
             data: { isAvailable: false }
         });
@@ -50,7 +44,7 @@ exports.createAppointment = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.getAppointments = (0, asyncHandler_1.default)(async (req, res) => {
+export const getAppointments = asyncHandler(async (req, res) => {
     try {
         const { salonId, status, date } = req.query;
         const userId = req.user.userId;
@@ -62,7 +56,7 @@ exports.getAppointments = (0, asyncHandler_1.default)(async (req, res) => {
             where.date = new Date(date);
         // Filter by salon ownership for salon owners
         if (userRole === 'SALON_OWNER') {
-            const ownedSalons = await prisma_1.default.salon.findMany({
+            const ownedSalons = await prisma.salon.findMany({
                 where: { ownerId: userId },
                 select: { id: true }
             });
@@ -71,7 +65,7 @@ exports.getAppointments = (0, asyncHandler_1.default)(async (req, res) => {
         else if (salonId && userRole === 'ADMIN') {
             where.salonId = salonId;
         }
-        const appointments = await prisma_1.default.appointment.findMany({
+        const appointments = await prisma.appointment.findMany({
             where,
             include: {
                 salon: { select: { name: true } },
@@ -90,13 +84,13 @@ exports.getAppointments = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.updateAppointment = (0, asyncHandler_1.default)(async (req, res) => {
+export const updateAppointment = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const { status, notes } = req.body;
         const userId = req.user.userId;
         const userRole = req.user.role;
-        const appointment = await prisma_1.default.appointment.findUnique({
+        const appointment = await prisma.appointment.findUnique({
             where: { id },
             include: { salon: true }
         });
@@ -106,7 +100,7 @@ exports.updateAppointment = (0, asyncHandler_1.default)(async (req, res) => {
         if (appointment.salon.ownerId !== userId && userRole !== 'ADMIN') {
             return res.status(403).json({ message: 'Not authorized to update this appointment' });
         }
-        const updatedAppointment = await prisma_1.default.appointment.update({
+        const updatedAppointment = await prisma.appointment.update({
             where: { id },
             data: { status, notes }
         });

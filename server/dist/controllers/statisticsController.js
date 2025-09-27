@@ -1,18 +1,12 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPlatformStatistics = exports.getSalonStatistics = void 0;
-const asyncHandler_1 = __importDefault(require("../middlewares/asyncHandler"));
-const prisma_1 = __importDefault(require("../config/prisma"));
-exports.getSalonStatistics = (0, asyncHandler_1.default)(async (req, res) => {
+import asyncHandler from "../middlewares/asyncHandler";
+import prisma from "../config/prisma";
+export const getSalonStatistics = asyncHandler(async (req, res) => {
     try {
         const { salonId } = req.params;
         const { startDate, endDate } = req.query;
         const userId = req.user.userId;
         const userRole = req.user.role;
-        const salon = await prisma_1.default.salon.findUnique({
+        const salon = await prisma.salon.findUnique({
             where: { id: salonId }
         });
         if (!salon) {
@@ -28,7 +22,7 @@ exports.getSalonStatistics = (0, asyncHandler_1.default)(async (req, res) => {
                 lte: new Date(endDate)
             };
         }
-        const statistics = await prisma_1.default.salonStatistic.findMany({
+        const statistics = await prisma.salonStatistic.findMany({
             where,
             orderBy: { date: 'desc' }
         });
@@ -38,7 +32,7 @@ exports.getSalonStatistics = (0, asyncHandler_1.default)(async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-exports.getPlatformStatistics = (0, asyncHandler_1.default)(async (req, res) => {
+export const getPlatformStatistics = asyncHandler(async (req, res) => {
     try {
         const userRole = req.user.role;
         if (userRole !== 'ADMIN') {
@@ -52,7 +46,7 @@ exports.getPlatformStatistics = (0, asyncHandler_1.default)(async (req, res) => 
                 lte: new Date(endDate)
             };
         }
-        const statistics = await prisma_1.default.platformStatistic.findMany({
+        const statistics = await prisma.platformStatistic.findMany({
             where,
             orderBy: { date: 'desc' }
         });

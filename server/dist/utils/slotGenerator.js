@@ -1,14 +1,8 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateSlotsForDay = generateSlotsForDay;
-const prisma_1 = __importDefault(require("../config/prisma"));
-const luxon_1 = require("luxon");
-async function generateSlotsForDay(salonId, date, openHour, closeHour) {
+import prisma from "../config/prisma";
+import { DateTime } from "luxon";
+export async function generateSlotsForDay(salonId, date, openHour, closeHour) {
     const slots = [];
-    const day = luxon_1.DateTime.fromJSDate(date).setZone("Africa/Nairobi").startOf("day");
+    const day = DateTime.fromJSDate(date).setZone("Africa/Nairobi").startOf("day");
     for (let hour = openHour; hour < closeHour; hour++) {
         const start = day.plus({ hours: hour }).toJSDate();
         const end = day.plus({ hours: hour + 1 }).toJSDate();
@@ -20,7 +14,7 @@ async function generateSlotsForDay(salonId, date, openHour, closeHour) {
             isAvailable: true,
         });
     }
-    await prisma_1.default.slot.createMany({
+    await prisma.slot.createMany({
         data: slots,
         skipDuplicates: true,
     });

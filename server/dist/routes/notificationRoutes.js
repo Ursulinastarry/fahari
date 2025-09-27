@@ -1,14 +1,9 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const notificationsController_1 = require("../controllers/notificationsController");
-const protect_1 = require("../middlewares/protect");
-const router = express_1.default.Router();
-router.get("/", protect_1.protect, notificationsController_1.getMyNotifications);
-router.patch("/:id/read", protect_1.protect, notificationsController_1.markAsRead);
-router.delete("/:id", protect_1.protect, notificationsController_1.deleteNotification);
-router.delete("/", protect_1.protect, notificationsController_1.clearMyNotifications);
-exports.default = router;
+import express from "express";
+import { getMyNotifications, markAsRead, deleteNotification, clearMyNotifications } from "../controllers/notificationsController";
+import { protect } from "../middlewares/protect";
+const router = express.Router();
+router.get("/", protect, getMyNotifications);
+router.patch("/:id/read", protect, markAsRead);
+router.delete("/:id", protect, deleteNotification);
+router.delete("/", protect, clearMyNotifications);
+export default router;
