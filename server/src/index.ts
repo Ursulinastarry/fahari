@@ -32,16 +32,6 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 4000;
-const server = http.createServer(app);
-initSocket(server);
-import { startReminderCron } from "./cron/reminder";
-
-
-// Start reminder cron
-startReminderCron();
-
-
 const allowedOrigins = [
   "http://localhost:5173",
   "https://fahari.vercel.app",
@@ -61,6 +51,16 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   credentials: true
 }));
+
+const PORT = process.env.PORT || 4000;
+const server = http.createServer(app);
+initSocket(server);
+import { startReminderCron } from "./cron/reminder";
+
+
+// Start reminder cron
+startReminderCron();
+
 
 
 // app.use(
