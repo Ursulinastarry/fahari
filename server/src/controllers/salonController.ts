@@ -40,7 +40,7 @@ export const createSalon = async (req: UserRequest, res: Response) => {
     const userRole = (req as any).user.role;
 
     if (userRole !== "SALON_OWNER" && userRole !== "ADMIN") {
-      return res.status(403).json({ message: "Only salon owners can create salons" });
+      return res.status(403).json({ message: "Only salon owners can create salons." });
     }
 
     // With FormData, text fields come through req.body
