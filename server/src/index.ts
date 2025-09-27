@@ -24,7 +24,7 @@ import fileUpload from 'express-fileupload';
 import "./cron/slotScheduler";
 import path from 'path';
 import { fileURLToPath } from 'url';
-
+console.log("server running")
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -37,7 +37,7 @@ const allowedOrigins = [
   "https://fahari.vercel.app",
   "https://faharibeauty.com"
 ];
-
+console.log("hitting cors")
 app.use(cors({
   origin: function(origin, callback) {
     console.log('CORS Origin:', origin); // Debug log
@@ -107,7 +107,7 @@ connectClient();
 //   });
 //   next();
 // });
-
+console.log("hitting routes")
 // Routes
 app.use('/api/salons', salonRoutes);
 app.use('/api/users', userRoutes);
