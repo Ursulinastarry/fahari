@@ -11,7 +11,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/users/login",
+        "https://fahari-production.up.railway.app/api/users/login",
         { email, password },
         { withCredentials: true }
       );
