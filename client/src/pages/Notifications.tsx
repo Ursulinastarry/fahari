@@ -19,7 +19,7 @@ const Notifications: React.FC = () => {
     // Initial fetch
     const fetchNotifications = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/notifications", { 
+        const res = await axios.get("https://fahari-production.up.railway.app/api/notifications", { 
           withCredentials: true 
         });
         setNotifications(res.data);
@@ -58,7 +58,7 @@ const Notifications: React.FC = () => {
     try {
       console.log("Making API call to mark as read...");
       const response = await axios.patch(
-        `http://localhost:4000/api/notifications/${notification.id}/read`,
+        `https://fahari-production.up.railway.app/api/notifications/${notification.id}/read`,
         {},
         { withCredentials: true }
       );

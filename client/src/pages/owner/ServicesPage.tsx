@@ -35,10 +35,10 @@ const ServicesPage: React.FC = () => {
       }
       try {
         const [salonRes, baseRes] = await Promise.all([
-          axios.get(`http://localhost:4000/api/salon-services/${salonId}`, {
+          axios.get(`https://fahari-production.up.railway.app/api/salon-services/${salonId}`, {
             withCredentials: true,
           }),
-          axios.get("http://localhost:4000/api/services", {
+          axios.get("https://fahari-production.up.railway.app/api/services", {
             withCredentials: true,
           }),
         ]);
@@ -53,7 +53,7 @@ const ServicesPage: React.FC = () => {
 
   const deleteService = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:4000/api/salon-services/${id}`, {
+      await axios.delete(`https://fahari-production.up.railway.app/api/salon-services/${id}`, {
         withCredentials: true,
       });
       setSalonServices((prev) => prev.filter((s) => s.id !== id));
@@ -99,7 +99,7 @@ const ServicesPage: React.FC = () => {
       } else {
         // Update existing salon service
         const res = await axios.put(
-          `http://localhost:4000/api/salon-services/${editingService.id}`,
+          `https://fahari-production.up.railway.app/api/salon-services/${editingService.id}`,
           {
             price: editingService.price,
             duration: editingService.duration,

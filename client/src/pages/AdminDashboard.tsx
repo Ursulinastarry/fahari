@@ -17,7 +17,7 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/users", { withCredentials: true });
+        const res = await axios.get("https://fahari-production.up.railway.app/api/users", { withCredentials: true });
         setUsers(res.data);
       } catch (err) {
         console.error("Error fetching users:", err);
@@ -28,7 +28,7 @@ const AdminDashboard: React.FC = () => {
 
  const approveUser = async (id: string) => {
   await axios.put(
-    `http://localhost:4000/api/users/${id}/approve`,
+    `https://fahari-production.up.railway.app/api/users/${id}/approve`,
     {}, // no body, so pass empty object
     { withCredentials: true }
   );
@@ -37,7 +37,7 @@ const AdminDashboard: React.FC = () => {
 
 const suspendUser = async (id: string) => {
   await axios.put(
-    `http://localhost:4000/api/users/${id}/suspend`,
+    `https://fahari-production.up.railway.app/api/users/${id}/suspend`,
     {},
     { withCredentials: true }
   );
@@ -46,7 +46,7 @@ const suspendUser = async (id: string) => {
 
 const deleteUser = async (id: string) => {
   await axios.delete(
-    `http://localhost:4000/api/users/${id}`,
+    `https://fahari-production.up.railway.app/api/users/${id}`,
     { withCredentials: true }
   );
   setUsers(users.filter(u => u.id !== id));

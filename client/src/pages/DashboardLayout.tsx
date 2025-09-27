@@ -27,11 +27,11 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/users/me", { withCredentials: true });
+        const res = await axios.get("https://fahari-production.up.railway.app/api/users/me", { withCredentials: true });
         setUser(res.data);
 
         if (res.data.role === "SALON_OWNER") {
-          const salonRes = await axios.get("http://localhost:4000/api/salons/owner/me", { withCredentials: true });
+          const salonRes = await axios.get("https://fahari-production.up.railway.app/api/salons/owner/me", { withCredentials: true });
           setSalon(salonRes.data);
         }
       } catch (err) {
@@ -51,7 +51,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
 
     const fetchNotifications = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/notifications", { withCredentials: true });
+        const res = await axios.get("https://fahari-production.up.railway.app/api/notifications", { withCredentials: true });
         setNotifications(res.data);
       } catch (err) {
         console.error("Error fetching notifications:", err);
@@ -61,7 +61,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
     fetchNotifications();
 
     // Real-time socket listener
-    socket = io("http://localhost:4000", {
+    socket = io("https://fahari-production.up.railway.app", {
       transports: ["websocket"],   // force WebSocket, skip polling
       withCredentials: true,
     });
@@ -78,7 +78,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
   // Handle logout
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:4000/api/users/logout", {}, { withCredentials: true });
+      await axios.post("https://fahari-production.up.railway.app/api/users/logout", {}, { withCredentials: true });
       navigate("/login");
     } catch (err) {
       console.error("Logout failed:", err);
@@ -99,7 +99,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/ai/chat",
+        "https://fahari-production.up.railway.app/api/ai/chat",
         { message: chatInput },
         { withCredentials: true }
       );

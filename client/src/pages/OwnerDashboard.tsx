@@ -22,7 +22,7 @@ const OwnerDashboard: React.FC = () => {
     const checkSalon = async () => {
       try {
         // Replace this endpoint with your actual salon check API
-        const response = await fetch('http://localhost:4000/api/salons/owner/me', {
+        const response = await fetch('https://fahari-production.up.railway.app/api/salons/owner/me', {
           credentials: 'include' // Include cookies for authentication
         });
         

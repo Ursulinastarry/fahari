@@ -45,7 +45,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       }
 
       ;
-      const response = await fetch(`http://localhost:4000/api/users/${user!.id}`, {
+      const response = await fetch(`https://fahari-production.up.railway.app/api/users/${user!.id}`, {
         method: 'PUT',
         credentials: 'include',
         body: formData,

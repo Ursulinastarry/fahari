@@ -31,7 +31,7 @@ const AppointmentsPage: React.FC = () => {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/bookings/me", {
+      const res = await axios.get("https://fahari-production.up.railway.app/api/bookings/me", {
         withCredentials: true,
       });
       setBookings(res.data);
@@ -47,7 +47,7 @@ const AppointmentsPage: React.FC = () => {
   const cancelBooking = async (id: string, status: string) => {
     try {
       await axios.patch(
-        `http://localhost:4000/api/bookings/${id}/cancel`,
+        `https://fahari-production.up.railway.app/api/bookings/${id}/cancel`,
         { status },
         { withCredentials: true }
       );
@@ -67,7 +67,7 @@ const AppointmentsPage: React.FC = () => {
 
   try {
     const { data } = await axios.patch(
-      `http://localhost:4000/api/bookings/${rescheduleId}/reschedule`,
+      `https://fahari-production.up.railway.app/api/bookings/${rescheduleId}/reschedule`,
       { newDateTime },
       { withCredentials: true }
     );
@@ -329,7 +329,7 @@ const AppointmentsPage: React.FC = () => {
                 formData.append("comment", comment);
                 images.forEach((file) => formData.append("reviewImages", file)); // field name must match multer config
 
-                await axios.post("http://localhost:4000/api/reviews", formData, {
+                await axios.post("https://fahari-production.up.railway.app/api/reviews", formData, {
                 withCredentials: true,
                 });
 

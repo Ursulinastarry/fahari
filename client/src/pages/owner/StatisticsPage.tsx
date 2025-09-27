@@ -22,7 +22,7 @@ const StatisticsPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/api/bookings/owner", { withCredentials: true })
+      .get("https://fahari-production.up.railway.app/api/bookings/owner", { withCredentials: true })
       .then((res) => setBookings(res.data))
       .catch((err) => console.error("Error fetching bookings:", err));
   }, []);

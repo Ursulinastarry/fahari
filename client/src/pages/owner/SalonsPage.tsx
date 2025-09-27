@@ -19,7 +19,7 @@ type Salon = {
   gallery: (string | File)[];
 };
 
-const API_BASE = "http://localhost:4000"; // update for prod
+const API_BASE = "https://fahari-production.up.railway.app"; // update for prod
 
 const SalonOwnerSalons: React.FC = () => {
   const [salons, setSalons] = useState<Salon[]>([]);

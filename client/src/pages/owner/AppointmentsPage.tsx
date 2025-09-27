@@ -30,7 +30,7 @@ const AppointmentsPage: React.FC = () => {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/bookings/owner", {
+      const res = await axios.get("https://fahari-production.up.railway.app/api/bookings/owner", {
         withCredentials: true,
       });
       setBookings(res.data);
@@ -46,7 +46,7 @@ const AppointmentsPage: React.FC = () => {
   const cancelBooking = async (id: string, status: string) => {
     try {
       await axios.patch(
-        `http://localhost:4000/api/bookings/${id}/cancel`,
+        `https://fahari-production.up.railway.app/api/bookings/${id}/cancel`,
         { status },
         { withCredentials: true }
       );
@@ -65,7 +65,7 @@ const AppointmentsPage: React.FC = () => {
 
   try {
     const { data } = await axios.patch(
-      `http://localhost:4000/api/bookings/${rescheduleId}/reschedule`,
+      `https://fahari-production.up.railway.app/api/bookings/${rescheduleId}/reschedule`,
       { newDateTime },
       { withCredentials: true }
     );
@@ -89,7 +89,7 @@ const AppointmentsPage: React.FC = () => {
   const fetchBookingReview = async (bookingId: string) => {
     setLoadingReview(true);
     try {
-      const res = await axios.get(`http://localhost:4000/api/reviews/${bookingId}`, {
+      const res = await axios.get(`https://fahari-production.up.railway.app/api/reviews/${bookingId}`, {
         withCredentials: true,
       });
       setSelectedReview(res.data);
