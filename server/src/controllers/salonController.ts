@@ -362,7 +362,7 @@ export const deleteSalon = async (req: Request, res: Response) => {
       where: { id }
     });
     
-    res.json({ message: 'Salon deleted successfully' });
+    res.json({ message: 'Salon deleted successfully.' });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
