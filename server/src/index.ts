@@ -32,8 +32,25 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://fahari.vercel.app",
+  "https://faharibeauty.com"
+];
+
 app.use(cors({
-  origin: "https://faharibeauty.com", // Temporarily test with just this origin
+  origin: function(origin, callback) {
+    console.log('CORS Origin:', origin); // Debug log
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      console.log('Origin not allowed:', origin); // Debug log
+      const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
+      return callback(new Error(msg), false);
+    }
+    console.log('Origin allowed:', origin); // Debug log
+    return callback(null, true);
+  },
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   credentials: true
 }));
 
