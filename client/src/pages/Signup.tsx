@@ -26,7 +26,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   try {
     await axios.post(
-      "http://localhost:4000/api/users/register",
+      "https://fahari-production.up.railway.app/api/users/register",
       formData,
       { withCredentials: true }
     );

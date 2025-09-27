@@ -42,7 +42,7 @@ import { startReminderCron } from "./cron/reminder";
 startReminderCron();
 
 app.use(cors({
-  origin: ["http://localhost:5173","https://fahari.vercel.app"],
+  origin: ["http://localhost:5173","https://fahari.vercel.app","https://faharibeauty.com"],
   methods: "GET, POST, PUT, PATCH, DELETE",
   credentials: true // allows cookies and auth headers
 }));
