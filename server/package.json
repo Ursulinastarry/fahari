@@ -11,7 +11,7 @@
     "prisma": "prisma",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
-    "prisma:seed": "ts-node src/seed.ts"
+    "prisma:seed": "ts-node dist/seed.js"
   },
   "keywords": [],
   "author": "",
