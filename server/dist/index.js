@@ -23,21 +23,39 @@ import cookieParser from 'cookie-parser';
 import "./cron/slotScheduler.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
+console.log("server running");
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://fahari.vercel.app",
+    "https://faharibeauty.com"
+];
+console.log("hitting cors");
+app.use(cors({
+    origin: function (origin, callback) {
+        console.log('CORS Origin:', origin); // Debug log
+        if (!origin)
+            return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            console.log('Origin not allowed:', origin); // Debug log
+            const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
+            return callback(new Error(msg), false);
+        }
+        console.log('Origin allowed:', origin); // Debug log
+        return callback(null, true);
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true
+}));
 const PORT = process.env.PORT || 4000;
 const server = http.createServer(app);
 initSocket(server);
 import { startReminderCron } from "./cron/reminder.js";
 // Start reminder cron
 startReminderCron();
-app.use(cors({
-    origin: ["http://localhost:5173", "https://fahari.vercel.app"],
-    methods: "GET, POST, PUT, PATCH, DELETE",
-    credentials: true // allows cookies and auth headers
-}));
 // app.use(
 //   fileUpload({
 //     createParentPath: true,
@@ -76,6 +94,7 @@ connectClient();
 //   });
 //   next();
 // });
+console.log("hitting routes");
 // Routes
 app.use('/api/salons', salonRoutes);
 app.use('/api/users', userRoutes);
