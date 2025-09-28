@@ -8,6 +8,7 @@ import ProfileManager from "./ProfileManager";
 interface Props {
   title: string;
   children: ReactNode;
+  logo?: string | ReactNode;
 }
 
 const DashboardLayout: React.FC<Props> = ({ title, children }) => {

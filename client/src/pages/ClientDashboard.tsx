@@ -10,8 +10,11 @@ const ClientDashboard: React.FC = () => {
   const { user } = useUser();
 
   return (
-    <DashboardLayout title="Fahari Beauty">
-      {/* Navbar inside dashboard */}
+<DashboardLayout 
+  title="Fahari Beauty"
+  logo="/fahari.svg" // or logo={<YourLogoComponent />}
+>     
+ {/* Navbar inside dashboard */}
       <div className="flex gap-6 border-b mb-6">
         <button
           onClick={() => setActiveTab("home")}

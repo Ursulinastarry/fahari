@@ -10,11 +10,14 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log("hitting login");
+
       const res = await axios.post(
         "https://fahari-production.up.railway.app/api/users/login",
         { email, password },
         { withCredentials: true }
       );
+
       const { user } = res.data;
 
       if (user.role === "CLIENT") navigate("/");
