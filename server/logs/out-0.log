@@ -2713,3 +2713,9 @@
 2025-09-28T01:26:41: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
 2025-09-28T01:26:42: 🚀 Server running on http://localhost:4000
 2025-09-28T01:26:44: ✅ Connected to the database.
+2025-09-28T12:25:45: [dotenv@17.2.1] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+2025-09-28T12:25:46: 📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)
+2025-09-28T12:25:46: ⏰ Current time: 9/28/2025, 12:25:46 PM
+2025-09-28T12:25:46: [dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+2025-09-28T12:25:46: 🚀 Server running on http://localhost:4000
+2025-09-28T12:25:47: ✅ Connected to the database.
