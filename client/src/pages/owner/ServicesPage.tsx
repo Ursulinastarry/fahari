@@ -87,7 +87,7 @@ const ServicesPage: React.FC = () => {
       if (isNew) {
         // Create new salon service
         const res = await axios.post(
-          "http://localhost:4000/api/salon-services",
+          "https://fahari-production.up.railway.app/api/salon-services",
           {
             serviceId: editingService.service.id, // base service id
             price: editingService.price,
