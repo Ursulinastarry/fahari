@@ -152,7 +152,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
   onClick={() => setShowContactUs(true)}
   className="text-gray-600 hover:text-purple-600"
 >
-  📧 Contact us
+  Contact us
 </button>
           {/* Show Login or Logout button based on user status */}
           {!isLoading && (
