@@ -207,6 +207,9 @@ export const updateSalon = async (req, res) => {
         }
         // Extract text fields
         const { name, description, email, phone, address, city, location, businessHours, } = req.body;
+        const businessHoursData = typeof req.body.businessHours === 'string'
+            ? JSON.parse(req.body.businessHours)
+            : req.body.businessHours;
         // Handle uploaded files
         const files = req.files;
         console.log("files", files);
@@ -255,7 +258,7 @@ export const updateSalon = async (req, res) => {
                 address: address || salon.address,
                 city: city || salon.city,
                 location: location || salon.location,
-                businessHours: businessHours || salon.businessHours,
+                businessHours: businessHoursData,
                 profileImage,
                 coverImage,
                 gallery,

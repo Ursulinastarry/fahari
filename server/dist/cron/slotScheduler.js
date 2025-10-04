@@ -1,33 +1,6 @@
 import cron from "node-cron";
 import prisma from "../config/prisma.js";
 import { generateSlotsForDay } from "../utils/slotGenerator.js";
-/**
- * Cron job to delete expired slots (where end time is less than now)
- * Runs every minute (Africa/Nairobi).
- */
-// cron.schedule(
-//   "* * * * *", // every minute
-//   async () => {
-//     const now = DateTime.now().setZone("Africa/Nairobi");
-//     console.log("🗑️ Running expired slot cleanup...");
-//     console.log("⏰ Current Nairobi time:", now.toISO());
-//     try {
-//       const deleted = await prisma.slot.deleteMany({
-//         where: {
-//           endTime: {
-//             lt: now.toJSDate(), // Prisma expects JS Date
-//           },
-//         },
-//       });
-//       console.log(
-//         `🧹 Deleted ${deleted.count} expired slots at ${now.toFormat("yyyy-LL-dd HH:mm")}`
-//       );
-//     } catch (err) {
-//       console.error("❌ Failed to delete expired slots:", err);
-//     }
-//   },
-//   { timezone: "Africa/Nairobi" }
-// );
 // PRODUCTION CRON - Runs at 10am
 cron.schedule("0 10 * * *", // 10am daily
 async () => {

@@ -21,6 +21,7 @@ import http from "http";
 import { initSocket } from "./realtime/socket.js";
 import cookieParser from 'cookie-parser';
 import "./cron/slotScheduler.js";
+import "./cron/reminder.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 console.log("server running");
@@ -33,18 +34,18 @@ const allowedOrigins = [
     "https://fahari.vercel.app",
     "https://faharibeauty.com"
 ];
-console.log("hitting cors");
+// console.log("hitting cors")
 app.use(cors({
     origin: function (origin, callback) {
-        console.log('CORS Origin:', origin); // Debug log
+        // console.log('CORS Origin:', origin); // Debug log
         if (!origin)
             return callback(null, true);
         if (allowedOrigins.indexOf(origin) === -1) {
-            console.log('Origin not allowed:', origin); // Debug log
+            // console.log('Origin not allowed:', origin); // Debug log
             const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
             return callback(new Error(msg), false);
         }
-        console.log('Origin allowed:', origin); // Debug log
+        // console.log('Origin allowed:', origin); // Debug log
         return callback(null, true);
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
@@ -53,16 +54,6 @@ app.use(cors({
 const PORT = process.env.PORT || 4000;
 const server = http.createServer(app);
 initSocket(server);
-import { startReminderCron } from "./cron/reminder.js";
-// Start reminder cron
-startReminderCron();
-// app.use(
-//   fileUpload({
-//     createParentPath: true,
-//     limits: { fileSize: 10 * 1024 * 1024 }, // max 10MB
-//     abortOnLimit: true,
-//   })
-// );
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
@@ -83,17 +74,6 @@ export async function connectClient() {
     }
 }
 connectClient();
-// ✅ GLOBAL LOGGER MIDDLEWARE
-// app.use((req, res, next) => {
-//   const start = Date.now();
-//   res.on("finish", () => {
-//     const duration = Date.now() - start;
-//     console.log(
-//       `📌 ${req.method} ${req.originalUrl} [${res.statusCode}] - ${duration}ms`
-//     );
-//   });
-//   next();
-// });
 console.log("hitting routes");
 // Routes
 app.use('/api/salons', salonRoutes);
