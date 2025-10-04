@@ -32,7 +32,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Helper function to send email
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 async function sendNotificationEmail(
   to: string,
   title: string,
@@ -40,31 +43,20 @@ async function sendNotificationEmail(
   data?: Record<string, any>
 ) {
   try {
-    await transporter.sendMail({
-      from: process.env.ZOHO_EMAIL,
-      to,
+    await resend.emails.send({
+      from: "Fahari Beauty <onboarding@resend.dev>",
+      to: to,
       subject: title,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">${title}</h2>
           <p style="color: #666; line-height: 1.6;">${message}</p>
-          ${data ? `
-            <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-top: 20px;">
-              <h3 style="margin-top: 0; color: #333;">Additional Details:</h3>
-              <pre style="background-color: #fff; padding: 10px; border-radius: 3px; overflow-x: auto;">${JSON.stringify(data, null, 2)}</pre>
-            </div>
-          ` : ''}
-          <p style="color: #999; font-size: 12px; margin-top: 30px;">
-            This is an automated notification from Fahari Beauty.
-          </p>
         </div>
       `,
-      text: `${title}\n\n${message}${data ? '\n\nDetails:\n' + JSON.stringify(data, null, 2) : ''}`,
     });
     console.log(`Email sent to ${to}`);
   } catch (error) {
     console.error("Error sending email:", error);
-    // Don't throw - we don't want email failures to break notifications
   }
 }
 
