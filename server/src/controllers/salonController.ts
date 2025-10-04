@@ -321,7 +321,7 @@ export const updateSalon = async (req: Request, res: Response) => {
         address: address || salon.address,
         city: city || salon.city,
         location: location || salon.location,
-        businessHours: businessHours || salon.businessHours,
+        businessHours: parsedBusinessHours,
         profileImage,
         coverImage,
         gallery,
