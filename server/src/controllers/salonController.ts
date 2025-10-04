@@ -256,7 +256,14 @@ export const updateSalon = async (req: Request, res: Response) => {
       location,
       businessHours,
     } = req.body;
-
+    let parsedBusinessHours = {};
+    if (businessHours) {
+      try {
+        parsedBusinessHours = JSON.parse(businessHours);
+      } catch (e) {
+        return res.status(400).json({ message: "Invalid businessHours format" });
+      }
+    }
     // Handle uploaded files
     const files = req.files as unknown as { [fieldname: string]: Express.Multer.File[] };
     console.log("files",files);
