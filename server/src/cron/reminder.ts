@@ -6,7 +6,7 @@ import { getIO } from "../realtime/socket";
 
   // run every minute
   cron.schedule("* * * * *", async () => {
-    // console.log("🔔 Running reminder cron job");
+    console.log("🔔 Running reminder cron job");
     const now = new Date();
 const fiveHoursFromNow = new Date(now.getTime() + 5 * 60 * 60 * 1000);
 const fiveMinutesWindow = new Date(fiveHoursFromNow.getTime() + 5 * 60 * 1000);
