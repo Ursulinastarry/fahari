@@ -129,7 +129,6 @@ const AppointmentsPage: React.FC = () => {
           effectiveStatus = "REVIEWED";
         } else {
   effectiveStatus = "COMPLETED";
-  alert("Please review the service!");
 }
           }
 
