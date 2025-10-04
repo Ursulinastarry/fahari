@@ -66,22 +66,27 @@ const AppointmentsPage: React.FC = () => {
   }
 
   try {
+    const localDate = new Date(newDateTime);
+    const dateTimeToSend = localDate.toISOString();
+    
+    console.log("Original input:", newDateTime);
+    console.log("Sending to backend:", dateTimeToSend);
+
     const { data } = await axios.patch(
       `https://fahari-production.up.railway.app/api/bookings/${rescheduleId}/reschedule`,
-      { newDateTime },
+      { newDateTime: dateTimeToSend },
       { withCredentials: true }
     );
 
-    // Show success message before refresh
     alert(
       `${data.message}\n\n` +
       `Old Time: ${new Date(data.originalDateTime).toLocaleString()}\n` +
-      `New Time: ${newDateTime}`
+      `New Time: ${new Date(data.newDateTime).toLocaleString()}`
     );
 
     setRescheduleId(null);
     setNewDateTime("");
-    fetchBookings(); // refresh after message
+    fetchBookings();
   } catch (err: any) {
     console.error("Error rescheduling booking:", err);
     alert(err.response?.data?.message || "Failed to reschedule booking. Try again.");
