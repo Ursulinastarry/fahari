@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { DateTime } from "luxon";
+import { Star } from "lucide-react";
 
 interface Booking {
   id: string;
@@ -22,7 +23,9 @@ const AppointmentsPage: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [rescheduleId, setRescheduleId] = useState<string | null>(null);
   const [newDateTime, setNewDateTime] = useState<string>("");
-
+    const [loadingReview, setLoadingReview] = useState(false);
+  const [selectedReview, setSelectedReview] = useState<any>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
   // Review modal state
   const [reviewBookingId, setReviewBookingId] = useState<string | null>(null);
   const [rating, setRating] = useState<number>(0);
@@ -93,7 +96,20 @@ const AppointmentsPage: React.FC = () => {
   }
 };
 
-
+const fetchBookingReview = async (bookingId: string) => {
+    setLoadingReview(true);
+    try {
+      const res = await axios.get(`https://fahari-production.up.railway.app/api/reviews/${bookingId}`, {
+        withCredentials: true,
+      });
+      setSelectedReview(res.data);
+      setIsModalOpen(true);
+    } catch (err: any) {
+      console.error("Error fetching review:", err.response?.data?.message || err.message);
+    } finally {
+      setLoadingReview(false);
+    }
+  };
   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const files = Array.from(e.target.files || []);
   if (files.length > 0) {
@@ -230,10 +246,12 @@ const AppointmentsPage: React.FC = () => {
 
             {effectiveStatus === "REVIEWED" && (
           <button
-            disabled
-            className="px-3 py-1 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed"
+              onClick={() => fetchBookingReview(b.id)}
+            className="px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
           >
-            Reviewed
+           {loadingReview ? "Loading..." : "see review"}
+
+            
           </button>
             )}
           </div>
@@ -357,6 +375,48 @@ const AppointmentsPage: React.FC = () => {
             </div>
           </div>
         )}
+        {/* Review Modal */}
+      {isModalOpen && selectedReview && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96 relative">
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              onClick={() => setIsModalOpen(false)}
+            >
+              ✕
+            </button>
+
+            <div className="flex items-center gap-3 mb-4">
+              <img
+                src={selectedReview.client.avatar || "/default-avatar.png"}
+                alt={selectedReview.client.firstName}
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <p className="font-semibold">
+                {selectedReview.client.firstName} {selectedReview.client.lastName}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-1 mb-2">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`h-5 w-5 ${
+                    i < selectedReview.rating
+                      ? "text-yellow-400 fill-yellow-400"
+                      : "text-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <p className="text-gray-700 mb-2">{selectedReview.comment}</p>
+            <p className="text-xs text-gray-500">
+              {new Date(selectedReview.createdAt).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      )}
       </div>
       )}
   
