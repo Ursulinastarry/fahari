@@ -17,6 +17,7 @@ import waitlistRoutes from './routes/waitlistRoutes';
 import searchRoutes from './routes/searchRoutes';
 import salonServiceRoutes from './routes/salonServiceRoutes';
 import serviceRoutes from './routes/serviceRoutes';
+import contactRoutes from './routes/contactRoutes';
 import http,{Server} from "http";
 import { initSocket } from "./realtime/socket";
 import cookieParser from 'cookie-parser';
@@ -97,6 +98,7 @@ app.use('/api/waitlist', waitlistRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/salon-services', salonServiceRoutes);
 app.use('/api/services', serviceRoutes);
+app.use('/api/contact', contactRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.get('/', (_, res) => res.send('Fahari AI Backend is Live 🚀'));

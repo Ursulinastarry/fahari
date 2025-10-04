@@ -104,14 +104,18 @@ if (!salonServiceId) {
     title: "Booking Confirmed",
     message: `Your booking for ${booking.salonService?.service.name} at ${booking.salon.name} is confirmed.`,
     type: "BOOKING_CONFIRMATION",
-    data: { bookingId: booking.id, bookingNumber: booking.bookingNumber }
+    data: { bookingId: booking.id, bookingNumber: booking.bookingNumber },
+    sendEmail: true,
+    emailTo: user.email,
   });
   await createAndSendNotification({
     userId: booking.salon.ownerId,
     title: "New Booking",
     message: `${user.firstName} ${user.lastName} booked ${booking.salonService?.service.name}.`,
     type: "BOOKING_CONFIRMATION",
-    data: { bookingId: booking.id, client: booking.clientId }
+    data: { bookingId: booking.id, client: booking.clientId },
+    sendEmail: true,
+    emailTo: user.email,
   });
   res.status(201).json({ booking, bookedSlots: slotIds, appointment });
 });
@@ -363,7 +367,9 @@ await createAndSendNotification({
     title: "Booking Rescheduled",
     message: `Your booking for ${updatedBooking.salonService!.service.name} at ${updatedBooking.salon.name} has been rescheduled to ${new Date(updatedBooking.slot.startTime).toLocaleString()}.`,
     type: "BOOKING_REMINDER",
-    data: { bookingId: booking.id }
+    data: { bookingId: booking.id },
+    sendEmail: true,
+    emailTo: req.user.email,
   });
 const user=req.user;
   await createAndSendNotification({
@@ -371,7 +377,9 @@ const user=req.user;
     title: "Booking Rescheduled",
     message: `${user.firstName} ${user.lastName} rescheduled ${updatedBooking.salonService!.service.name} to ${new Date(updatedBooking.slot.startTime).toLocaleString()}.`,
     type: "BOOKING_REMINDER",
-    data: { bookingId: booking.id }
+    data: { bookingId: booking.id },
+    sendEmail: true,
+    emailTo: req.user.email,
   });
 res.json({
   message: "Booking rescheduled successfully",
@@ -439,7 +447,9 @@ export const cancelBooking = asyncHandler(async (req: UserRequest, res: Response
     title: "Booking Cancelled",
     message: `Your booking for ${booking.salonService!.service.name} at ${booking.salon.name} has been cancelled.`,
     type: "BOOKING_CANCELLATION",
-    data: { bookingId: booking.id }
+    data: { bookingId: booking.id },
+    sendEmail: true,
+    emailTo: req.user.email,
   });
 const user=req.user;
   await createAndSendNotification({
@@ -447,7 +457,9 @@ const user=req.user;
     title: "Booking Cancelled",
     message: `${user.firstName} ${user.lastName} cancelled their booking for ${booking.salonService!.service.name}.`,
     type: "BOOKING_CANCELLATION",
-    data: { bookingId: booking.id }
+    data: { bookingId: booking.id },
+    sendEmail: true,
+    emailTo: req.user.email,
   });
     res.json({ message: 'Booking cancelled successfully' });
   } catch (error: any) {

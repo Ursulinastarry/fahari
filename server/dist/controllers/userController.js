@@ -47,13 +47,14 @@ export const createUser = asyncHandler(async (req, res) => {
      VALUES ($1, $2, $3, $4, $5, $6)
      RETURNING id, email, "firstName", "lastName", role, "isActive"`, [email, phone, hashedPassword, firstName, lastName, role.toUpperCase()]);
     const user = rows[0];
-    // Notify all admins
     await createAndSendNotification({
         role: "ADMIN",
         title: "New user registration",
         message: `New user ${user.email} registered and is awaiting approval.`,
         type: "GENERAL",
         data: { id: user.id, email: user.email },
+        sendEmail: true,
+        emailTo: "admin@faharibeauty.com"
     });
     // Notify the user
     await createAndSendNotification({
@@ -132,9 +133,11 @@ export const approveUser = asyncHandler(async (req, res) => {
     const user = rows[0];
     await createAndSendNotification({
         userId: user.id,
-        title: "Account approved 🎉",
-        message: "Your account has been approved! You can now log in.",
+        title: "Account approved",
+        message: "Welcome to Fahari Beauty! Your account has been approved! You can now log in.",
         type: "GENERAL",
+        sendEmail: true,
+        emailTo: user.email,
     });
     res.json({ message: "User approved successfully", user });
 });
@@ -152,9 +155,11 @@ export const suspendUser = asyncHandler(async (req, res) => {
     const user = rows[0];
     await createAndSendNotification({
         userId: user.id,
-        title: "Account suspended ⛔",
-        message: "Your account has been suspended. Please contact support.",
+        title: "Account suspended",
+        message: "We are sorry to see you go.Your account has been suspended. Please contact support.",
         type: "GENERAL",
+        sendEmail: true,
+        emailTo: user.email,
     });
     res.json({ message: "User suspended successfully", user });
 });

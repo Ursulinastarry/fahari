@@ -6,6 +6,7 @@ import { io, Socket } from "socket.io-client";
 import { useUser } from "../contexts/UserContext";
 import ProfileManager from "./ProfileManager";
 import NotificationsModal from "./Notifications";
+import ContactUsModal from "./ContactUsPage";
 interface Props {
   title: string;
   children: ReactNode;
@@ -22,6 +23,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
   const [chatInput, setChatInput] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [showProfile, setShowProfile] = useState(false);
+  const [showContactUs, setShowContactUs] = useState(false);
   const navigate = useNavigate();
   let socket: Socket | null = null;
 
@@ -146,7 +148,12 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
           >
             🤖 AI
           </button>
-          
+          <button
+  onClick={() => setShowContactUs(true)}
+  className="text-gray-600 hover:text-purple-600"
+>
+  📧 Contact us
+</button>
           {/* Show Login or Logout button based on user status */}
           {!isLoading && (
             user ? (
@@ -243,6 +250,10 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
           </div>
         </div>
       )}
+      <ContactUsModal 
+  isOpen={showContactUs}
+  onClose={() => setShowContactUs(false)}
+/>
     </div>
   );
 };
