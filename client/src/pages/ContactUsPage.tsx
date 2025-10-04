@@ -75,17 +75,17 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
             <div className="space-y-2 text-gray-700">
               <p className="flex items-center gap-2">
                 <span>📧</span>
-                <a href="mailto:info@faharibeauty.com" className="hover:text-purple-600">
-                  info@faharibeauty.com
+                <a href="mailto:help@faharibeauty.com" className="hover:text-purple-600">
+                  help@faharibeauty.com
                 </a>
               </p>
               <p className="flex items-center gap-2">
                 <span>📱</span>
-                <span>+254 XXX XXX XXX</span>
+                <span>+254 706 520 320</span>
               </p>
               <p className="flex items-center gap-2">
                 <span>📍</span>
-                <span>Mombasa, Kenya</span>
+                <span>Nyeri, Kenya</span>
               </p>
             </div>
           </div>
