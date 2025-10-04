@@ -256,14 +256,9 @@ export const updateSalon = async (req: Request, res: Response) => {
       location,
       businessHours,
     } = req.body;
-    let parsedBusinessHours = {};
-    if (businessHours) {
-      try {
-        parsedBusinessHours = JSON.parse(businessHours);
-      } catch (e) {
-        return res.status(400).json({ message: "Invalid businessHours format" });
-      }
-    }
+   const businessHoursData = typeof req.body.businessHours === 'string' 
+    ? JSON.parse(req.body.businessHours)
+    : req.body.businessHours;
     // Handle uploaded files
     const files = req.files as unknown as { [fieldname: string]: Express.Multer.File[] };
     console.log("files",files);
@@ -321,7 +316,7 @@ export const updateSalon = async (req: Request, res: Response) => {
         address: address || salon.address,
         city: city || salon.city,
         location: location || salon.location,
-        businessHours: parsedBusinessHours,
+        businessHours: businessHoursData,
         profileImage,
         coverImage,
         gallery,
