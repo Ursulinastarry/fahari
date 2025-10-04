@@ -136,6 +136,7 @@ export const getMe = asyncHandler(async (req: UserRequest, res: Response) => {
 
 export const logoutUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   //We need to immedietly invalidate the access token and the refreh token 
+  console.log("logout endpoint hit");
   res.cookie("access_token", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "production",
@@ -151,6 +152,7 @@ export const logoutUser = asyncHandler(async (req: Request, res: Response, next:
   });
 
   res.status(200).json({ message: "User logged out successfully" });
+  alert("You have been logged out");
 });
 
 export const approveUser = asyncHandler(async (req: UserRequest, res: Response) => {

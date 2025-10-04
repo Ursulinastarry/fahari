@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import PasswordInput from "./Password";
 const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -11,7 +11,10 @@ const Signup = () => {
     lastName: "",
     role: "" 
   });
+const [password, setPassword] = useState("");
+const [confirmPassword, setConfirmPassword] = useState("");
 
+  const passwordsMatch = password && confirmPassword && password === confirmPassword;
   const handleChange = (
   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 ) => {
@@ -72,13 +75,23 @@ const handleSubmit = async (e: React.FormEvent) => {
             onChange={handleChange}
             className="col-span-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-indigo-500 p-3 border"
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-            className="col-span-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-indigo-500 p-3 border"
-          />
+          <PasswordInput
+        value={password}
+        onChange={setPassword}
+        label="Password"
+        placeholder="••••••••"
+      />
+      <PasswordInput
+        value={confirmPassword}
+        onChange={setConfirmPassword}
+        label="Confirm Password"
+        placeholder="Re-enter your password"
+      />
+
+      {/* Error message */}
+      {confirmPassword && !passwordsMatch && (
+        <p className="text-red-500 text-sm">Passwords do not match</p>
+      )}
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Role</label>
             <select
@@ -97,6 +110,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           <button
             type="submit"
+            disabled={!passwordsMatch}
             className="col-span-2 w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition"
           >
             Sign Up

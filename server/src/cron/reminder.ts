@@ -3,24 +3,31 @@ import cron from "node-cron";
 import prisma from "../config/prisma";
 import { getIO } from "../realtime/socket";
 
-export const startReminderCron = () => {
+
   // run every minute
   cron.schedule("* * * * *", async () => {
     // console.log("🔔 Running reminder cron job");
     const now = new Date();
-    const fiveHoursLater = new Date(now.getTime() + 5 * 60 * 60 * 1000);
+const fiveHoursFromNow = new Date(now.getTime() + 5 * 60 * 60 * 1000);
+const fiveMinutesWindow = new Date(fiveHoursFromNow.getTime() + 5 * 60 * 1000);
 
-    const bookings = await prisma.booking.findMany({
-      where: {
-        slot: {
-          startTime: {
-            gte: fiveHoursLater,
-            lt: new Date(fiveHoursLater.getTime() + 60 * 1000), // 1-minute window
-          },
-        },
+const bookings = await prisma.booking.findMany({
+  where: {
+    slot: {
+      startTime: {
+        gte: fiveHoursFromNow,
+        lt: fiveMinutesWindow, // 5-minute window instead of 1
       },
-      include: { slot: true },
-    });
+    },
+    status: "CONFIRMED", // Add status check
+  },
+  include: { 
+    slot: true,
+    client: true, // Include client for debugging
+  },
+});
+
+console.log(`🔍 Found ${bookings.length} bookings to remind`);
 
     const io = getIO();
 
@@ -32,4 +39,4 @@ export const startReminderCron = () => {
       });
     }
   });
-};
+

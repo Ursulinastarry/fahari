@@ -10,9 +10,9 @@ import {
 
 const router = Router();
 
-router.post("/", protect, addSalonService);
 router.get("/owner", protect, getOwnerServices);
-router.get("/:salonId", protect, getSalonServices);
+router.post("/:salonId", protect, addSalonService);
+router.get("/:salonId", getSalonServices);
 router.put("/:id", protect, updateSalonService);
 router.delete("/:id", protect, removeSalonService);
 

@@ -76,7 +76,7 @@ const AppointmentsPage: React.FC = () => {
     alert(
       `${data.message}\n\n` +
       `Old Time: ${new Date(data.originalDateTime).toLocaleString()}\n` +
-      `New Time: ${new Date(data.newDateTime).toLocaleString()}`
+      `New Time: ${newDateTime}`
     );
 
     setRescheduleId(null);
@@ -90,18 +90,23 @@ const AppointmentsPage: React.FC = () => {
 
 
   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length > 0) {
-      const newFiles = [...images, ...files].slice(0, 5);
-      setImages(prev => ({ ...prev, images: newFiles }));
+  const files = Array.from(e.target.files || []);
+  if (files.length > 0) {
+    // Combine existing and new files, limit to 5
+    const newFiles = [...images, ...files].slice(0, 5);
+    setImages(newFiles); // Just set the array directly
 
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload
-        reader.readAsDataURL(file);
-      });
-    }
-  };
+    // Optional: Preview images
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        // Handle preview if needed
+        console.log(e.target?.result);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+};
   const formatEAT = (utcDate: string) => {
     return DateTime.fromISO(utcDate, { zone: "utc" })
       .setZone("Africa/Nairobi")
@@ -123,8 +128,9 @@ const AppointmentsPage: React.FC = () => {
         if (b.status === "REVIEWED") {
           effectiveStatus = "REVIEWED";
         } else {
-          effectiveStatus = "COMPLETED";
-        }
+  effectiveStatus = "COMPLETED";
+  alert("Please review the service!");
+}
           }
 
           // If backend status is REVIEWED, always show as REVIEWED

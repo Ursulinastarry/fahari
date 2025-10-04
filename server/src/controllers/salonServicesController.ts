@@ -5,23 +5,46 @@ import { UserRequest } from "../utils/types/userTypes";
 import { PrismaClient } from '@prisma/client';
 import { pool } from "../index";
 import prisma from "../config/prisma";
+// Route: POST /api/salons/:salonId/services
 export const addSalonService = asyncHandler(async (req: Request, res: Response) => {
   const { serviceId, price, duration } = req.body;
+  const { salonId } = req.params; // Get from URL
   const userId = (req as any).user.userId;
 
-  // Find the salon belonging to this owner
+  // Verify the salon belongs to this owner
   const salon = await prisma.salon.findFirst({
-    where: { ownerId: userId },
+    where: { 
+      id: salonId,
+      ownerId: userId, // Ensure ownership
+    },
   });
 
   if (!salon) {
-    return res.status(404).json({ message: "Salon not found for this owner" });
+    return res.status(404).json({ 
+      message: "Salon not found or you don't have permission to modify it" 
+    });
+  }
+
+  // Check if this service already exists for this salon
+  const existingService = await prisma.salonService.findUnique({
+    where: {
+      salonId_serviceId: {
+        salonId: salon.id,
+        serviceId: serviceId,
+      },
+    },
+  });
+
+  if (existingService) {
+    return res.status(409).json({ 
+      message: "This service already exists for this salon" 
+    });
   }
 
   const salonService = await prisma.salonService.create({
     data: {
       serviceId,
-      salonId: salon.id, // automatically bound to owner’s salon
+      salonId: salon.id,
       price,
       duration,
     },

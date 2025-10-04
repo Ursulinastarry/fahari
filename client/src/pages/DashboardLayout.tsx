@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { useUser } from "../contexts/UserContext";
 import ProfileManager from "./ProfileManager";
+import NotificationsModal from "./Notifications";
 interface Props {
   title: string;
   children: ReactNode;
@@ -120,19 +121,21 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
         <div className="flex items-center gap-4">
           {/* Only show notifications icon if user is logged in */}
           {user && (
+            <>
             <button
-              onClick={() => setShowNotifications(!showNotifications)}
+              onClick={() => setShowNotifications(true)}
               className="relative text-gray-600 hover:text-purple-600"
             >
               🔔
-              {notifications.some((n) => !n.isRead) && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">
-                  {notifications.filter((n) => !n.isRead).length}
-                </span>
-              )}
+              
             </button>
+            <NotificationsModal 
+        isOpen={showNotifications}
+        onClose={() => setShowNotifications(false)}
+           />
+            </>
           )}
-          
+         
           {/* Only show profile button if user is logged in */}
           {user && <ProfileManager />}
 
@@ -168,36 +171,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
       {/* Page Content */}
       <main className="p-8">{children}</main>
 
-      {/* Notifications Modal */}
-      {showNotifications && user && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md relative">
-            <button
-              onClick={() => setShowNotifications(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
-            >
-              ✕
-            </button>
-            <h2 className="text-xl font-bold mb-4 text-purple-600">Notifications</h2>
-            {notifications.length === 0 ? (
-              <p className="text-gray-500">No notifications yet</p>
-            ) : (
-              <ul className="space-y-3 max-h-96 overflow-y-auto">
-                {notifications.map((notif) => (
-                  <li
-                    key={notif.id}
-                    className={`p-3 rounded-lg ${notif.isRead ? "bg-gray-50" : "bg-purple-50"}`}
-                  >
-                    <p className="font-semibold">{notif.title}</p>
-                    <p className="text-sm text-gray-600">{notif.message}</p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      )}
-
+      
       {/* Profile Modal */}
       {showProfile && user && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

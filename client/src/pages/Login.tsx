@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-
+import PasswordInput from "./Password";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,16 +45,12 @@ const Login = () => {
               className="mt-1 w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-indigo-500 p-3 border"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="mt-1 w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-indigo-500 p-3 border"
-            />
-          </div>
+          <PasswordInput
+        value={password}
+        onChange={setPassword}
+        label="Password"
+        placeholder="••••••••"
+      />
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition"
