@@ -5,14 +5,13 @@ import nodemailer from "nodemailer";
 // Create Zoho transporter
 const transporter = nodemailer.createTransport({
     host: "smtp.zoho.com",
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.ZOHO_EMAIL,
         pass: process.env.ZOHO_PASSWORD,
     },
 });
-// Helper function to send email
 async function sendNotificationEmail(to, title, message, data) {
     try {
         await transporter.sendMail({
