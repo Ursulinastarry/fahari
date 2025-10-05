@@ -2,23 +2,60 @@
 import { pool } from "../index.js";
 import { io } from "../realtime/socket.js";
 import axios from "axios";
-// Cache the account ID to avoid fetching it every time
+// Cache tokens and account ID
+let cachedAccessToken = undefined;
+let tokenExpiry = 0;
 let cachedAccountId = undefined;
+async function refreshAccessToken() {
+    try {
+        const response = await axios.post("https://accounts.zoho.com/oauth/v2/token", null, {
+            params: {
+                refresh_token: process.env.ZOHO_REFRESH_TOKEN,
+                client_id: process.env.ZOHO_CLIENT_ID,
+                client_secret: process.env.ZOHO_CLIENT_SECRET,
+                grant_type: "refresh_token",
+            },
+        });
+        const accessToken = String(response.data.access_token);
+        const expiresIn = Number(response.data.expires_in);
+        cachedAccessToken = accessToken;
+        // Set expiry to 5 minutes before actual expiry (default is 1 hour)
+        tokenExpiry = Date.now() + (expiresIn - 300) * 1000;
+        console.log("Access token refreshed successfully");
+        return accessToken;
+    }
+    catch (error) {
+        console.error("Error refreshing access token:", error);
+        if (axios.isAxiosError(error)) {
+            console.error("Response data:", error.response?.data);
+        }
+        throw new Error("Failed to refresh Zoho access token");
+    }
+}
+async function getAccessToken() {
+    // If token exists and hasn't expired, return it
+    if (cachedAccessToken && Date.now() < tokenExpiry) {
+        return cachedAccessToken;
+    }
+    // Otherwise refresh the token
+    return await refreshAccessToken();
+}
 async function getZohoAccountId() {
     if (cachedAccountId !== undefined) {
         return cachedAccountId;
     }
     try {
+        const accessToken = await getAccessToken();
         const response = await axios.get("https://mail.zoho.com/api/accounts", {
             headers: {
-                "Authorization": `Zoho-oauthtoken ${process.env.ZOHO_API_TOKEN}`,
+                "Authorization": `Zoho-oauthtoken ${accessToken}`,
                 "Accept": "application/json",
             },
         });
-        // The API returns an array of accounts, get the first one
         if (response.data?.data && response.data.data.length > 0) {
             const accountId = String(response.data.data[0].accountId);
             cachedAccountId = accountId;
+            console.log("Zoho account ID cached:", accountId);
             return accountId;
         }
         throw new Error("No Zoho Mail account found");
@@ -34,6 +71,7 @@ async function getZohoAccountId() {
 }
 async function sendNotificationEmail(to, title, message, data) {
     try {
+        const accessToken = await getAccessToken();
         const accountId = await getZohoAccountId();
         const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -59,7 +97,7 @@ async function sendNotificationEmail(to, title, message, data) {
         };
         const response = await axios.post(`https://mail.zoho.com/api/accounts/${accountId}/messages`, emailPayload, {
             headers: {
-                "Authorization": `Zoho-oauthtoken ${process.env.ZOHO_API_TOKEN}`,
+                "Authorization": `Zoho-oauthtoken ${accessToken}`,
                 "Content-Type": "application/json",
                 "Accept": "application/json",
             },

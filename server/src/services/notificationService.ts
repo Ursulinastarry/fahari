@@ -3,9 +3,33 @@ import { pool } from "../index";
 import { io } from "../realtime/socket";
 import axios from "axios";
 
+/**
+ * SETUP INSTRUCTIONS FOR ZOHO OAUTH:
+ * 
+ * 1. Go to https://accounts.zoho.com/developerconsole
+ * 2. Click "GET STARTED" and choose "Self Client"
+ * 3. Enter a Client Name (e.g., "Fahari Beauty Notifications")
+ * 4. Click CREATE - you'll get Client ID and Client Secret
+ * 
+ * 5. Generate the initial token by visiting this URL in your browser:
+ *    https://accounts.zoho.com/oauth/v2/auth?scope=ZohoMail.messages.ALL,ZohoMail.accounts.READ&client_id=YOUR_CLIENT_ID&response_type=code&access_type=offline&redirect_uri=http://localhost
+ * 
+ * 6. After authorization, you'll be redirected to localhost with a code parameter
+ *    Copy the code from the URL
+ * 
+ * 7. Exchange the code for tokens using this curl command (or Postman):
+ *    curl -X POST "https://accounts.zoho.com/oauth/v2/token?code=YOUR_CODE&grant_type=authorization_code&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&redirect_uri=http://localhost"
+ * 
+ * 8. Add to your .env file:
+ *    ZOHO_CLIENT_ID=your_client_id
+ *    ZOHO_CLIENT_SECRET=your_client_secret
+ *    ZOHO_REFRESH_TOKEN=your_refresh_token (from step 7)
+ *    ZOHO_EMAIL=your_zoho_email_address
+ */
+
 export type NotifyPayload = {
-  userId?: string;       // single user
-  role?: "ADMIN" | "SALON_OWNER" | "CLIENT"; // or everyone with a role
+  userId?: string;
+  role?: "ADMIN" | "SALON_OWNER" | "CLIENT";
   title: string;
   message: string;
   type?:
@@ -17,12 +41,57 @@ export type NotifyPayload = {
     | "PAYMENT_FAILED"
     | "GENERAL";
   data?: Record<string, any>;
-  sendEmail?: boolean; // Optional: control whether to send email
-  emailTo?: string;    // Optional: override email recipient
+  sendEmail?: boolean;
+  emailTo?: string;
 };
 
-// Cache the account ID to avoid fetching it every time
+// Cache tokens and account ID
+let cachedAccessToken: string | undefined = undefined;
+let tokenExpiry: number = 0;
 let cachedAccountId: string | undefined = undefined;
+
+async function refreshAccessToken(): Promise<string> {
+  try {
+    const response = await axios.post(
+      "https://accounts.zoho.com/oauth/v2/token",
+      null,
+      {
+        params: {
+          refresh_token: process.env.ZOHO_REFRESH_TOKEN,
+          client_id: process.env.ZOHO_CLIENT_ID,
+          client_secret: process.env.ZOHO_CLIENT_SECRET,
+          grant_type: "refresh_token",
+        },
+      }
+    );
+
+    const accessToken = String(response.data.access_token);
+    const expiresIn = Number(response.data.expires_in);
+    
+    cachedAccessToken = accessToken;
+    // Set expiry to 5 minutes before actual expiry (default is 1 hour)
+    tokenExpiry = Date.now() + (expiresIn - 300) * 1000;
+    
+    console.log("Access token refreshed successfully");
+    return accessToken;
+  } catch (error) {
+    console.error("Error refreshing access token:", error);
+    if (axios.isAxiosError(error)) {
+      console.error("Response data:", error.response?.data);
+    }
+    throw new Error("Failed to refresh Zoho access token");
+  }
+}
+
+async function getAccessToken(): Promise<string> {
+  // If token exists and hasn't expired, return it
+  if (cachedAccessToken && Date.now() < tokenExpiry) {
+    return cachedAccessToken;
+  }
+
+  // Otherwise refresh the token
+  return await refreshAccessToken();
+}
 
 async function getZohoAccountId(): Promise<string> {
   if (cachedAccountId !== undefined) {
@@ -30,20 +99,22 @@ async function getZohoAccountId(): Promise<string> {
   }
 
   try {
+    const accessToken = await getAccessToken();
+    
     const response = await axios.get(
       "https://mail.zoho.com/api/accounts",
       {
         headers: {
-          "Authorization": `Zoho-oauthtoken ${process.env.ZOHO_API_TOKEN}`,
+          "Authorization": `Zoho-oauthtoken ${accessToken}`,
           "Accept": "application/json",
         },
       }
     );
 
-    // The API returns an array of accounts, get the first one
     if (response.data?.data && response.data.data.length > 0) {
       const accountId = String(response.data.data[0].accountId);
       cachedAccountId = accountId;
+      console.log("Zoho account ID cached:", accountId);
       return accountId;
     }
 
@@ -65,6 +136,7 @@ async function sendNotificationEmail(
   data?: Record<string, any>
 ) {
   try {
+    const accessToken = await getAccessToken();
     const accountId = await getZohoAccountId();
 
     const htmlContent = `
@@ -96,7 +168,7 @@ async function sendNotificationEmail(
       emailPayload,
       {
         headers: {
-          "Authorization": `Zoho-oauthtoken ${process.env.ZOHO_API_TOKEN}`,
+          "Authorization": `Zoho-oauthtoken ${accessToken}`,
           "Content-Type": "application/json",
           "Accept": "application/json",
         },
