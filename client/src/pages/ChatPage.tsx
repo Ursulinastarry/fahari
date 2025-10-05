@@ -1,19 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Loader2 } from 'lucide-react';
-
-export default function AIAssistant() {
+import { Send, Bot, User, Loader2, X } from 'lucide-react';
+interface AIAssistantProps {
+  userRole?: 'CLIENT' | 'SALON_OWNER' | 'ADMIN';
+  userId?: string;
+  onClose?: () => void;
+}
+export default function AIAssistant({ userRole = 'CLIENT', userId, onClose }: AIAssistantProps) {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: 'Hello! I can help you with salon bookings, available services, and appointments. How can I assist you today?'
+      content: getWelcomeMessage(userRole)
     }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [apiKey, setApiKey] = useState('');
-  const [showSettings, setShowSettings] = useState(true);
-    const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -23,30 +24,19 @@ export default function AIAssistant() {
     scrollToBottom();
   }, [messages]);
 
-  // Simulate fetching live data from your API
-  const fetchLiveData = async () => {
-    try {
-       const [salons, services, availabilities] = await Promise.all([
-    fetch('https://fahari-production.up.railway.app/api/salons').then(r => r.json()),
-    fetch('https://fahari-production.up.railway.app/api/salon-services').then(r => r.json()),
-    fetch('https://fahari-production.up.railway.app/api/slots').then(r => r.json())
-  ]);
-  
-  return { salons, services, availabilities };
-    } catch (error) {
-      console.error('Error fetching live data:', error);
-      return null;
+  function getWelcomeMessage(role: string) {
+    if (role === 'CLIENT') {
+      return 'Hello! I can help you find salons, book appointments, check available slots, and answer questions about our services. How can I assist you today?';
+    } else if (role === 'SALON_OWNER') {
+      return 'Hello! I can help you manage your salon appointments, track revenue, manage slots, and answer questions about your business. What would you like to know?';
+    } else if (role === 'ADMIN') {
+      return 'Hello ADMIN! I can provide platform analytics, salon performance data, user statistics, and any system-wide information. What would you like to know?';
     }
-  };
+    return 'Hello! How can I assist you today?';
+  }
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
-    
-    if (!apiKey) {
-      alert('Please enter your Groq API key in settings first');
-      setShowSettings(true);
-      return;
-    }
 
     const userMessage = input.trim();
     setInput('');
@@ -56,69 +46,57 @@ export default function AIAssistant() {
     setIsLoading(true);
 
     try {
-      // Fetch live data from your API
-      const liveData = await fetchLiveData();
-      
-      // Build context with live data
-      const systemPrompt = `You are a helpful assistant for a salon booking website. 
-Here is the current live data you can reference:
-
-AVAILABLE SALONS:
-${liveData?.salons?.map((s: { name: any; location: any; }) => `- ${s.name} (${s.location})`).join('\n') || 'Loading...'}
-
-SERVICES OFFERED:
-${liveData?.services?.map((s: { name: any; price: any; duration: any; }) => `- ${s.name}: ${s.price}, Duration: ${s.duration}`).join('\n') || 'Loading...'}
-
-AVAILABLE TIME SLOTS:
-Today: ${liveData?.availabilities?.today?.join(', ') || 'None'}
-Tomorrow: ${liveData?.availabilities?.tomorrow?.join(', ') || 'None'}
-
-Help users book appointments, answer questions about services, and provide information about salon locations and availability. Be friendly and concise.`;
-
-      // Call Groq API
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      // Call your backend proxy instead of Groq directly
+      const response = await fetch('https://fahari-production.up.railway.app/api/ai-chat', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          // Add your authentication header here
+          // 'Authorization': `Bearer ${yourAuthToken}`
         },
         body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
-          messages: [
-            { role: 'system', content: systemPrompt },
-            ...messages.map(m => ({ role: m.role, content: m.content })),
-            { role: 'user', content: userMessage }
-          ],
-          temperature: 0.7,
-          max_tokens: 500
+          messages: [...messages, { role: 'user', content: userMessage }],
+          userRole: userRole,
+          userId: userId
         })
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error?.message || 'API request failed');
+        throw new Error('Failed to get response from AI');
       }
 
       const data = await response.json();
       const assistantMessage = data.choices[0]?.message?.content || 'Sorry, I could not process that.';
       
       setMessages(prev => [...prev, { role: 'assistant', content: assistantMessage }]);
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('Error:', error);
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: `Sorry, there was an error: ${error.message}. Please check your API key and try again.` 
+        content: `Sorry, there was an error: ${error.message}. Please try again.` 
       }]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleKeyPress = (e:any) => {
+  const handleKeyPress = (e: any) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  const getRoleColor = () => {
+    if (userRole === 'ADMIN') return 'from-red-500 to-pink-500';
+    if (userRole === 'SALON_OWNER') return 'from-green-500 to-emerald-500';
+    return 'from-purple-500 to-blue-500';
+  };
+
+  const getRoleTitle = () => {
+    if (userRole === 'ADMIN') return 'ADMIN Assistant';
+    if (userRole === 'SALON_OWNER') return 'Salon Management Assistant';
+    return 'Booking Assistant';
   };
 
   return (
@@ -126,43 +104,23 @@ Help users book appointments, answer questions about services, and provide infor
       {/* Header */}
       <div className="bg-white shadow-md p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+          <div className={`w-10 h-10 bg-gradient-to-r ${getRoleColor()} rounded-full flex items-center justify-center`}>
             <Bot className="text-white" size={24} />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-800">Salon Assistant</h1>
-            <p className="text-sm text-gray-500">Powered by Groq AI</p>
+            <h1 className="text-xl font-bold text-gray-800">{getRoleTitle()}</h1>
+            <p className="text-sm text-gray-500">Powered by AI</p>
           </div>
         </div>
-        <button
-          onClick={() => setShowSettings(!showSettings)}
-          className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition"
-        >
-          {showSettings ? 'Hide' : 'Show'} Settings
-        </button>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-lg transition"
+          >
+            <X size={20} />
+          </button>
+        )}
       </div>
-
-      {/* Settings Panel */}
-      {showSettings && (
-        <div className="bg-yellow-50 border-b border-yellow-200 p-4">
-          <div className="max-w-2xl">
-            <h3 className="font-semibold text-gray-800 mb-2">⚙️ Setup Required</h3>
-            <p className="text-sm text-gray-600 mb-3">
-              Get your free API key from <a href="https://console.groq.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">console.groq.com</a>
-            </p>
-            <input
-              type="password"
-              placeholder="Enter your Groq API key (gsk_...)"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <p className="text-xs text-gray-500 mt-2">
-              💡 This key is stored in memory only and never sent anywhere except Groq's API
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -174,7 +132,7 @@ Help users book appointments, answer questions about services, and provide infor
             <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
               msg.role === 'user' 
                 ? 'bg-blue-500' 
-                : 'bg-gradient-to-r from-purple-500 to-blue-500'
+                : `bg-gradient-to-r ${getRoleColor()}`
             }`}>
               {msg.role === 'user' ? (
                 <User className="text-white" size={18} />
@@ -196,7 +154,7 @@ Help users book appointments, answer questions about services, and provide infor
         
         {isLoading && (
           <div className="flex gap-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center">
+            <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${getRoleColor()} flex items-center justify-center`}>
               <Bot className="text-white" size={18} />
             </div>
             <div className="bg-white px-4 py-3 rounded-2xl shadow-sm">
@@ -216,21 +174,24 @@ Help users book appointments, answer questions about services, and provide infor
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask about services, availability, or book an appointment..."
+            placeholder={
+              userRole === 'SALON_OWNER' 
+                ? "Ask about appointments, revenue, or slots..." 
+                : userRole === 'ADMIN'
+                ? "Ask about platform stats, salons, or users..."
+                : "Ask about services, availability, or bookings..."
+            }
             className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             disabled={isLoading}
           />
           <button
             onClick={sendMessage}
             disabled={isLoading || !input.trim()}
-            className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full hover:from-purple-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2"
+            className={`px-6 py-3 bg-gradient-to-r ${getRoleColor()} text-white rounded-full hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2`}
           >
             <Send size={20} />
           </button>
         </div>
-        <p className="text-xs text-center text-gray-500 mt-2">
-          💡 Replace the fetchLiveData() function with your actual API endpoints
-        </p>
       </div>
     </div>
   );

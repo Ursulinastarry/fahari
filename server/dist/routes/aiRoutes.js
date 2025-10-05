@@ -1,6 +1,8 @@
-"use strict";
-// import express from 'express';
-// import { askFahariAI } from '../controllers/aiController.js';
-// const router = express.Router();
-// router.post('/ask', askFahariAI);
-// export default router;
+// routes/aiChatRoutes.js
+import express from 'express';
+import { handleAIChat } from '../controllers/aiController.js';
+import { protect } from '../middlewares/protect.js';
+const router = express.Router();
+// POST /api/ai-chat
+router.post('/ai-chat', protect, handleAIChat);
+export default router;
