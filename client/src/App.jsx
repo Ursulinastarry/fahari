@@ -22,6 +22,7 @@ import SalonOwnerSalons from "./pages/owner/SalonsPage";
 import { UserProvider } from './contexts/UserContext';
 import ServicesPage from "./pages/owner/ServicesPage";
 import HomePage from "./pages/HomePage";
+import AIAssistant from "./pages/ChatPage";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/owner/salons" element={<SalonOwnerSalons />} />
         <Route path="/salon-services/:salonId" element={<ServicesPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/chat" element={<AIAssistant />} />
       </Routes>
     </BrowserRouter>
     </UserProvider>

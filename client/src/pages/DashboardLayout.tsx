@@ -143,7 +143,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
 
           
           <button
-            onClick={() => setShowChatbot(true)}
+            onClick={() => navigate("/chat")}
             className="text-gray-600 hover:text-purple-600"
           >
             🤖 AI
@@ -212,44 +212,6 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
         </div>
       )}
 
-      {/* AI Chatbot Modal */}
-      {showChatbot && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg flex flex-col relative">
-            <button
-              onClick={() => setShowChatbot(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
-            >
-              ✕
-            </button>
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-bold text-purple-600">Fahari AI Assistant</h2>
-            </div>
-            <div className="flex-1 p-4 space-y-3 overflow-y-auto">
-              {chatMessages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`p-3 rounded-lg ${
-                    msg.type === "user" ? "bg-purple-600 text-white self-end" : "bg-gray-100 text-gray-800 self-start"
-                  }`}
-                >
-                  {msg.message}
-                </div>
-              ))}
-            </div>
-            <form onSubmit={handleChatSubmit} className="flex border-t">
-              <input
-                type="text"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Ask me anything..."
-                className="flex-1 p-3 outline-none"
-              />
-              <button type="submit" className="px-6 bg-purple-600 text-white">Send</button>
-            </form>
-          </div>
-        </div>
-      )}
       <ContactUsModal 
   isOpen={showContactUs}
   onClose={() => setShowContactUs(false)}
