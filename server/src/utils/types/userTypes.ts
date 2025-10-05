@@ -25,9 +25,16 @@ export interface User {
 export interface UserRequest extends Request {
     user?: User;
 }
-// export interface FileUploadUserRequest extends Request {
-//   user?: User;
-//   files?: {
-//     [key: string]: UploadedFile | UploadedFile[];
-//   };
-// }
+interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
+export interface AIClientRequest extends Request {
+  body: {
+    messages: ChatMessage[];
+    userRole: User['role'];
+    userId: User['id'];
+  };
+  user?: User;
+  }

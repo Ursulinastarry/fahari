@@ -1,34 +1,22 @@
 // controllers/aiChatController.ts
 import { Request, Response } from 'express';
-
+import { User} from '../utils/types/userTypes';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-interface ChatMessage {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
-}
-
-interface AIClientRequest extends Request {
-  body: {
-    messages: ChatMessage[];
-    userRole: 'CLIENT' | 'SALON_OWNER' | 'ADMIN';
-    userId: string;
-  };
-  user?: any; // Adjust this based on your auth middleware
-}
-
+import { AIClientRequest } from '../utils/types/userTypes';
 interface LiveData {
   salons?: any[];
   services?: any[];
   slots?: any[];
   appointments?: any[];
-  users?: any[];
+  users?: User[];
   revenue?: {
     total?: number;
     this_month?: number;
     pending?: number;
   };
 }
+
 
 export const handleAIChat = async (req: AIClientRequest, res: Response): Promise<void> => {
   try {
@@ -41,7 +29,7 @@ export const handleAIChat = async (req: AIClientRequest, res: Response): Promise
     }
 
     // Fetch live data based on user role
-    const liveData = await fetchLiveDataForUser(userRole, userId, req.user.salonId);
+    const liveData = await fetchLiveDataForUser(userRole, userId);
     
     // Build role-specific system prompt
     const systemPrompt = buildSystemPrompt(userRole, liveData);
@@ -84,7 +72,6 @@ export const handleAIChat = async (req: AIClientRequest, res: Response): Promise
 async function fetchLiveDataForUser(
   userRole: 'CLIENT' | 'SALON_OWNER' | 'ADMIN', 
   userId: string,
-  salonId:string
 ): Promise<LiveData | null> {
   const baseUrl = 'https://fahari-production.up.railway.app/api';
   
@@ -101,13 +88,13 @@ async function fetchLiveDataForUser(
       
     } else if (userRole === 'SALON_OWNER') {
       // Fetch data relevant to salon owners
-      const [appointments, slots, services] = await Promise.all([
+      const [appointments] = await Promise.all([
         fetch(`${baseUrl}/bookings/owner`).then(r => r.json()),
-        fetch(`${baseUrl}/slots/salons?salonId=${salonId}`).then(r => r.json()),
+        // fetch(`${baseUrl}/slots/salons?salonId=${salonId}`).then(r => r.json()),
         // fetch(`${baseUrl}/revenue?salonId=${userId}`).then(r => r.json()),
-        fetch(`${baseUrl}/salon-services?salonId=${salonId}`).then(r => r.json())
+        // fetch(`${baseUrl}/salon-services?salonId=${salonId}`).then(r => r.json())
       ]);
-      return { appointments, slots, services };
+      return { appointments };
       
     } else if (userRole === 'ADMIN') {
       // Fetch platform-wide data for admin

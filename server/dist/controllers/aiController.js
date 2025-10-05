@@ -8,7 +8,7 @@ export const handleAIChat = async (req, res) => {
             return;
         }
         // Fetch live data based on user role
-        const liveData = await fetchLiveDataForUser(userRole, userId, req.user.salonId);
+        const liveData = await fetchLiveDataForUser(userRole, userId);
         // Build role-specific system prompt
         const systemPrompt = buildSystemPrompt(userRole, liveData);
         // Call Groq API
@@ -43,7 +43,7 @@ export const handleAIChat = async (req, res) => {
     }
 };
 // Fetch relevant data based on user role
-async function fetchLiveDataForUser(userRole, userId, salonId) {
+async function fetchLiveDataForUser(userRole, userId) {
     const baseUrl = 'https://fahari-production.up.railway.app/api';
     try {
         if (userRole === 'CLIENT') {
@@ -58,13 +58,13 @@ async function fetchLiveDataForUser(userRole, userId, salonId) {
         }
         else if (userRole === 'SALON_OWNER') {
             // Fetch data relevant to salon owners
-            const [appointments, slots, services] = await Promise.all([
+            const [appointments] = await Promise.all([
                 fetch(`${baseUrl}/bookings/owner`).then(r => r.json()),
-                fetch(`${baseUrl}/slots/salons?salonId=${salonId}`).then(r => r.json()),
+                // fetch(`${baseUrl}/slots/salons?salonId=${salonId}`).then(r => r.json()),
                 // fetch(`${baseUrl}/revenue?salonId=${userId}`).then(r => r.json()),
-                fetch(`${baseUrl}/salon-services?salonId=${salonId}`).then(r => r.json())
+                // fetch(`${baseUrl}/salon-services?salonId=${salonId}`).then(r => r.json())
             ]);
-            return { appointments, slots, services };
+            return { appointments };
         }
         else if (userRole === 'ADMIN') {
             // Fetch platform-wide data for admin

@@ -5,6 +5,6 @@ import { protect } from '../middlewares/protect';
 const router = express.Router();
 
 // POST /api/ai-chat
-router.post('/', handleAIChat);
+router.post('/', protect, handleAIChat);
 
 export default router;
