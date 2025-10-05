@@ -4,5 +4,5 @@ import { handleAIChat } from '../controllers/aiController.js';
 import { protect } from '../middlewares/protect.js';
 const router = express.Router();
 // POST /api/ai-chat
-router.post('/ai-chat', protect, handleAIChat);
+router.post('/', protect, handleAIChat);
 export default router;
