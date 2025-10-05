@@ -1,24 +1,14 @@
 // src/services/notificationService.ts
 import { pool } from "../index.js";
 import { io } from "../realtime/socket.js";
-import nodemailer from "nodemailer";
-// Create Zoho transporter
-const transporter = nodemailer.createTransport({
-    host: "smtp.zoho.com",
-    port: 25,
-    secure: false,
-    auth: {
-        user: process.env.ZOHO_EMAIL,
-        pass: process.env.ZOHO_PASSWORD,
-    },
-});
+import axios from "axios";
 async function sendNotificationEmail(to, title, message, data) {
     try {
-        await transporter.sendMail({
-            from: process.env.ZOHO_EMAIL,
-            to,
+        const emailPayload = {
+            fromAddress: process.env.ZOHO_EMAIL,
+            toAddress: to,
             subject: title,
-            html: `
+            content: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">${title}</h2>
           <p style="color: #666; line-height: 1.6;">${message}</p>
@@ -33,12 +23,21 @@ async function sendNotificationEmail(to, title, message, data) {
           </p>
         </div>
       `,
-            text: `${title}\n\n${message}${data ? '\n\nDetails:\n' + JSON.stringify(data, null, 2) : ''}`,
+        };
+        const response = await axios.post("https://mail.zoho.com/api/accounts/{accountId}/messages", emailPayload, {
+            headers: {
+                "Authorization": `Zoho-oauthtoken ${process.env.ZOHO_API_TOKEN}`,
+                "Content-Type": "application/json",
+            },
         });
-        console.log(`Email sent to ${to}`);
+        console.log(`Email sent to ${to}`, response.data);
     }
     catch (error) {
         console.error("Error sending email:", error);
+        if (axios.isAxiosError(error)) {
+            console.error("Response data:", error.response?.data);
+            console.error("Response status:", error.response?.status);
+        }
         // Don't throw - we don't want email failures to break notifications
     }
 }
