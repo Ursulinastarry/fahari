@@ -2,32 +2,66 @@
 import { pool } from "../index.js";
 import { io } from "../realtime/socket.js";
 import axios from "axios";
+// Cache the account ID to avoid fetching it every time
+let cachedAccountId = undefined;
+async function getZohoAccountId() {
+    if (cachedAccountId !== undefined) {
+        return cachedAccountId;
+    }
+    try {
+        const response = await axios.get("https://mail.zoho.com/api/accounts", {
+            headers: {
+                "Authorization": `Zoho-oauthtoken ${process.env.ZOHO_API_TOKEN}`,
+                "Accept": "application/json",
+            },
+        });
+        // The API returns an array of accounts, get the first one
+        if (response.data?.data && response.data.data.length > 0) {
+            const accountId = String(response.data.data[0].accountId);
+            cachedAccountId = accountId;
+            return accountId;
+        }
+        throw new Error("No Zoho Mail account found");
+    }
+    catch (error) {
+        console.error("Error fetching Zoho account ID:", error);
+        if (axios.isAxiosError(error)) {
+            console.error("Response data:", error.response?.data);
+            console.error("Response status:", error.response?.status);
+        }
+        throw error;
+    }
+}
 async function sendNotificationEmail(to, title, message, data) {
     try {
+        const accountId = await getZohoAccountId();
+        const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #333;">${title}</h2>
+        <p style="color: #666; line-height: 1.6;">${message}</p>
+        ${data ? `
+          <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-top: 20px;">
+            <h3 style="margin-top: 0; color: #333;">Additional Details:</h3>
+            <pre style="background-color: #fff; padding: 10px; border-radius: 3px; overflow-x: auto;">${JSON.stringify(data, null, 2)}</pre>
+          </div>
+        ` : ''}
+        <p style="color: #999; font-size: 12px; margin-top: 30px;">
+          This is an automated notification from Fahari Beauty.
+        </p>
+      </div>
+    `;
         const emailPayload = {
             fromAddress: process.env.ZOHO_EMAIL,
             toAddress: to,
             subject: title,
-            content: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333;">${title}</h2>
-          <p style="color: #666; line-height: 1.6;">${message}</p>
-          ${data ? `
-            <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin-top: 20px;">
-              <h3 style="margin-top: 0; color: #333;">Additional Details:</h3>
-              <pre style="background-color: #fff; padding: 10px; border-radius: 3px; overflow-x: auto;">${JSON.stringify(data, null, 2)}</pre>
-            </div>
-          ` : ''}
-          <p style="color: #999; font-size: 12px; margin-top: 30px;">
-            This is an automated notification from Fahari Beauty.
-          </p>
-        </div>
-      `,
+            content: htmlContent,
+            mailFormat: "html",
         };
-        const response = await axios.post("https://mail.zoho.com/api/accounts/{accountId}/messages", emailPayload, {
+        const response = await axios.post(`https://mail.zoho.com/api/accounts/${accountId}/messages`, emailPayload, {
             headers: {
                 "Authorization": `Zoho-oauthtoken ${process.env.ZOHO_API_TOKEN}`,
                 "Content-Type": "application/json",
+                "Accept": "application/json",
             },
         });
         console.log(`Email sent to ${to}`, response.data);
@@ -37,6 +71,7 @@ async function sendNotificationEmail(to, title, message, data) {
         if (axios.isAxiosError(error)) {
             console.error("Response data:", error.response?.data);
             console.error("Response status:", error.response?.status);
+            console.error("Request URL:", error.config?.url);
         }
         // Don't throw - we don't want email failures to break notifications
     }
