@@ -34,36 +34,16 @@ export const createSlot = asyncHandler(async (req, res) => {
         res.status(500).json({ error: "Failed to create slot" });
     }
 });
-export const getSlots = asyncHandler(async (req, res) => {
+import { getSlotsService } from "../services/aiService.js";
+export const getSlots = async (req, res) => {
     try {
-        const { salonId, date, serviceId, isAvailable } = req.query;
-        const where = {};
-        if (salonId)
-            where.salonId = salonId;
-        if (date)
-            where.date = new Date(date);
-        if (serviceId)
-            where.serviceId = serviceId;
-        if (isAvailable !== undefined)
-            where.isAvailable = Boolean(isAvailable);
-        const slots = await prisma.slot.findMany({
-            where,
-            include: {
-                salon: {
-                    select: { name: true }
-                },
-                service: {
-                    select: { name: true, category: true }
-                }
-            },
-            orderBy: [{ date: 'asc' }, { startTime: 'asc' }]
-        });
+        const slots = await getSlotsService(req.query);
         res.json(slots);
     }
     catch (error) {
         res.status(500).json({ message: error.message });
     }
-});
+};
 export const getSalonSlots = asyncHandler(async (req, res) => {
     const { salonId } = req.params;
     const slots = await prisma.slot.findMany({

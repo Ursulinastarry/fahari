@@ -1,6 +1,6 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import prisma from "../config/prisma.js";
-// Route: POST /api/salons/:salonId/services
+import { getSalonServicesService } from "../services/aiService.js";
 export const addSalonService = asyncHandler(async (req, res) => {
     const { serviceId, price, duration } = req.body;
     const { salonId } = req.params; // Get from URL
@@ -127,20 +127,10 @@ export const getOwnerServices = asyncHandler(async (req, res) => {
 export const getSalonServices = async (req, res) => {
     try {
         const { salonId } = req.params;
-        if (!salonId) {
-            return res.status(400).json({ message: "Salon ID is required" });
-        }
-        const salon = await prisma.salon.findUnique({
-            where: { id: salonId },
-            include: { salonServices: { include: { service: true } } }, // assuming relation: Salon -> Services
-        });
-        if (!salon) {
-            return res.status(404).json({ message: "Salon not found" });
-        }
-        return res.json(salon.salonServices);
+        const services = await getSalonServicesService(salonId);
+        res.json(services);
     }
     catch (error) {
-        console.error("Error fetching salon services:", error);
-        return res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: error.message });
     }
 };

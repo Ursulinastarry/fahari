@@ -46,34 +46,16 @@ export const createSlot = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-export const getSlots = asyncHandler(async (req: Request, res: Response) => {
+import { getSlotsService } from "../services/aiService";
+
+export const getSlots = async (req: Request, res: Response) => {
   try {
-    const { salonId, date, serviceId, isAvailable } = req.query;
-    
-    const where: any = {};
-    if (salonId) where.salonId = salonId as string;
-    if (date) where.date = new Date(date as string);
-    if (serviceId) where.serviceId = serviceId as string;
-    if (isAvailable !== undefined) where.isAvailable = Boolean(isAvailable);
-    
-    const slots = await prisma.slot.findMany({
-      where,
-      include: {
-        salon: {
-          select: { name: true }
-        },
-        service: {
-          select: { name: true, category: true }
-        }
-      },
-      orderBy: [{ date: 'asc' }, { startTime: 'asc' }]
-    });
-    
+    const slots = await getSlotsService(req.query);
     res.json(slots);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
-});
+};
 
 export const getSalonSlots = asyncHandler(async (req: Request, res: Response) => {
   const { salonId } = req.params;

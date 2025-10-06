@@ -1,5 +1,4 @@
-import { getBookingsData } from '../services/aiService.js';
-import { getMyBookingsService } from '../services/aiService.js';
+import { getMyBookingsService, getBookingsData, getSalonsService, getSlotsService, getAllServicesService } from '../services/aiService.js';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 export const handleAIChat = async (req, res) => {
     try {
@@ -49,36 +48,33 @@ async function fetchLiveDataForUser(userRole, userId) {
     const baseUrl = 'https://fahari-production.up.railway.app/api';
     try {
         if (userRole === 'CLIENT') {
-            // Fetch data relevant to clients
-            // const [salons, services, slots, appointments] = await Promise.all([
-            //   fetch(`${baseUrl}/salons`).then(r => r.json()),
-            //   fetch(`${baseUrl}/salon-services`).then(r => r.json()),
-            //   fetch(`${baseUrl}/slots`).then(r => r.json()),
-            //   fetch(`${baseUrl}/bookings/me`).then(r => r.json())
-            // ]);
-            const bookings = await getMyBookingsService(userId);
-            return { bookings };
+            const [salons, slots, bookings, services] = await Promise.all([
+                getSalonsService({ page: 1, limit: 50 }).then((data) => data.salons),
+                getSlotsService({}),
+                getMyBookingsService(userId),
+                getAllServicesService(),
+            ]);
+            return { salons, slots, bookings, services };
         }
         else if (userRole === 'SALON_OWNER') {
             // Fetch data relevant to salon owners
-            const [appointments] = await Promise.all([
+            const [bookings] = await Promise.all([
                 fetch(`${baseUrl}/bookings/owner`).then(r => r.json()),
                 // fetch(`${baseUrl}/slots/salons?salonId=${salonId}`).then(r => r.json()),
                 // fetch(`${baseUrl}/revenue?salonId=${userId}`).then(r => r.json()),
                 // fetch(`${baseUrl}/salon-services?salonId=${salonId}`).then(r => r.json())
             ]);
-            return { appointments };
+            return { bookings };
         }
         else if (userRole === 'ADMIN') {
             // Fetch platform-wide data for admin
-            const [salons, users, appointments] = await Promise.all([
+            const [salons, users,] = await Promise.all([
                 fetch(`${baseUrl}/salons`).then(r => r.json()),
                 fetch(`${baseUrl}/users`).then(r => r.json()),
-                fetch(`${baseUrl}/bookings`).then(r => r.json()),
                 // fetch(`${baseUrl}/platform-revenue`).then(r => r.json())
             ]);
             const bookings = await getBookingsData(userId, userRole);
-            return { salons, users, appointments, bookings };
+            return { salons, users, bookings };
         }
         return null;
     }
@@ -91,9 +87,16 @@ async function fetchLiveDataForUser(userRole, userId) {
 function buildSystemPrompt(userRole, liveData) {
     if (userRole === 'CLIENT') {
         return `You are a helpful assistant for Fahari Salon Management System.
-You are helping a CLIENT user who wants to book appointments and find salon services.
+You are helping a CLIENT user who wants to book bookings and find salon services.
 
+AVAILABLE SALONS:
+${liveData?.salons?.map(s => -`${s.name} at ${s.location || 'location not specified'}`).join('\n') || 'No salons available'}
 
+AVAILABLE SERVICES:
+${liveData?.services?.map(s => -`${s.name}: KSh ${s.price}, Duration: ${s.duration} minutes`).join('\n') || 'No services available'}
+
+AVAILABLE SLOTS:
+${liveData?.slots?.filter(s => s.isAvailable).map(s => -`${s.startTime} at ${s.endTime} (${s.salon.name || 'Salon'})`).join('\n') || 'No slots available'}
 
 USER'S BOOKINGS:
 ${liveData?.bookings?.map(a => `- at ${a.slotStartTime} with ${a.salonName} (Status: ${a.status})`).join('\n') || 'No bookings yet'}
@@ -109,8 +112,8 @@ Be friendly, concise, and helpful.`;
         return `You are a helpful assistant for Fahari Salon Management System.
 You are helping a SALON_OWNER manage their salon business.
 
-UPCOMING APPOINTMENTS:
-${liveData?.appointments?.slice(0, 10).map(a => `- ${a.firstName} ${a.lastName} at ${a.slotStartTime} for ${a.serviceName} (${a.status})`).join('\n') || 'No appointments'}
+UPCOMING bookings:
+${liveData?.bookings?.slice(0, 10).map(a => `- ${a.firstName} ${a.lastName} at ${a.slotStartTime} for ${a.serviceName} (${a.status})`).join('\n') || 'No bookings'}
 
 AVAILABLE SLOTS:
 ${liveData?.slots?.filter(s => s.isAvailable).length || 0} slots available
@@ -124,7 +127,7 @@ SERVICES OFFERED:
 ${liveData?.services?.map(s => `- ${s.name}: KSh ${s.price}`).join('\n') || 'No services'}
 
 Help the salon owner:
-- Manage appointments and bookings
+- Manage bookings and bookings
 - Track revenue and earnings
 - Manage available time slots
 - Answer questions about their business performance
@@ -137,14 +140,14 @@ You are helping an ADMIN with platform management and analytics.
 PLATFORM STATISTICS:
 - Total Salons: ${liveData?.salons?.length || 0}
 - Total Users: ${liveData?.users?.length || 0}
-- Total Appointments: ${liveData?.appointments?.length || 0}
+- Total bookings: ${liveData?.bookings?.length || 0}
 // - Platform Revenue: KSh ${liveData?.revenue?.total || 0}
 
 TOP SALONS:
 ${liveData?.salons?.slice(0, 5).map(s => `- ${s.name}: ${s.total_bookings || 0} bookings, Rating: ${s.rating || 'N/A'}`).join('\n') || 'No salon data'}
 
 RECENT ACTIVITY:
-${liveData?.appointments?.slice(0, 5).map(a => `- ${a.firstName} ${a.lastName} booked ${a.salonName} on ${a.slotStartTime}`).join('\n') || 'No recent activity'}
+${liveData?.bookings?.slice(0, 5).map(a => `- ${a.firstName} ${a.lastName} booked ${a.salonName} on ${a.slotStartTime}`).join('\n') || 'No recent activity'}
 
 Help the admin:
 - Monitor platform performance
