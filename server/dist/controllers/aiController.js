@@ -48,13 +48,22 @@ async function fetchLiveDataForUser(userRole, userId) {
     const baseUrl = 'https://fahari-production.up.railway.app/api';
     try {
         if (userRole === 'CLIENT') {
-            const [salons, slots, bookings, services] = await Promise.all([
-                getSalonsService({ page: 1, limit: 50 }).then((data) => data.salons),
-                getSlotsService({}),
-                getMyBookingsService(userId),
+            const [salonsResult, servicesResult, slotsResult, bookingsResult] = await Promise.all([
+                // getSalonsService expects a query object
+                getSalonsService({ page: 1, limit: 10 }),
+                // getAllServicesService takes no params
                 getAllServicesService(),
+                // getSlotsService expects a query (can be empty)
+                getSlotsService({}),
+                // getMyBookingsService expects userId
+                getMyBookingsService(userId),
             ]);
-            return { salons, slots, bookings, services };
+            return {
+                salons: salonsResult.salons, // includes pagination inside
+                salonServices: servicesResult,
+                slots: slotsResult,
+                bookings: bookingsResult,
+            };
         }
         else if (userRole === 'SALON_OWNER') {
             // Fetch data relevant to salon owners
@@ -93,7 +102,7 @@ AVAILABLE SALONS:
 ${liveData?.salons?.map(s => -`${s.name} at ${s.location || 'location not specified'}`).join('\n') || 'No salons available'}
 
 AVAILABLE SERVICES:
-${liveData?.services?.map(s => -`${s.name}: KSh ${s.price}, Duration: ${s.duration} minutes`).join('\n') || 'No services available'}
+${liveData?.salonServices?.map(s => -`${s.service.name}: KSh ${s.price}, Duration: ${s.duration} minutes`).join('\n') || 'No services available'}
 
 AVAILABLE SLOTS:
 ${liveData?.slots?.filter(s => s.isAvailable).map(s => -`${s.startTime} at ${s.endTime} (${s.salon.name || 'Salon'})`).join('\n') || 'No slots available'}
@@ -124,7 +133,7 @@ ${liveData?.slots?.filter(s => s.isAvailable).length || 0} slots available
 // - Pending Payments: KSh ${liveData?.revenue?.pending || 0}
 
 SERVICES OFFERED:
-${liveData?.services?.map(s => `- ${s.name}: KSh ${s.price}`).join('\n') || 'No services'}
+${liveData?.salonServices?.map(s => `- ${s.service.name}: KSh ${s.price}`).join('\n') || 'No services'}
 
 Help the salon owner:
 - Manage bookings and bookings
@@ -144,7 +153,7 @@ PLATFORM STATISTICS:
 // - Platform Revenue: KSh ${liveData?.revenue?.total || 0}
 
 TOP SALONS:
-${liveData?.salons?.slice(0, 5).map(s => `- ${s.name}: ${s.total_bookings || 0} bookings, Rating: ${s.rating || 'N/A'}`).join('\n') || 'No salon data'}
+${liveData?.salons?.slice(0, 5).map(s => `- ${s.name}:  Rating: ${s.averageRating || 'N/A'}`).join('\n') || 'No salon data'}
 
 RECENT ACTIVITY:
 ${liveData?.bookings?.slice(0, 5).map(a => `- ${a.firstName} ${a.lastName} booked ${a.salonName} on ${a.slotStartTime}`).join('\n') || 'No recent activity'}

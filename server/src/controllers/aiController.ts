@@ -6,22 +6,14 @@ import { getSalonServices } from './salonServicesController';
 import { getBookings } from './bookingController';
 import { getSlots } from './slotsController';
 import { AIClientRequest } from '../utils/types/userTypes';
-import { getMyBookingsService,getBookingsData,getSalonServicesService,getSalonsService,getSlotsService,getAllServicesService} from '../services/aiService';
+import { getMyBookingsService,
+  getBookingsData,
+  getSalonServicesService,
+  getSalonsService,
+  getSlotsService,
+  getAllServicesService} from '../services/aiService';
+import { LiveData} from '@/utils/types/liveData';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-
-interface LiveData {
-  salons?: any[];
-  services?: any[];
-  slots?: any[];
-  bookings?: any[];
-  users?: User[];
-  revenue?: {
-    total?: number;
-    this_month?: number;
-    pending?: number;
-  };
-}
-
 
 export const handleAIChat = async (req: AIClientRequest, res: Response): Promise<void> => {
   try {
@@ -82,14 +74,27 @@ async function fetchLiveDataForUser(
   
   try {
     if (userRole === 'CLIENT') {
-      const [salons, slots,bookings,services] = await Promise.all([
-      getSalonsService({ page: 1, limit: 50 }).then((data) => data.salons),
+       const [salonsResult, servicesResult, slotsResult, bookingsResult] = await Promise.all([
+    // getSalonsService expects a query object
+    getSalonsService({ page: 1, limit: 10 }),
 
-    getSlotsService({}),
-    getMyBookingsService(userId),
+    // getAllServicesService takes no params
     getAllServicesService(),
+
+    // getSlotsService expects a query (can be empty)
+    getSlotsService({}),
+
+    // getMyBookingsService expects userId
+    getMyBookingsService(userId),
   ]);
-      return { salons,slots,bookings,services };
+
+  return {
+    salons: salonsResult.salons, // includes pagination inside
+    salonServices: servicesResult,
+    slots: slotsResult,
+    bookings: bookingsResult,
+  };
+
       
     } else if (userRole === 'SALON_OWNER') {
       // Fetch data relevant to salon owners
@@ -132,7 +137,7 @@ AVAILABLE SALONS:
 ${liveData?.salons?.map(s => - `${s.name} at ${s.location || 'location not specified'}`).join('\n') || 'No salons available'}
 
 AVAILABLE SERVICES:
-${liveData?.services?.map(s => - `${s.name}: KSh ${s.price}, Duration: ${s.duration} minutes`).join('\n') || 'No services available'}
+${liveData?.salonServices?.map(s => - `${s.service!.name}: KSh ${s.price}, Duration: ${s.duration} minutes`).join('\n') || 'No services available'}
 
 AVAILABLE SLOTS:
 ${liveData?.slots?.filter(s => s.isAvailable).map(s => 
@@ -170,7 +175,7 @@ ${liveData?.slots?.filter(s => s.isAvailable).length || 0} slots available
 // - Pending Payments: KSh ${liveData?.revenue?.pending || 0}
 
 SERVICES OFFERED:
-${liveData?.services?.map(s => `- ${s.name}: KSh ${s.price}`).join('\n') || 'No services'}
+${liveData?.salonServices?.map(s => `- ${s.service!.name}: KSh ${s.price}`).join('\n') || 'No services'}
 
 Help the salon owner:
 - Manage bookings and bookings
@@ -192,7 +197,7 @@ PLATFORM STATISTICS:
 
 TOP SALONS:
 ${liveData?.salons?.slice(0, 5).map(s => 
-  `- ${s.name}: ${s.total_bookings || 0} bookings, Rating: ${s.rating || 'N/A'}`
+  `- ${s.name}:  Rating: ${s.averageRating || 'N/A'}`
 ).join('\n') || 'No salon data'}
 
 RECENT ACTIVITY:
