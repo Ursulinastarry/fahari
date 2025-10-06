@@ -70,51 +70,43 @@ async function fetchLiveDataForUser(
   userRole: 'CLIENT' | 'SALON_OWNER' | 'ADMIN', 
   userId: string,
 ): Promise<LiveData | null> {
-  const baseUrl = 'https://fahari-production.up.railway.app/api';
   
   try {
     if (userRole === 'CLIENT') {
        const [salonsResult, servicesResult, slotsResult, bookingsResult] = await Promise.all([
-    // getSalonsService expects a query object
     getSalonsService({ page: 1, limit: 10 }),
-
-    // getAllServicesService takes no params
     getAllServicesService(),
-
-    // getSlotsService expects a query (can be empty)
     getSlotsService({}),
-
-    // getMyBookingsService expects userId
     getMyBookingsService(userId),
   ]);
 
-  return {
-    salons: salonsResult.salons, // includes pagination inside
-    salonServices: servicesResult,
-    slots: slotsResult,
-    bookings: bookingsResult,
-  };
+  const salons = salonsResult?.salons || [];
+  const salonServices = servicesResult || [];
+  const slots = slotsResult || [];
+  const bookings = bookingsResult || [];
+
+  return { salons, salonServices, slots, bookings };
 
       
     } else if (userRole === 'SALON_OWNER') {
       // Fetch data relevant to salon owners
-      const [bookings] = await Promise.all([
-        fetch(`${baseUrl}/bookings/owner`).then(r => r.json()),
+      // const [bookings] = await Promise.all([
+        // fetch(`${baseUrl}/bookings/owner`).then(r => r.json()),
         // fetch(`${baseUrl}/slots/salons?salonId=${salonId}`).then(r => r.json()),
         // fetch(`${baseUrl}/revenue?salonId=${userId}`).then(r => r.json()),
         // fetch(`${baseUrl}/salon-services?salonId=${salonId}`).then(r => r.json())
-      ]);
-      return { bookings };
+      // ]);
+      // return { bookings };
       
     } else if (userRole === 'ADMIN') {
       // Fetch platform-wide data for admin
-      const [salons, users, ] = await Promise.all([
-        fetch(`${baseUrl}/salons`).then(r => r.json()),
-        fetch(`${baseUrl}/users`).then(r => r.json()),
-        // fetch(`${baseUrl}/platform-revenue`).then(r => r.json())
-      ]);
-      const bookings=await getBookingsData(userId,userRole);
-      return { salons, users, bookings};
+      // const [salons, users, ] = await Promise.all([
+      //   fetch(`${baseUrl}/salons`).then(r => r.json()),
+      //   fetch(`${baseUrl}/users`).then(r => r.json()),
+      //   fetch(`${baseUrl}/platform-revenue`).then(r => r.json())
+      // ]);
+      // const bookings=await getBookingsData(userId,userRole);
+      // return { salons, users, bookings};
     }
     
     return null;
@@ -129,34 +121,54 @@ function buildSystemPrompt(
   userRole: 'CLIENT' | 'SALON_OWNER' | 'ADMIN', 
   liveData: LiveData | null
 ): string {
-  if (userRole === 'CLIENT') {
-    return `You are a helpful assistant for Fahari Salon Management System.
-You are helping a CLIENT user who wants to book bookings and find salon services.
+ if (userRole === 'CLIENT') {
+  return `You are a helpful assistant for Fahari Salon Management System.
+You are helping a CLIENT user who wants to explore salons, view services, and make bookings.
 
-AVAILABLE SALONS:
-${liveData?.salons?.map(s => - `${s.name} at ${s.location || 'location not specified'}`).join('\n') || 'No salons available'}
+=== AVAILABLE SALONS ===
+${
+  liveData?.salons?.length
+    ? liveData.salons.map(s => 
+        `- ${s.name} (${s.city || 'Unknown City'}) — ${s.location || 'No location'}`
+      ).join('\n')
+    : 'No salons available yet.'
+}
 
-AVAILABLE SERVICES:
-${liveData?.salonServices?.map(s => - `${s.service!.name}: KSh ${s.price}, Duration: ${s.duration} minutes`).join('\n') || 'No services available'}
+=== AVAILABLE SERVICES ===
+${
+  liveData?.salonServices?.length
+    ? liveData.salonServices.map(svc =>
+        `- ${svc?.service?.name || 'Unnamed service'}: KSh ${svc.price || 'N/A'} (${svc.duration || '?'} min)`
+      ).join('\n')
+    : 'No services found.'
+}
 
-AVAILABLE SLOTS:
-${liveData?.slots?.filter(s => s.isAvailable).map(s => 
-  - `${s.startTime} at ${s.endTime} (${s.salon.name || 'Salon'})`
-).join('\n') || 'No slots available'}
+=== AVAILABLE SLOTS ===
+${
+  liveData?.slots?.filter(s => s.isAvailable)?.length
+    ? liveData.slots
+        .filter(s => s.isAvailable)
+        .map(slot => `- ${slot.startTime}–${slot.endTime} at ${slot.salon?.name || 'Unknown Salon'}`)
+        .join('\n')
+    : 'No available slots currently.'
+}
 
-USER'S BOOKINGS:
-${liveData?.bookings?.map(a => 
-  `- at ${a.slotStartTime} with ${a.salonName} (Status: ${a.status})`
-).join('\n') || 'No bookings yet'}
+=== YOUR BOOKINGS ===
+${
+  liveData?.bookings?.length
+    ? liveData.bookings.map(b => 
+        `- ${b.serviceName || 'Service'} at ${b.slotStartTime || 'time not available'} (${b.status || 'unknown status'})`
+      ).join('\n')
+    : 'You have no bookings yet.'
+}
 
-Help the client:
-- Find available salons and services
-- Book bookings at available time slots
-- Check their existing bookings
-- Answer questions about services and pricing
-Be friendly, concise, and helpful.`;
-  }
-  
+Your job:
+- Help the client explore salons and services.
+- Suggest available slots for booking.
+- Help them manage or view their bookings.
+Keep it factual — do NOT invent or assume data. Use only what's shown above.`;
+}
+
   else if (userRole === 'SALON_OWNER') {
     return `You are a helpful assistant for Fahari Salon Management System.
 You are helping a SALON_OWNER manage their salon business.
