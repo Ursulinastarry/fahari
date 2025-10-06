@@ -7,6 +7,7 @@ import { getBookings } from './bookingController';
 import { getSlots } from './slotsController';
 import { AIClientRequest } from '../utils/types/userTypes';
 import { getBookingsData } from '../services/aiService';
+import { getMyBookingsService } from '../services/aiService';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 interface LiveData {
@@ -90,7 +91,8 @@ async function fetchLiveDataForUser(
         fetch(`${baseUrl}/slots`).then(r => r.json()),
         fetch(`${baseUrl}/bookings/me`).then(r => r.json())
       ]);
-      return { salons, services, slots, appointments };
+      const bookings=await getMyBookingsService(userId);
+      return { salons, services, slots, appointments ,bookings};
       
     } else if (userRole === 'SALON_OWNER') {
       // Fetch data relevant to salon owners

@@ -39,6 +39,46 @@ export const getBookingsData = async (userId: string, userRole: string, status?:
 
   return bookings;
 };
+import { pool } from "../index";
+import { UserRequest } from "../utils/types/userTypes";
+
+export const getMyBookingsService = async (userId: string) => {
+  const { rows } = await pool.query(
+    `
+    SELECT 
+      b.id, 
+      b."bookingNumber", 
+      b."totalAmount", 
+      b.status,
+      b."createdAt", 
+      b."updatedAt",
+      s.id as "salonId", 
+      s.name as "salonName",
+      ss.id as "salonServiceId",
+      sv.id as "serviceId",
+      sv.name as "serviceName",
+      u.id as "clientId", 
+      u."firstName", 
+      u."lastName", 
+      u.email, 
+      u.phone,
+      sl."startTime" as "slotStartTime",
+      sl."endTime"   as "slotEndTime"
+    FROM bookings b
+    JOIN salons s ON b."salonId" = s.id
+    JOIN users u ON b."clientId" = u.id
+    JOIN slots sl ON b."slotId" = sl.id
+    JOIN salon_services ss ON b."salonServiceId" = ss.id
+    JOIN services sv ON ss."serviceId" = sv.id
+    WHERE u.id = $1
+    ORDER BY b."createdAt" DESC
+    `,
+    [userId]
+  );
+
+  return rows;
+};
+
 export const fetchAllSalons = async () => {
   return await prisma.salon.findMany(); // Prisma, Sequelize, or whatever DB client
 };
