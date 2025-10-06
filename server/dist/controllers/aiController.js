@@ -1,3 +1,4 @@
+import { getBookingsData } from '../services/aiService.js';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 export const handleAIChat = async (req, res) => {
     try {
@@ -74,7 +75,8 @@ async function fetchLiveDataForUser(userRole, userId) {
                 fetch(`${baseUrl}/bookings`).then(r => r.json()),
                 // fetch(`${baseUrl}/platform-revenue`).then(r => r.json())
             ]);
-            return { salons, users, appointments };
+            const bookings = await getBookingsData(userId, userRole);
+            return { salons, users, appointments, bookings };
         }
         return null;
     }

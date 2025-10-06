@@ -5,7 +5,7 @@ import { createAndSendNotification } from "../services/notificationService";
 
 // Run every minute
 cron.schedule("* * * * *", async () => {
-  console.log("🔔 Running reminder cron job");
+  // console.log("🔔 Running reminder cron job");
   
   try {
     // Get current Nairobi time
@@ -14,18 +14,18 @@ cron.schedule("* * * * *", async () => {
     );
 
     const fiveHoursFromNow = new Date(nairobiNow.getTime() + 5 * 60 * 60 * 1000);
-    const fiveMinutesWindow = new Date(fiveHoursFromNow.getTime() + 5 * 60 * 1000);
+    const oneMinuteWindow = new Date(fiveHoursFromNow.getTime() + 1 * 60 * 1000);
 
-    console.log("Nairobi now:", nairobiNow.toISOString());
-    console.log("Five hours from now:", fiveHoursFromNow.toISOString());
-    console.log("Five minutes after that:", fiveMinutesWindow.toISOString());
+    // console.log("Nairobi now:", nairobiNow.toISOString());
+    // console.log("Five hours from now:", fiveHoursFromNow.toISOString());
+    // console.log("One minute after that:", oneMinuteWindow.toISOString());
 
     const bookings = await prisma.booking.findMany({
       where: {
         slot: {
           startTime: {
             gte: fiveHoursFromNow,
-            lt: fiveMinutesWindow, // 5-minute window
+            lt: oneMinuteWindow, // 1-minute window
           },
         },
         status: "CONFIRMED",
@@ -49,7 +49,7 @@ cron.schedule("* * * * *", async () => {
       await createAndSendNotification({
         userId: booking.client.id,
         title: "Don't forget your appointment!",
-        message: `Your booking for ${booking.salonService?.service?.name || "service"} at ${booking.salon?.name || "salon"} is coming up in 5 hours.`,
+        message: `Your booking for ${booking.salonService?.service?.name || "service"} at ${booking.salon?.name || "salon"} is coming up in 8 hours.`,
         type: "BOOKING_REMINDER",
         data: { bookingId: booking.id },
         sendEmail: true,

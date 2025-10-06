@@ -119,53 +119,15 @@ if (!salonServiceId) {
   });
   res.status(201).json({ booking, bookedSlots: slotIds, appointment });
 });
+import { getBookingsData } from "../services/aiService";
+
 export const getBookings = asyncHandler(async (req: Request, res: Response) => {
   try {
     const { status, salonId } = req.query;
     const userId = (req as any).user.id;
     const userRole = (req as any).user.role;
-    
-    const where: any = {};
-    if (status) where.status = status as string;
-    
-    // Filter based on user role
-    if (userRole === 'CLIENT') {
-      where.clientId = userId;
-    } else if (userRole === 'SALON_OWNER') {
-      if (salonId) {
-        // Verify salon ownership
-        const salon = await prisma.salon.findFirst({
-          where: { id: salonId as string, ownerId: userId }
-        });
-        if (!salon) {
-          return res.status(403).json({ message: 'Not authorized to view bookings for this salon' });
-        }
-        where.salonId = salonId as string;
-      } else {
-        // Get all bookings for owned salons
-        const ownedSalons = await prisma.salon.findMany({
-          where: { ownerId: userId },
-          select: { id: true }
-        });
-        where.salonId = { in: ownedSalons.map((s: { id: any; }) => s.id) };
-      }
-    } else if (userRole === 'ADMIN' && salonId) {
-      where.salonId = salonId as string;
-    }
-    
-    const bookings = await prisma.booking.findMany({
-      where,
-      include: {
-        client: { select: { firstName: true, lastName: true, phone: true } },
-        salon: { select: { name: true } },
-        salonService: { select: { service: { select: { name: true, category: true } } } },
-        appointment: true,
-        payment: true,
-        review: true
-      },
-      orderBy: { createdAt: 'desc' }
-    });
-    
+
+    const bookings = await getBookingsData(userId, userRole, status as string, salonId as string);
     res.json(bookings);
   } catch (error: any) {
     res.status(500).json({ message: error.message });

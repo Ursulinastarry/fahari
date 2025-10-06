@@ -1,14 +1,20 @@
 // controllers/aiChatController.ts
 import { Request, Response } from 'express';
 import { User} from '../utils/types/userTypes';
+import { getSalons } from './salonController';
+import { getSalonServices } from './salonServicesController';
+import { getBookings } from './bookingController';
+import { getSlots } from './slotsController';
+import { AIClientRequest } from '../utils/types/userTypes';
+import { getBookingsData } from '../services/aiService';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-import { AIClientRequest } from '../utils/types/userTypes';
 interface LiveData {
   salons?: any[];
   services?: any[];
   slots?: any[];
   appointments?: any[];
+  bookings?: any[];
   users?: User[];
   revenue?: {
     total?: number;
@@ -104,7 +110,8 @@ async function fetchLiveDataForUser(
         fetch(`${baseUrl}/bookings`).then(r => r.json()),
         // fetch(`${baseUrl}/platform-revenue`).then(r => r.json())
       ]);
-      return { salons, users, appointments };
+      const bookings=await getBookingsData(userId,userRole);
+      return { salons, users, appointments,bookings };
     }
     
     return null;

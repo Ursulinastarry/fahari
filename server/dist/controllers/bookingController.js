@@ -96,53 +96,13 @@ export const createBooking = asyncHandler(async (req, res) => {
     });
     res.status(201).json({ booking, bookedSlots: slotIds, appointment });
 });
+import { getBookingsData } from "../services/aiService.js";
 export const getBookings = asyncHandler(async (req, res) => {
     try {
         const { status, salonId } = req.query;
         const userId = req.user.id;
         const userRole = req.user.role;
-        const where = {};
-        if (status)
-            where.status = status;
-        // Filter based on user role
-        if (userRole === 'CLIENT') {
-            where.clientId = userId;
-        }
-        else if (userRole === 'SALON_OWNER') {
-            if (salonId) {
-                // Verify salon ownership
-                const salon = await prisma.salon.findFirst({
-                    where: { id: salonId, ownerId: userId }
-                });
-                if (!salon) {
-                    return res.status(403).json({ message: 'Not authorized to view bookings for this salon' });
-                }
-                where.salonId = salonId;
-            }
-            else {
-                // Get all bookings for owned salons
-                const ownedSalons = await prisma.salon.findMany({
-                    where: { ownerId: userId },
-                    select: { id: true }
-                });
-                where.salonId = { in: ownedSalons.map((s) => s.id) };
-            }
-        }
-        else if (userRole === 'ADMIN' && salonId) {
-            where.salonId = salonId;
-        }
-        const bookings = await prisma.booking.findMany({
-            where,
-            include: {
-                client: { select: { firstName: true, lastName: true, phone: true } },
-                salon: { select: { name: true } },
-                salonService: { select: { service: { select: { name: true, category: true } } } },
-                appointment: true,
-                payment: true,
-                review: true
-            },
-            orderBy: { createdAt: 'desc' }
-        });
+        const bookings = await getBookingsData(userId, userRole, status, salonId);
         res.json(bookings);
     }
     catch (error) {
