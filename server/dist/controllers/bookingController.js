@@ -183,45 +183,21 @@ export const getOwnerBookings = asyncHandler(async (req, res) => {
   `, [ownerId]);
     res.json(rows);
 });
+import { getMyBookingsService } from "../services/aiService.js";
 export const getMyBookings = async (req, res) => {
     try {
         const userId = req.user?.id;
-        if (!userId)
+        if (!userId) {
             return res.status(401).json({ error: "Unauthorized" });
-        const { rows: bookingArray } = await pool.query(`
-  SELECT 
-    b.id, 
-    b."bookingNumber", 
-    b."totalAmount", 
-    b.status,
-    b."createdAt", 
-    b."updatedAt",
-    s.id as "salonId", 
-    s.name as "salonName",
-    ss.id as "salonServiceId",
-    sv.id as "serviceId",
-    sv.name as "serviceName",
-    u.id as "clientId", 
-    u."firstName", 
-    u."lastName", 
-    u.email, 
-    u.phone,
-    sl."startTime" as "slotStartTime",
-    sl."endTime"   as "slotEndTime"
-  FROM bookings b
-  JOIN salons s ON b."salonId" = s.id
-  JOIN users u ON b."clientId" = u.id
-  JOIN slots sl ON b."slotId" = sl.id
-  JOIN salon_services ss ON b."salonServiceId" = ss.id
-  JOIN services sv ON ss."serviceId" = sv.id
-    WHERE u.id = $1
-    ORDER BY b."createdAt" DESC
-    `, [userId]);
-        res.json(bookingArray);
+        }
+        const bookings = await getMyBookingsService(userId);
+        res.json(bookings);
     }
     catch (err) {
         console.error("Error fetching bookings:", err);
-        res.status(500).json({ error: err instanceof Error ? err.message : err });
+        res
+            .status(500)
+            .json({ error: err instanceof Error ? err.message : "Unknown error" });
     }
 };
 // controllers/bookingController.ts

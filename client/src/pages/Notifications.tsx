@@ -129,13 +129,13 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, onClose
           ) : (
             <div className="space-y-4">
               {notifications.map((notification) => {
-                console.log('Rendering notification:', {
-                  id: notification.id,
-                  title: notification.title,
-                  isRead: notification.isRead,
-                  createdAt: notification.createdAt,
-                  hasCreatedAt: !!notification.createdAt
-                });
+                // console.log('Rendering notification:', {
+                //   id: notification.id,
+                //   title: notification.title,
+                //   isRead: notification.isRead,
+                //   createdAt: notification.createdAt,
+                //   hasCreatedAt: !!notification.createdAt
+                // });
 
                 return (
                   <div

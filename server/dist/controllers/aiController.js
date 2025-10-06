@@ -1,4 +1,5 @@
 import { getBookingsData } from '../services/aiService.js';
+import { getMyBookingsService } from '../services/aiService.js';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 export const handleAIChat = async (req, res) => {
     try {
@@ -49,13 +50,14 @@ async function fetchLiveDataForUser(userRole, userId) {
     try {
         if (userRole === 'CLIENT') {
             // Fetch data relevant to clients
-            const [salons, services, slots, appointments] = await Promise.all([
-                fetch(`${baseUrl}/salons`).then(r => r.json()),
-                fetch(`${baseUrl}/salon-services`).then(r => r.json()),
-                fetch(`${baseUrl}/slots`).then(r => r.json()),
-                fetch(`${baseUrl}/bookings/me`).then(r => r.json())
-            ]);
-            return { salons, services, slots, appointments };
+            // const [salons, services, slots, appointments] = await Promise.all([
+            //   fetch(`${baseUrl}/salons`).then(r => r.json()),
+            //   fetch(`${baseUrl}/salon-services`).then(r => r.json()),
+            //   fetch(`${baseUrl}/slots`).then(r => r.json()),
+            //   fetch(`${baseUrl}/bookings/me`).then(r => r.json())
+            // ]);
+            const bookings = await getMyBookingsService(userId);
+            return { bookings };
         }
         else if (userRole === 'SALON_OWNER') {
             // Fetch data relevant to salon owners
@@ -91,22 +93,15 @@ function buildSystemPrompt(userRole, liveData) {
         return `You are a helpful assistant for Fahari Salon Management System.
 You are helping a CLIENT user who wants to book appointments and find salon services.
 
-AVAILABLE SALONS:
-${liveData?.salons?.map(s => `- ${s.name} at ${s.location || 'location not specified'}`).join('\n') || 'No salons available'}
 
-AVAILABLE SERVICES:
-${liveData?.services?.map(s => `- ${s.name}: KSh ${s.price}, Duration: ${s.duration} minutes`).join('\n') || 'No services available'}
 
-AVAILABLE SLOTS:
-${liveData?.slots?.filter(s => s.isAvailable).map(s => `- ${s.startTime} at ${s.endTime} (${s.salon.name || 'Salon'})`).join('\n') || 'No slots available'}
-
-USER'S APPOINTMENTS:
-${liveData?.appointments?.map(a => `- at ${a.slotStartTime} with ${a.salonName} (Status: ${a.status})`).join('\n') || 'No appointments yet'}
+USER'S BOOKINGS:
+${liveData?.bookings?.map(a => `- at ${a.slotStartTime} with ${a.salonName} (Status: ${a.status})`).join('\n') || 'No bookings yet'}
 
 Help the client:
 - Find available salons and services
-- Book appointments at available time slots
-- Check their existing appointments
+- Book bookings at available time slots
+- Check their existing bookings
 - Answer questions about services and pricing
 Be friendly, concise, and helpful.`;
     }

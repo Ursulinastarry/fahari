@@ -34,7 +34,7 @@ cron.schedule("* * * * *", async () => {
                 salon: true,
             },
         });
-        console.log(`🔍 Found ${bookings.length} bookings to remind`);
+        // console.log(`🔍 Found ${bookings.length} bookings to remind`);
         // Send notification for each booking
         for (const booking of bookings) {
             await createAndSendNotification({
