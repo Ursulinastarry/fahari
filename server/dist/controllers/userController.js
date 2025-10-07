@@ -8,6 +8,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import prisma from "../config/prisma.js";
+import { getAllUsersService } from "../services/aiService.js";
 dotenv.config();
 //Debugging  - check if env var are loaded correctly  
 const jwtSecret = process.env.ACCESS_TOKEN_SECRET;
@@ -165,13 +166,8 @@ export const suspendUser = asyncHandler(async (req, res) => {
 });
 /** Get all users */
 export const getAllUsers = asyncHandler(async (req, res) => {
-    try {
-        const { rows } = await pool.query(`SELECT * FROM users`);
-        res.json(rows);
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+    const users = await getAllUsersService();
+    res.json(users);
 });
 /** Get user by ID */
 export const getUserById = asyncHandler(async (req, res) => {

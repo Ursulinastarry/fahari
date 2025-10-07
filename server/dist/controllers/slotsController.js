@@ -1,6 +1,7 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import prisma from "../config/prisma.js";
 import { DateTime } from 'luxon';
+import { getSlotsService, getOwnerSlotsService } from "../services/aiService.js";
 export const createSlot = asyncHandler(async (req, res) => {
     try {
         const { salonId, serviceId, date, startTime, endTime, isRecurring } = req.body;
@@ -34,7 +35,6 @@ export const createSlot = asyncHandler(async (req, res) => {
         res.status(500).json({ error: "Failed to create slot" });
     }
 });
-import { getSlotsService } from "../services/aiService.js";
 export const getSlots = async (req, res) => {
     try {
         const slots = await getSlotsService(req.query);
@@ -45,18 +45,13 @@ export const getSlots = async (req, res) => {
     }
 };
 export const getSalonSlots = asyncHandler(async (req, res) => {
-    const { salonId } = req.params;
-    const slots = await prisma.slot.findMany({
-        where: { salonId },
-        orderBy: { startTime: "asc" },
-        select: {
-            id: true,
-            startTime: true,
-            endTime: true,
-            isAvailable: true,
-            serviceId: true,
-        },
-    });
+    if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+    if (req.user.role !== "SALON_OWNER" && req.user.role !== "ADMIN") {
+        return res.status(403).json({ message: "Forbidden" });
+    }
+    const slots = await getOwnerSlotsService(req.user.id);
     res.json(slots);
 });
 export const updateSlot = asyncHandler(async (req, res) => {

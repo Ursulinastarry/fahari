@@ -5,7 +5,7 @@ import { UserRequest } from "../utils/types/userTypes";
 import { PrismaClient } from '@prisma/client';
 import { pool } from "../index";
 import prisma from "../config/prisma";
-import { getSalonServicesService } from "@/services/aiService";
+import { getSalonServicesService,getOwnerServicesService } from "@/services/aiService";
 export const addSalonService = asyncHandler(async (req: Request, res: Response) => {
   const { serviceId, price, duration } = req.body;
   const { salonId } = req.params; // Get from URL
@@ -124,32 +124,11 @@ export const getOwnerServices = asyncHandler(async (req: UserRequest, res: Respo
     return res.status(403).json({ message: "Forbidden: only salon owners or admins can view this" });
   }
 
-  const salons = await prisma.salon.findMany({
-    where: { ownerId: req.user.id },
-    include: {
-      salonServices: {
-        include: { service: true },
-      },
-    },
-  });
+  const services = await getOwnerServicesService(req.user.id);
 
-  if (!salons.length) {
-    return res.status(404).json({ message: "No salons found for this owner" });
+  if (!services.length) {
+    return res.status(404).json({ message: "No services found for this owner" });
   }
-
-  // Normalize shape for frontend
-  const services = salons.flatMap((salon) =>
-    salon.salonServices.map((ss) => ({
-      id: ss.id, // 👈 salonService id
-      price: ss.price,
-      duration: ss.duration,
-      service: {
-        id: ss.service.id,     // base service id
-        name: ss.service.name, // base service name
-        active: ss.service.isActive,
-      },
-    }))
-  );
 
   res.json(services);
 });

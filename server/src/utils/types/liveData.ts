@@ -15,7 +15,7 @@ export interface SalonData {
   salonServices: {
     id: string;
     price: number;
-    duration:number;
+    duration: number;
     service: {
       id: string;
       name: string;
@@ -37,7 +37,49 @@ export interface Pagination {
   pages: number;
 }
 
+export interface OwnerBooking {
+  id: string;
+  bookingNumber: string;
+  totalAmount: number;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  salonId: string;
+  salonName: string;
+  salonServiceId: string;
+  serviceId: string;
+  serviceName: string;
+  clientId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  slotStartTime: Date | string;
+  slotEndTime: Date | string;
+}
+
+export interface OwnerService {
+  id: string;
+  price: number;
+  duration: number;
+  service: {
+    id: string;
+    name: string;
+    active: boolean;
+  };
+}
+
+export interface SalonSlot {
+  id: string;
+  salonId: string;
+  startTime: Date | string;
+  endTime: Date | string;
+  isAvailable: boolean;
+  serviceId: string | null;
+}
+
 export interface LiveData {
+  // Client data
   salons?: SalonData[];
   salonServices?: SalonData['salonServices'];
   slots?: {
@@ -48,13 +90,16 @@ export interface LiveData {
     endTime: Date | string;
     isAvailable: boolean;
     salon: { name: string };
-    service: { name: string; category: string | null} | null;
+    service: { name: string; category: string | null } | null;
   }[];
   bookings?: any[];
+  
+  // Salon Owner data
+  ownerBookings?: OwnerBooking[];
+  ownerServices?: OwnerService[];
+  ownerSlots?: SalonSlot[];
+  
+  // Admin data
   users?: User[];
-  revenue?: {
-    total?: number;
-    this_month?: number;
-    pending?: number;
-  };
+  allBookings?: OwnerBooking[];
 }

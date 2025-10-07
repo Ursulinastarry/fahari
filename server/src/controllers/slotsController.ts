@@ -6,6 +6,7 @@ import { PrismaClient } from '@prisma/client';
 import { pool } from "../index";
 import prisma from "../config/prisma";
 import { DateTime } from 'luxon';
+import { getSlotsService,getOwnerSlotsService } from "../services/aiService";
 
 export const createSlot = asyncHandler(async (req: Request, res: Response) => {
   try {
@@ -46,7 +47,6 @@ export const createSlot = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-import { getSlotsService } from "../services/aiService";
 
 export const getSlots = async (req: Request, res: Response) => {
   try {
@@ -57,21 +57,16 @@ export const getSlots = async (req: Request, res: Response) => {
   }
 };
 
-export const getSalonSlots = asyncHandler(async (req: Request, res: Response) => {
-  const { salonId } = req.params;
+export const getSalonSlots = asyncHandler(async (req: UserRequest, res: Response) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
-  const slots = await prisma.slot.findMany({
-    where: { salonId },
-    orderBy: { startTime: "asc" },
-    select: {
-      id: true,
-      startTime: true,
-      endTime: true,
-      isAvailable: true,
-      serviceId: true,
-    },
-  });
+  if (req.user.role !== "SALON_OWNER" && req.user.role !== "ADMIN") {
+    return res.status(403).json({ message: "Forbidden" });
+  }
 
+  const slots = await getOwnerSlotsService(req.user.id);
   res.json(slots);
 });
 export const updateSlot = asyncHandler(async (req: Request, res: Response) => {

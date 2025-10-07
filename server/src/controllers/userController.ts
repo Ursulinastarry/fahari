@@ -10,6 +10,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import prisma from "../config/prisma";
+import { getAllUsersService } from "@/services/aiService";
 dotenv.config()
 //Debugging  - check if env var are loaded correctly  
 
@@ -216,14 +217,11 @@ export const suspendUser = asyncHandler(async (req: UserRequest, res: Response) 
 });
 
 /** Get all users */
-export const getAllUsers = asyncHandler(async (req: Request, res: Response)=> {
-  try {
-    const { rows } = await pool.query(`SELECT * FROM users`);
-    res.json(rows);
-  } catch (error:any) {
-    res.status(500).json({ message: error.message });
-  }
-})
+export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
+  const users = await getAllUsersService();
+  res.json(users);
+});
+
 
 /** Get user by ID */
 export const getUserById = asyncHandler(async (req: Request, res: Response)=> {

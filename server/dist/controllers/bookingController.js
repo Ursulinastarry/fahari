@@ -1,8 +1,8 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
-import { pool } from "../index.js";
 import prisma from "../config/prisma.js";
 import { DateTime } from "luxon";
 import { createAndSendNotification } from "../services/notificationService.js";
+import { getMyBookingsService, getOwnerBookingsService, getBookingsData } from "../services/aiService.js";
 export const createBooking = asyncHandler(async (req, res) => {
     const { salonId, salonServiceId, slotDate, slotStartTime } = req.body;
     // slotDate = "2025-08-28", slotStartTime = "06:00"
@@ -96,7 +96,6 @@ export const createBooking = asyncHandler(async (req, res) => {
     });
     res.status(201).json({ booking, bookedSlots: slotIds, appointment });
 });
-import { getBookingsData } from "../services/aiService.js";
 export const getBookings = asyncHandler(async (req, res) => {
     try {
         const { status, salonId } = req.query;
@@ -147,43 +146,12 @@ export const getOwnerBookings = asyncHandler(async (req, res) => {
         return res.status(401).json({ message: "Unauthorized" });
     }
     const ownerId = req.user.id;
-    // Only SALON_OWNER or ADMIN should be allowed
     if (req.user.role !== "SALON_OWNER" && req.user.role !== "ADMIN") {
         return res.status(403).json({ message: "Only salon owners or admins can view bookings" });
     }
-    // Query all bookings for salons owned by this user
-    const { rows } = await pool.query(`
-  SELECT 
-    b.id, 
-    b."bookingNumber", 
-    b."totalAmount", 
-    b.status,
-    b."createdAt", 
-    b."updatedAt",
-    s.id as "salonId", 
-    s.name as "salonName",
-    ss.id as "salonServiceId",
-    sv.id as "serviceId",
-    sv.name as "serviceName",
-    u.id as "clientId", 
-    u."firstName", 
-    u."lastName", 
-    u.email, 
-    u.phone,
-    sl."startTime" as "slotStartTime",
-    sl."endTime"   as "slotEndTime"
-  FROM bookings b
-  JOIN salons s ON b."salonId" = s.id
-  JOIN users u ON b."clientId" = u.id
-  JOIN slots sl ON b."slotId" = sl.id
-  JOIN salon_services ss ON b."salonServiceId" = ss.id
-  JOIN services sv ON ss."serviceId" = sv.id
-  WHERE s."ownerId" = $1
-  ORDER BY b."createdAt" DESC
-  `, [ownerId]);
-    res.json(rows);
+    const bookings = await getOwnerBookingsService(ownerId);
+    res.json(bookings);
 });
-import { getMyBookingsService } from "../services/aiService.js";
 export const getMyBookings = async (req, res) => {
     try {
         const userId = req.user?.id;

@@ -141,3 +141,207 @@ export const getAllServicesService = async () => {
         include: { service: true, salon: true }
     });
 };
+export const getOwnerBookingsService = async (ownerId) => {
+    const { rows } = await pool.query(`
+    SELECT 
+      b.id, 
+      b."bookingNumber", 
+      b."totalAmount", 
+      b.status,
+      b."createdAt", 
+      b."updatedAt",
+      s.id as "salonId", 
+      s.name as "salonName",
+      ss.id as "salonServiceId",
+      sv.id as "serviceId",
+      sv.name as "serviceName",
+      u.id as "clientId", 
+      u."firstName", 
+      u."lastName", 
+      u.email, 
+      u.phone,
+      sl."startTime" as "slotStartTime",
+      sl."endTime"   as "slotEndTime"
+    FROM bookings b
+    JOIN salons s ON b."salonId" = s.id
+    JOIN users u ON b."clientId" = u.id
+    JOIN slots sl ON b."slotId" = sl.id
+    JOIN salon_services ss ON b."salonServiceId" = ss.id
+    JOIN services sv ON ss."serviceId" = sv.id
+    WHERE s."ownerId" = $1
+    ORDER BY b."createdAt" DESC
+    `, [ownerId]);
+    return rows;
+};
+/**
+ * Get all services for salons owned by the user
+ */
+export const getOwnerServicesService = async (ownerId) => {
+    const salons = await prisma.salon.findMany({
+        where: { ownerId },
+        include: {
+            salonServices: {
+                include: { service: true },
+            },
+        },
+    });
+    // Flatten and normalize the services
+    const services = salons.flatMap((salon) => salon.salonServices.map((ss) => ({
+        id: ss.id,
+        price: ss.price,
+        duration: ss.duration,
+        service: {
+            id: ss.service.id,
+            name: ss.service.name,
+            active: ss.service.isActive,
+        },
+    })));
+    return services;
+};
+/**
+ * Get all slots for salons owned by the user
+ */
+export const getOwnerSlotsService = async (ownerId) => {
+    const salons = await prisma.salon.findMany({
+        where: { ownerId },
+        select: { id: true },
+    });
+    const salonIds = salons.map((s) => s.id);
+    if (salonIds.length === 0) {
+        return [];
+    }
+    const slots = await prisma.slot.findMany({
+        where: { salonId: { in: salonIds } },
+        orderBy: { startTime: 'asc' },
+        select: {
+            id: true,
+            salonId: true,
+            startTime: true,
+            endTime: true,
+            isAvailable: true,
+            serviceId: true,
+        },
+    });
+    return slots;
+};
+/**
+ * Get salons owned by the user
+ */
+export const getOwnerSalonsService = async (ownerId) => {
+    const salons = await prisma.salon.findMany({
+        where: { ownerId },
+        include: {
+            owner: {
+                select: {
+                    firstName: true,
+                    lastName: true,
+                },
+            },
+            salonServices: {
+                include: { service: true },
+            },
+            reviews: {
+                select: {
+                    id: true,
+                    rating: true,
+                    comment: true,
+                    createdAt: true,
+                },
+            },
+        },
+    });
+    // Calculate average ratings and return properly typed data
+    return salons.map((salon) => ({
+        id: salon.id,
+        name: salon.name,
+        city: salon.city,
+        location: salon.location,
+        owner: salon.owner,
+        salonServices: salon.salonServices,
+        reviews: salon.reviews,
+        averageRating: salon.reviews.length > 0
+            ? salon.reviews.reduce((sum, r) => sum + r.rating, 0) / salon.reviews.length
+            : 0,
+    }));
+};
+// ===== ADMIN SERVICES =====
+/**
+ * Get all users (admin only)
+ */
+export const getAllUsersService = async () => {
+    const { rows } = await pool.query(`SELECT * FROM users`);
+    return rows;
+};
+/**
+ * Get all bookings across platform (admin only)
+ */
+export const getAllBookingsService = async () => {
+    const { rows } = await pool.query(`
+    SELECT 
+      b.id, 
+      b."bookingNumber", 
+      b."totalAmount", 
+      b.status,
+      b."createdAt", 
+      b."updatedAt",
+      s.id as "salonId", 
+      s.name as "salonName",
+      ss.id as "salonServiceId",
+      sv.id as "serviceId",
+      sv.name as "serviceName",
+      u.id as "clientId", 
+      u."firstName", 
+      u."lastName", 
+      u.email, 
+      u.phone,
+      sl."startTime" as "slotStartTime",
+      sl."endTime"   as "slotEndTime"
+    FROM bookings b
+    JOIN salons s ON b."salonId" = s.id
+    JOIN users u ON b."clientId" = u.id
+    JOIN slots sl ON b."slotId" = sl.id
+    JOIN salon_services ss ON b."salonServiceId" = ss.id
+    JOIN services sv ON ss."serviceId" = sv.id
+    ORDER BY b."createdAt" DESC
+    `);
+    return rows;
+};
+/**
+ * Get all salons (admin only)
+ */
+export const getAllSalonsService = async () => {
+    const salons = await prisma.salon.findMany({
+        include: {
+            owner: {
+                select: {
+                    firstName: true,
+                    lastName: true,
+                },
+            },
+            salonServices: {
+                include: { service: true },
+            },
+            reviews: {
+                select: {
+                    id: true,
+                    rating: true,
+                    comment: true,
+                    createdAt: true,
+                },
+            },
+        },
+    });
+    // Calculate average ratings and return properly typed data
+    return salons.map((salon) => ({
+        id: salon.id,
+        name: salon.name,
+        city: salon.city,
+        location: salon.location,
+        owner: salon.owner,
+        salonServices: salon.salonServices,
+        reviews: salon.reviews,
+        averageRating: salon.reviews.length > 0
+            ? salon.reviews.reduce((sum, r) => sum + r.rating, 0) / salon.reviews.length
+            : 0,
+    }));
+};
