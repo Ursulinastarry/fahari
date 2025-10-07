@@ -152,7 +152,7 @@ export const getAllServicesService = async () => {
     include: { service: true, salon: true }
   });
 };
-export const getOwnerBookingsService = async (ownerId: string): Promise<OwnerBooking[]> => {
+export const getOwnerBookingsService = async (userId: string): Promise<OwnerBooking[]> => {
   const { rows } = await pool.query(
     `
     SELECT 
@@ -183,7 +183,7 @@ export const getOwnerBookingsService = async (ownerId: string): Promise<OwnerBoo
     WHERE s."ownerId" = $1
     ORDER BY b."createdAt" DESC
     `,
-    [ownerId]
+    [userId]
   );
 
   return rows as OwnerBooking[];
@@ -192,9 +192,9 @@ export const getOwnerBookingsService = async (ownerId: string): Promise<OwnerBoo
 /**
  * Get all services for salons owned by the user
  */
-export const getOwnerServicesService = async (ownerId: string): Promise<OwnerService[]> => {
+export const getOwnerServicesService = async (userId: string): Promise<OwnerService[]> => {
   const salons = await prisma.salon.findMany({
-    where: { ownerId },
+    where: { ownerId:userId },
     include: {
       salonServices: {
         include: { service: true },
@@ -222,9 +222,9 @@ export const getOwnerServicesService = async (ownerId: string): Promise<OwnerSer
 /**
  * Get all slots for salons owned by the user
  */
-export const getOwnerSlotsService = async (ownerId: string): Promise<SalonSlot[]> => {
+export const getOwnerSlotsService = async (userId: string): Promise<SalonSlot[]> => {
   const salons = await prisma.salon.findMany({
-    where: { ownerId },
+    where: { ownerId:userId },
     select: { id: true },
   });
 
@@ -253,9 +253,9 @@ export const getOwnerSlotsService = async (ownerId: string): Promise<SalonSlot[]
 /**
  * Get salons owned by the user
  */
-export const getOwnerSalonsService = async (ownerId: string): Promise<any[]> => {
+export const getOwnerSalonsService = async (userId: string): Promise<any[]> => {
   const salons = await prisma.salon.findMany({
-    where: { ownerId },
+    where: { ownerId:userId },
     include: {
       owner: {
         select: {
