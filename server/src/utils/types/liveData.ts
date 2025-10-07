@@ -97,7 +97,7 @@ export interface LiveData {
   // Salon Owner data
   ownerBookings?: OwnerBooking[];
   ownerServices?: OwnerService[];
-  ownerSlots?: SalonSlot[];
+  salonSlots?: SalonSlot[];
   ownerSalons?: SalonData[];
   
   // Admin data

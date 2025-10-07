@@ -1,4 +1,4 @@
-import { getMyBookingsService, getSalonsService, getSlotsService, getAllServicesService, getOwnerBookingsService, getOwnerServicesService, getOwnerSlotsService, getOwnerSalonsService, getAllUsersService, getAllBookingsService, getAllSalonsService, } from '../services/aiService.js';
+import { getMyBookingsService, getSalonsService, getSlotsService, getAllServicesService, getOwnerBookingsService, getOwnerServicesService, getSalonSlotsService, getOwnerSalonsService, getAllUsersService, getAllBookingsService, getAllSalonsService, } from '../services/aiService.js';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 export const handleAIChat = async (req, res) => {
     try {
@@ -58,16 +58,16 @@ async function fetchLiveDataForUser(userRole, userId) {
         }
         else if (userRole === 'SALON_OWNER') {
             console.log("AI CONTEXT USER ID:", userId);
-            const [ownerBookings, ownerServices, ownerSlots, ownerSalons] = await Promise.all([
+            const [ownerBookings, ownerServices, salonSlots, ownerSalons] = await Promise.all([
                 getOwnerBookingsService(userId),
                 getOwnerServicesService(userId),
-                getOwnerSlotsService(userId),
+                getSalonSlotsService(userId),
                 getOwnerSalonsService(userId),
             ]);
             return {
                 ownerBookings: ownerBookings || [],
                 ownerServices: ownerServices || [],
-                ownerSlots: ownerSlots || [],
+                salonSlots: salonSlots || [],
                 ownerSalons: ownerSalons || [],
             };
         }
@@ -115,7 +115,7 @@ Help explore salons, book services, and manage bookings. Be concise.`;
         const pendingCount = liveData?.ownerBookings?.filter((b) => b.status === 'PENDING').length || 0;
         const confirmedCount = liveData?.ownerBookings?.filter((b) => b.status === 'CONFIRMED').length || 0;
         const completedCount = liveData?.ownerBookings?.filter((b) => b.status === 'COMPLETED').length || 0;
-        const availableSlotsCount = liveData?.ownerSlots?.filter((s) => s.isAvailable).length || 0;
+        const availableSlotsCount = liveData?.salonSlots?.filter((s) => s.isAvailable).length || 0;
         return `You are an AI assistant for Fahari helping a SALON_OWNER.
 
 YOUR SALONS: ${liveData?.ownerSalons?.length || 0}

@@ -202,21 +202,12 @@ export const getOwnerServicesService = async (userId) => {
 /**
  * Get all slots for salons owned by the user
  */
-export const getOwnerSlotsService = async (userId) => {
-    const salons = await prisma.salon.findMany({
-        where: { ownerId: userId },
-        select: { id: true },
-    });
-    const salonIds = salons.map((s) => s.id);
-    if (salonIds.length === 0) {
-        return [];
-    }
+export const getSalonSlotsService = async (salonId) => {
     const slots = await prisma.slot.findMany({
-        where: { salonId: { in: salonIds } },
-        orderBy: { startTime: 'asc' },
+        where: { salonId },
+        orderBy: { startTime: "asc" },
         select: {
             id: true,
-            salonId: true,
             startTime: true,
             endTime: true,
             isAvailable: true,

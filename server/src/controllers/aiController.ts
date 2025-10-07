@@ -10,7 +10,7 @@ import {
   getAllServicesService,
   getOwnerBookingsService,
   getOwnerServicesService,
-  getOwnerSlotsService,
+  getSalonSlotsService,
   getOwnerSalonsService,
   getAllUsersService,
   getAllBookingsService,
@@ -88,17 +88,17 @@ async function fetchLiveDataForUser(
     } else if (userRole === 'SALON_OWNER') {
       console.log("AI CONTEXT USER ID:", userId);
 
-      const [ownerBookings, ownerServices, ownerSlots, ownerSalons] = await Promise.all([
+      const [ownerBookings, ownerServices, salonSlots, ownerSalons] = await Promise.all([
         getOwnerBookingsService(userId),
         getOwnerServicesService(userId),
-        getOwnerSlotsService(userId),
+        getSalonSlotsService(userId),
         getOwnerSalonsService(userId),
       ]);
 
       return {
         ownerBookings: ownerBookings || [],
         ownerServices: ownerServices || [],
-        ownerSlots: ownerSlots || [],
+        salonSlots: salonSlots || [],
         ownerSalons: ownerSalons || [],
       };
     } else if (userRole === 'ADMIN') {
@@ -150,7 +150,7 @@ Help explore salons, book services, and manage bookings. Be concise.`;
     const pendingCount = liveData?.ownerBookings?.filter((b) => b.status === 'PENDING').length || 0;
     const confirmedCount = liveData?.ownerBookings?.filter((b) => b.status === 'CONFIRMED').length || 0;
     const completedCount = liveData?.ownerBookings?.filter((b) => b.status === 'COMPLETED').length || 0;
-    const availableSlotsCount = liveData?.ownerSlots?.filter((s) => s.isAvailable).length || 0;
+    const availableSlotsCount = liveData?.salonSlots?.filter((s) => s.isAvailable).length || 0;
 
     return `You are an AI assistant for Fahari helping a SALON_OWNER.
 

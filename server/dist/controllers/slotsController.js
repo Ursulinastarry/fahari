@@ -1,7 +1,7 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import prisma from "../config/prisma.js";
 import { DateTime } from 'luxon';
-import { getSlotsService, getOwnerSlotsService } from "../services/aiService.js";
+import { getSlotsService, getSalonSlotsService } from "../services/aiService.js";
 export const createSlot = asyncHandler(async (req, res) => {
     try {
         const { salonId, serviceId, date, startTime, endTime, isRecurring } = req.body;
@@ -45,14 +45,12 @@ export const getSlots = async (req, res) => {
     }
 };
 export const getSalonSlots = asyncHandler(async (req, res) => {
-    console.log("get slots");
-    if (!req.user) {
-        return res.status(401).json({ message: "Unauthorized" });
+    const { salonId } = req.params;
+    if (!salonId) {
+        res.status(400);
+        throw new Error("Salon ID is required");
     }
-    if (req.user.role !== "SALON_OWNER" && req.user.role !== "ADMIN") {
-        return res.status(403).json({ message: "Forbidden" });
-    }
-    const slots = await getOwnerSlotsService(req.user.id);
+    const slots = await getSalonSlotsService(salonId);
     res.json(slots);
 });
 export const updateSlot = asyncHandler(async (req, res) => {
