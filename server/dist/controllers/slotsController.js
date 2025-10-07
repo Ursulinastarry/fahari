@@ -36,7 +36,6 @@ export const createSlot = asyncHandler(async (req, res) => {
     }
 });
 export const getSlots = async (req, res) => {
-    console.log("get slots");
     try {
         const slots = await getSlotsService(req.query);
         res.json(slots);
@@ -46,6 +45,7 @@ export const getSlots = async (req, res) => {
     }
 };
 export const getSalonSlots = asyncHandler(async (req, res) => {
+    console.log("get slots");
     if (!req.user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
