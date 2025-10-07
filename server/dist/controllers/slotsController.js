@@ -36,6 +36,7 @@ export const createSlot = asyncHandler(async (req, res) => {
     }
 });
 export const getSlots = async (req, res) => {
+    console.log("get slots");
     try {
         const slots = await getSlotsService(req.query);
         res.json(slots);
