@@ -22,13 +22,13 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 export const handleAIChat = async (req: AIClientRequest, res: Response): Promise<void> => {
   try {
-    const { messages, userRole, userId } = req.body;
+    const { messages, userRole } = req.body;
 
     if (!req.user) {
       res.status(401).json({ error: 'Unauthorized' });
       return;
     }
-
+const userId=req.user?.id
     // Fetch live data based on user role
     const liveData = await fetchLiveDataForUser(userRole, userId);
 
