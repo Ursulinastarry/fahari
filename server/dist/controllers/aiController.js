@@ -56,6 +56,7 @@ async function fetchLiveDataForUser(userRole, userId) {
             return { salons, salonServices, slots, bookings };
         }
         else if (userRole === 'SALON_OWNER') {
+            console.log("AI CONTEXT USER ID:", userId);
             const [ownerBookings, ownerServices, ownerSlots, ownerSalons] = await Promise.all([
                 getOwnerBookingsService(userId),
                 getOwnerServicesService(userId),
