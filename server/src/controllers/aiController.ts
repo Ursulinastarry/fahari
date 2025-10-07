@@ -107,9 +107,9 @@ async function fetchLiveDataForUser(
       ]);
 
       return {
-        salons: allSalons,
-        users: allUsers,
-        allBookings,
+        salons: allSalons || [],
+        users: allUsers || [],
+        allBookings: allBookings || [],
       };
     }
 

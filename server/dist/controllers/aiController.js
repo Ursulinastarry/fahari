@@ -76,9 +76,9 @@ async function fetchLiveDataForUser(userRole, userId) {
                 getAllBookingsService(),
             ]);
             return {
-                salons: allSalons,
-                users: allUsers,
-                allBookings,
+                salons: allSalons || [],
+                users: allUsers || [],
+                allBookings: allBookings || [],
             };
         }
         return null;
