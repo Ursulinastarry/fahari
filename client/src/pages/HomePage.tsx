@@ -145,8 +145,8 @@ export default function HomePage() {
     © {new Date().getFullYear()} Fahari AI Salon Booking. All rights reserved.
   </p>
   <div className="flex flex-col md:flex-row justify-center gap-6 text-sm">
-    <p><strong>Phone:</strong> +254 712 345 678</p>
-    <p><strong>Email:</strong> support@fahariai.com</p>
+    <p><strong>Phone:</strong> +254 706 520320</p>
+    <p><strong>Email:</strong> help@faharibeauty.com</p>
     <p><strong>Location:</strong> Nyeri, Kenya</p>
   </div>
 </footer>
