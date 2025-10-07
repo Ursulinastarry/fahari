@@ -94,10 +94,10 @@ async function fetchLiveDataForUser(
       ]);
 
       return {
-        ownerBookings,
-        ownerServices,
-        ownerSlots,
-        salons: ownerSalons,
+        ownerBookings: ownerBookings || [],
+        ownerServices: ownerServices || [],
+        ownerSlots: ownerSlots || [],
+        ownerSalons: ownerSalons || [],
       };
     } else if (userRole === 'ADMIN') {
       const [allSalons, allUsers, allBookings] = await Promise.all([
@@ -147,27 +147,42 @@ Help explore salons, book services, and manage bookings. Be concise.`;
   } else if (userRole === 'SALON_OWNER') {
     const pendingCount = liveData?.ownerBookings?.filter((b) => b.status === 'PENDING').length || 0;
     const confirmedCount = liveData?.ownerBookings?.filter((b) => b.status === 'CONFIRMED').length || 0;
+    const completedCount = liveData?.ownerBookings?.filter((b) => b.status === 'COMPLETED').length || 0;
     const availableSlotsCount = liveData?.ownerSlots?.filter((s) => s.isAvailable).length || 0;
 
     return `You are an AI assistant for Fahari helping a SALON_OWNER.
 
-SALONS: ${liveData?.salons?.length || 0}
-BOOKINGS: ${liveData?.ownerBookings?.length || 0} total (${pendingCount} pending, ${confirmedCount} confirmed)
+YOUR SALONS: ${liveData?.ownerSalons?.length || 0}
+${liveData?.ownerSalons?.map(s => `- ${s.name} (${s.city})`).join('\n') || 'No salons'}
+
+BOOKINGS: ${liveData?.ownerBookings?.length || 0} total
+- Pending: ${pendingCount}
+- Confirmed: ${confirmedCount}
+- Completed: ${completedCount}
+
 SERVICES: ${liveData?.ownerServices?.length || 0}
+${liveData?.ownerServices?.slice(0, 5).map(s => `- ${s.service.name}: KSh${s.price}`).join('\n') || 'No services'}
+
 AVAILABLE SLOTS: ${availableSlotsCount}
 
-Help manage bookings, slots, and business insights. Be professional and concise.`;
+Help manage bookings, slots, and business insights. Be professional and data-driven.`;
   } else if (userRole === 'ADMIN') {
     const clientCount = liveData?.users?.filter((u) => u.role === 'CLIENT').length || 0;
     const ownerCount = liveData?.users?.filter((u) => u.role === 'SALON_OWNER').length || 0;
     const pendingBookings = liveData?.allBookings?.filter((b) => b.status === 'PENDING').length || 0;
+    const confirmedBookings = liveData?.allBookings?.filter((b) => b.status === 'CONFIRMED').length || 0;
 
     return `You are an AI assistant for Fahari helping an ADMIN.
 
 PLATFORM STATS:
 - Salons: ${liveData?.salons?.length || 0}
+${liveData?.salons?.slice(0, 3).map(s => `  • ${s.name} (${s.city}) - ${s.averageRating?.toFixed(1) || 'N/A'}⭐`).join('\n') || '  No salons'}
+
 - Users: ${liveData?.users?.length || 0} (${clientCount} clients, ${ownerCount} owners)
-- Bookings: ${liveData?.allBookings?.length || 0} (${pendingBookings} pending)
+- Bookings: ${liveData?.allBookings?.length || 0} (${pendingBookings} pending, ${confirmedBookings} confirmed)
+
+Recent Bookings:
+${liveData?.allBookings?.slice(0, 3).map(b => `- ${b.firstName} ${b.lastName} at ${b.salonName} (${b.status})`).join('\n') || 'None'}
 
 Help monitor platform, analyze data, and provide insights. Be analytical and concise.`;
   }

@@ -98,6 +98,7 @@ export interface LiveData {
   ownerBookings?: OwnerBooking[];
   ownerServices?: OwnerService[];
   ownerSlots?: SalonSlot[];
+  ownerSalons?: SalonData[];
   
   // Admin data
   users?: User[];
