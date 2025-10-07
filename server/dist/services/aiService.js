@@ -117,6 +117,7 @@ export const getSalonServicesService = async (salonId) => {
 };
 export const getSlotsService = async (query) => {
     const { salonId, date, serviceId, isAvailable } = query;
+    console.log("salonId", salonId);
     const where = {};
     if (salonId)
         where.salonId = salonId;

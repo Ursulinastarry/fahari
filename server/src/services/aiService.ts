@@ -129,7 +129,7 @@ export const getSalonServicesService = async (salonId: string) => {
 };
 export const getSlotsService = async (query: any) => {
   const { salonId, date, serviceId, isAvailable } = query;
-
+  console.log("salonId",salonId)
   const where: any = {};
   if (salonId) where.salonId = salonId as string;
   if (date) where.date = new Date(date as string);
