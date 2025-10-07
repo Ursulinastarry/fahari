@@ -141,7 +141,7 @@ export const getAllServicesService = async () => {
         include: { service: true, salon: true }
     });
 };
-export const getOwnerBookingsService = async (ownerId) => {
+export const getOwnerBookingsService = async (userId) => {
     const { rows } = await pool.query(`
     SELECT 
       b.id, 
@@ -170,15 +170,15 @@ export const getOwnerBookingsService = async (ownerId) => {
     JOIN services sv ON ss."serviceId" = sv.id
     WHERE s."ownerId" = $1
     ORDER BY b."createdAt" DESC
-    `, [ownerId]);
+    `, [userId]);
     return rows;
 };
 /**
  * Get all services for salons owned by the user
  */
-export const getOwnerServicesService = async (ownerId) => {
+export const getOwnerServicesService = async (userId) => {
     const salons = await prisma.salon.findMany({
-        where: { ownerId },
+        where: { ownerId: userId },
         include: {
             salonServices: {
                 include: { service: true },
@@ -201,9 +201,9 @@ export const getOwnerServicesService = async (ownerId) => {
 /**
  * Get all slots for salons owned by the user
  */
-export const getOwnerSlotsService = async (ownerId) => {
+export const getOwnerSlotsService = async (userId) => {
     const salons = await prisma.salon.findMany({
-        where: { ownerId },
+        where: { ownerId: userId },
         select: { id: true },
     });
     const salonIds = salons.map((s) => s.id);
@@ -227,9 +227,9 @@ export const getOwnerSlotsService = async (ownerId) => {
 /**
  * Get salons owned by the user
  */
-export const getOwnerSalonsService = async (ownerId) => {
+export const getOwnerSalonsService = async (userId) => {
     const salons = await prisma.salon.findMany({
-        where: { ownerId },
+        where: { ownerId: userId },
         include: {
             owner: {
                 select: {

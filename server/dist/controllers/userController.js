@@ -121,7 +121,6 @@ export const logoutUser = asyncHandler(async (req, res, next) => {
         expires: new Date(0) // Expire immediately
     });
     res.status(200).json({ message: "User logged out successfully" });
-    alert("You have been logged out");
 });
 export const approveUser = asyncHandler(async (req, res) => {
     if (!req.user || req.user.role !== "ADMIN") {
