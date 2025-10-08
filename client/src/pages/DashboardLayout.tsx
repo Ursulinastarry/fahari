@@ -224,7 +224,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
             onClick={() => setShowChatbot(true)}
             className="text-gray-600 hover:text-purple-600"
           >
-            🤖 AI
+            AI Assistant
           </button>
           
           <button
