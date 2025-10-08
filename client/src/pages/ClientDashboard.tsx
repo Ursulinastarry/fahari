@@ -12,7 +12,7 @@ const ClientDashboard: React.FC = () => {
   return (
 <DashboardLayout 
   title="Fahari Beauty"
-  logo="/fahari-adobe.png" // or logo={<YourLogoComponent />}
+  logo="/logo.png" // or logo={<YourLogoComponent />}
 >     
  {/* Navbar inside dashboard */}
       <div className="flex gap-6 border-b mb-6">

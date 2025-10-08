@@ -11,10 +11,10 @@ import { Send, Bot, User, Loader2, X } from 'lucide-react';
 interface Props {
   title: string;
   children: ReactNode;
-  logo?: string | ReactNode;
+  logo?: string;
 }
 
-const DashboardLayout: React.FC<Props> = ({ title, children }) => {
+const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showChatbot, setShowChatbot] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
@@ -29,7 +29,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  
   const navigate = useNavigate();
   let socket: Socket | null = null;
 
@@ -202,6 +202,7 @@ const DashboardLayout: React.FC<Props> = ({ title, children }) => {
       {/* Navbar */}
       <nav className="bg-white shadow-md border-b px-6 py-4 flex justify-between items-center">
         <h1 className="text-xl font-bold text-purple-600">{title}</h1>
+        {logo && <img src={logo} alt="logo" className="h-8 w-auto" />}
         <div className="flex items-center gap-4">
           {user && (
             <>
