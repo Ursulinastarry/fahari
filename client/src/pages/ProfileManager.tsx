@@ -257,11 +257,11 @@ const CircularProfileButton = ({ user, onClick }: { user: any; onClick: any; }) 
     >
       {user?.avatar ? (
         <Avatar
-                filename={typeof user.avatar === 'string' ? user.avatar : undefined}
-                alt={user.firstName}
-                className="w-full h-40 object-cover rounded-lg mb-3"
-                fallback="/images/default-salon.jpg"
-              />
+          filename={typeof user.avatar === 'string' ? user.avatar : undefined}
+          alt={user.firstName}
+          className="w-full h-full object-cover"
+          fallback="/images/default-salon.jpg"
+        />
       ) : (
         <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
           <span className="text-white font-medium text-sm">
@@ -272,6 +272,7 @@ const CircularProfileButton = ({ user, onClick }: { user: any; onClick: any; }) 
     </button>
   );
 };
+
 
 // Main component that includes both profile button and modal
 const ProfileManager = () => {
