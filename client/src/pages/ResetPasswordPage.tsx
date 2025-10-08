@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import PasswordInput from './Password';
+import { Eye, EyeOff } from "lucide-react";
+
 const ResetPasswordPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -14,7 +15,9 @@ const ResetPasswordPage: React.FC = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [tokenValid, setTokenValid] = useState(false);
-const passwordsMatch = newPassword && confirmPassword && newPassword === confirmPassword;  useEffect(() => {
+  const [showPassword,setShowPassword]=useState(false)
+
+  useEffect(() => {
     if (!token) {
       setError('Invalid reset link');
       setVerifying(false);
@@ -106,32 +109,49 @@ const passwordsMatch = newPassword && confirmPassword && newPassword === confirm
               <label htmlFor="newPassword" className="sr-only">
                 New Password
               </label>
-              
-              <PasswordInput
-                      value={newPassword}
-                      onChange={(e:any) => setNewPassword(e.target.value)}
-                      label="Password"
-                      placeholder="••••••••"
-                    />
+              <input
+                id="newPassword"
+                name="newPassword"
+                type="password"
+                required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="New password (min 8 characters)"
+              />
+              <button
+        type="button"
+        onClick={() => setShowPassword((prev) => !prev)}
+        className="absolute right-3 top-[38px] text-gray-500 hover:text-gray-700"
+      >
+        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+      </button>
             </div>
 
             <div>
               <label htmlFor="confirmPassword" className="sr-only">
                 Confirm Password
               </label>
-              
-       <PasswordInput
-        value={confirmPassword}
-        onChange={(e:any) => setConfirmPassword(e.target.value)}
-        label="Confirm Password"
-        placeholder="Re-enter your password"
-      />  
-        </div>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Confirm new password"
+              />
+              <button
+        type="button"
+        onClick={() => setShowPassword((prev) => !prev)}
+        className="absolute right-3 top-[38px] text-gray-500 hover:text-gray-700"
+      >
+        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+      </button>
+            </div>
           </div>
-           {/* Error message */}
-      {confirmPassword && !passwordsMatch && (
-        <p className="text-red-500 text-sm">Passwords do not match</p>
-      )}
+
           {message && (
             <div className="rounded-md bg-green-50 p-4">
               <p className="text-sm text-green-800">{message}</p>
