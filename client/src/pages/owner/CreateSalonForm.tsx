@@ -256,12 +256,12 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
   const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-700 py-8">
       <div className="max-w-4xl mx-auto px-4">
-        <div className="bg-white shadow-lg rounded-lg p-6">
+        <div className="bg-white dark:bg-black shadow-lg rounded-lg p-6">
           <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Your Salon</h2>
-            <p className="text-gray-600">Set up your salon profile to start managing your business</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Create Your Salon</h2>
+            <p className="text-gray-600 dark:text-white">Set up your salon profile to start managing your business</p>
           </div>
 
           {error && (
@@ -273,11 +273,11 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Basic Information */}
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-gray-900 border-b pb-2">Basic Information</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white border-b pb-2">Basic Information</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                     Salon Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -293,7 +293,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                     Phone Number <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -310,7 +310,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                   Business Email <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -326,7 +326,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                   Description
                 </label>
                 <textarea
@@ -343,10 +343,10 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
 
             {/* Location Information */}
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-gray-900 border-b pb-2">Location</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white border-b pb-2">Location</h3>
               
               <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                   Street Address <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -363,7 +363,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="city" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                     City <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -379,7 +379,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
                 </div>
 
                 <div>
-                  <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                     Location/Area
                   </label>
                   <input
@@ -397,11 +397,11 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
 
             {/* Images Upload Section */}
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-gray-900 border-b pb-2">Images</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white border-b pb-2">Images</h3>
               
               {/* Profile Image */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-gray-700 dark:text-white mb-3">
                   Profile Image
                 </label>
                 <div className="flex items-center space-x-6">
@@ -422,7 +422,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
                     </div>
                   ) : (
                     <div className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                      <Camera className="text-gray-400" size={28} />
+                      <Camera className="text-gray-400 dark:text-white" size={28} />
                     </div>
                   )}
                   <div>
@@ -437,14 +437,14 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
                       onChange={handleProfileImageChange}
                       className="hidden"
                     />
-                    <p className="text-sm text-gray-500 mt-2">Recommended: Square image, max 5MB</p>
+                    <p className="text-sm text-gray-500 dark:text-white mt-2">Recommended: Square image, max 5MB</p>
                   </div>
                 </div>
               </div>
 
               {/* Cover Image */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-gray-700 dark:text-white mb-3">
                   Cover Image
                 </label>
                 <div className="space-y-4">
@@ -466,8 +466,8 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
                   ) : (
                     <div className="w-full h-48 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
                       <div className="text-center">
-                        <Camera className="text-gray-400 mx-auto mb-3" size={36} />
-                        <p className="text-gray-500 font-medium">Cover Image</p>
+                        <Camera className="text-gray-400 dark:text-white mx-auto mb-3" size={36} />
+                        <p className="text-gray-500 dark:text-white font-medium">Cover Image</p>
                       </div>
                     </div>
                   )}
@@ -483,14 +483,14 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
                       onChange={handleCoverImageChange}
                       className="hidden"
                     />
-                    <p className="text-sm text-gray-500 mt-2">Recommended: 16:9 ratio, max 5MB</p>
+                    <p className="text-sm text-gray-500 dark:text-white mt-2">Recommended: 16:9 ratio, max 5MB</p>
                   </div>
                 </div>
               </div>
 
               {/* Gallery */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-gray-700 dark:text-white mb-3">
                   Gallery Images (Max 10)
                 </label>
                 <div className="space-y-4">
@@ -528,7 +528,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
                       className="hidden"
                       disabled={formData.gallery.length >= 10}
                     />
-                    <p className="text-sm text-gray-500 mt-2">
+                    <p className="text-sm text-gray-500 dark:text-white mt-2">
                       Upload multiple images ({formData.gallery.length}/10 uploaded)
                     </p>
                   </div>
@@ -538,12 +538,12 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
 
             {/* Business Hours */}
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-gray-900 border-b pb-2">Business Hours</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white border-b pb-2">Business Hours</h3>
               <div className="space-y-4">
                 {daysOfWeek.map((day) => (
-                  <div key={day} className="flex items-center space-x-6 p-4 bg-gray-50 rounded-lg">
+                  <div key={day} className="flex items-center space-x-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <div className="w-24">
-                      <span className="text-sm font-medium text-gray-700 capitalize">{day}</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-white capitalize">{day}</span>
                     </div>
                     <label className="flex items-center">
                       <input
@@ -552,7 +552,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
                         onChange={(e) => handleHoursChange(day, 'closed', !e.target.checked)}
                         className="mr-3 w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                       />
-                      <span className="text-sm text-gray-600">Open</span>
+                      <span className="text-sm text-gray-600 dark:text-white">Open</span>
                     </label>
                     {!formData.businessHours[day].closed ? (
                       <div className="flex items-center space-x-3">
@@ -562,7 +562,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
                           onChange={(e) => handleHoursChange(day, 'open', e.target.value)}
                           className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         />
-                        <span className="text-gray-500">to</span>
+                        <span className="text-gray-500 dark:text-white">to</span>
                         <input
                           type="time"
                           value={formData.businessHours[day].close}
@@ -571,7 +571,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
                         />
                       </div>
                     ) : (
-                      <span className="text-gray-400 text-sm ml-8">Closed</span>
+                      <span className="text-gray-400 dark:text-white text-sm ml-8">Closed</span>
                     )}
                   </div>
                 ))}
@@ -583,7 +583,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
               <button
                 type="button"
                 onClick={handleCancel}
-                className="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-300 
+                className="bg-gray-200 text-gray-700 dark:text-white px-8 py-3 rounded-lg hover:bg-gray-300 
                            focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors font-medium"
               >
                 Cancel

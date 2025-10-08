@@ -47,16 +47,16 @@ const StatisticsPage: React.FC = () => {
 
       {/* Summary Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
-        <div className="bg-white shadow rounded-xl p-6">
-          <h2 className="text-gray-600">Total Bookings</h2>
+        <div className="bg-white dark:bg-black shadow rounded-xl p-6">
+          <h2 className="text-gray-600 dark:text-white">Total Bookings</h2>
           <p className="text-2xl font-bold">{bookings.length}</p>
         </div>
-        <div className="bg-white shadow rounded-xl p-6">
-          <h2 className="text-gray-600">Total Revenue</h2>
+        <div className="bg-white dark:bg-black shadow rounded-xl p-6">
+          <h2 className="text-gray-600 dark:text-white">Total Revenue</h2>
           <p className="text-2xl font-bold">KES {totalRevenue}</p>
         </div>
-        <div className="bg-white shadow rounded-xl p-6">
-          <h2 className="text-gray-600">Avg. per Booking</h2>
+        <div className="bg-white dark:bg-black shadow rounded-xl p-6">
+          <h2 className="text-gray-600 dark:text-white">Avg. per Booking</h2>
           <p className="text-2xl font-bold">
             {bookings.length > 0 ? `KES ${(totalRevenue / bookings.length).toFixed(0)}` : "KES 0"}
           </p>
@@ -64,7 +64,7 @@ const StatisticsPage: React.FC = () => {
       </div>
 
       {/* Revenue Chart */}
-      <div className="bg-white shadow rounded-xl p-6">
+      <div className="bg-white dark:bg-black shadow rounded-xl p-6">
         <h2 className="text-lg font-semibold mb-4">Revenue Over Time</h2>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={chartData}>

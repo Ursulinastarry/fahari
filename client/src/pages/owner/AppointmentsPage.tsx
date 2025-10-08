@@ -134,21 +134,21 @@ const AppointmentsPage: React.FC = () => {
           return (
             <div
               key={b.id}
-              className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white shadow rounded-lg p-4"
+              className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white dark:bg-black shadow rounded-lg p-4"
             >
               <div>
                 <p className="font-semibold">
                   {b.firstName} {b.lastName}
                 </p>
-                <p className="text-sm text-gray-600">Booking: {b.bookingNumber}</p>
-                <p className="text-sm text-gray-600">Salon: {b.salonName}</p>
-                  <p className="text-sm text-gray-600">Service: {b.serviceName}</p> {/* New line */}
+                <p className="text-sm text-gray-600 dark:text-gray-50">Booking: {b.bookingNumber}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-50">Salon: {b.salonName}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-50">Service: {b.serviceName}</p> {/* New line */}
 
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-50">
                   Appointment: {formatEAT(b.slotStartTime)}
                 </p>
-                <p className="text-sm text-gray-600">Created: {formatEAT(b.createdAt)}</p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-50">Created: {formatEAT(b.createdAt)}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-50">
                   Email: {b.email} | Phone: {b.phone}
                 </p>
               </div>
@@ -162,7 +162,7 @@ const AppointmentsPage: React.FC = () => {
                       : effectiveStatus === "CANCELLED"
                       ? "bg-red-100 text-red-600"
                       : effectiveStatus === "COMPLETED"
-                      ? "bg-gray-200 text-gray-700"
+                      ? "bg-gray-200 text-gray-700 dark:text-white"
                       : effectiveStatus === "REVIEWED"
               ? "bg-blue-100 text-blue-600"
               : "bg-yellow-100 text-yellow-600"
@@ -225,7 +225,7 @@ const AppointmentsPage: React.FC = () => {
       {/* Reschedule Modal */}
       {rescheduleId && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white rounded-lg p-6 shadow-lg w-96">
+          <div className="bg-white dark:bg-black rounded-lg p-6 shadow-lg w-96">
             <h2 className="text-lg font-bold mb-4">Reschedule Booking</h2>
             <input
               type="datetime-local"
@@ -254,9 +254,9 @@ const AppointmentsPage: React.FC = () => {
       {/* Review Modal */}
       {isModalOpen && selectedReview && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-96 relative">
+          <div className="bg-white dark:bg-black rounded-lg shadow-lg p-6 w-96 relative">
             <button
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              className="absolute top-2 right-2 text-gray-500 dark:text-white hover:text-gray-700 dark:text-white"
               onClick={() => setIsModalOpen(false)}
             >
               ✕
@@ -286,8 +286,8 @@ const AppointmentsPage: React.FC = () => {
               ))}
             </div>
 
-            <p className="text-gray-700 mb-2">{selectedReview.comment}</p>
-            <p className="text-xs text-gray-500">
+            <p className="text-gray-700 dark:text-white mb-2">{selectedReview.comment}</p>
+            <p className="text-xs text-gray-500 dark:text-white">
               {new Date(selectedReview.createdAt).toLocaleDateString()}
             </p>
           </div>

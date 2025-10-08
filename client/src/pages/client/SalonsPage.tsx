@@ -346,7 +346,7 @@ const futureEvents = calendarEvents.filter((event) => {
               <div
                 key={salon.id}
                 onClick={() => fetchSalonDetails(salon.id)}
-                className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg cursor-pointer transition-shadow duration-300"
+                className="bg-white dark:bg-black rounded-xl shadow-md p-6 hover:shadow-lg cursor-pointer transition-shadow duration-300"
               >
                 <SalonImage
                   filename={salon.coverImage}
@@ -368,17 +368,17 @@ const futureEvents = calendarEvents.filter((event) => {
                       }`}
                     />
                   ))}
-                  <span className="text-gray-500 text-sm ml-2">
+                  <span className="text-gray-500 dark:text-white text-sm ml-2">
                     {(salonRatings[salon.id] || 0).toFixed(1)}
                   </span>
                 </div>
-                <p className="text-gray-500">{salon.city}, {salon.location}</p>
+                <p className="text-gray-500 dark:text-white">{salon.city}, {salon.location}</p>
               </div>
             ))}
           </div>
         </div>
       ) : (
-        <div className="bg-white shadow-lg rounded-xl p-6">
+        <div className="bg-white dark:bg-black shadow-lg rounded-xl p-6">
           <button 
             onClick={goBackToSalons} 
             className="text-indigo-600 hover:underline mb-4 font-medium"
@@ -401,12 +401,12 @@ const futureEvents = calendarEvents.filter((event) => {
     ))}
   </div>
 ) : (
-  <p className="text-gray-500">No gallery images available.</p>
+  <p className="text-gray-500 dark:text-white">No gallery images available.</p>
 )}
     </div>
           <div className="mb-6">
             <h2 className="text-3xl font-bold mb-2">{selectedSalon.name}</h2>
-            <p className="text-gray-600 mb-4">{selectedSalon.description}</p>
+            <p className="text-gray-600 dark:text-white mb-4">{selectedSalon.description}</p>
             <div className="flex items-center gap-2 mb-4">
               
               <div className="flex items-center gap-1">
@@ -420,7 +420,7 @@ const futureEvents = calendarEvents.filter((event) => {
                     }`}
                   />
                 ))}
-                <span className="text-gray-500 text-sm ml-1">
+                <span className="text-gray-500 dark:text-white text-sm ml-1">
                   {(salonRatings[selectedSalon.id] || 0).toFixed(1)}
                 </span>
               </div>
@@ -437,14 +437,14 @@ const futureEvents = calendarEvents.filter((event) => {
           <div className="mb-8">
             <h3 className="text-xl font-semibold mb-4">Services</h3>
             {services.length === 0 ? (
-              <p className="text-gray-500">No services available.</p>
+              <p className="text-gray-500 dark:text-white">No services available.</p>
             ) : (
               <div className="grid gap-4">
                 {services.map((salonService) => (
                   <div key={salonService.id} className="flex justify-between items-center p-4 border rounded-lg hover:bg-gray-50">
                     <div>
                       <span className="font-medium text-lg">{salonService.service.name}</span>
-                      <p className="text-gray-600">KSh {salonService.price} • {salonService.duration} minutes</p>
+                      <p className="text-gray-600 dark:text-white">KSh {salonService.price} • {salonService.duration} minutes</p>
                     </div>
                     <button
                       onClick={() => handleServiceClick(salonService)}
@@ -475,7 +475,7 @@ const futureEvents = calendarEvents.filter((event) => {
           <div>
             <h3 className="text-xl font-semibold mb-4">Available Time Slots</h3>
             {slots.length === 0 ? (
-              <p className="text-gray-500">No slots available.</p>
+              <p className="text-gray-500 dark:text-white">No slots available.</p>
             ) : (
               <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin]}
@@ -505,9 +505,9 @@ const futureEvents = calendarEvents.filter((event) => {
       {/* Time Picker Modal */}
       {showTimePicker && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg p-6 shadow-lg w-96 max-h-96 overflow-y-auto">
+          <div className="bg-white dark:bg-black rounded-lg p-6 shadow-lg w-96 max-h-96 overflow-y-auto">
             <h2 className="text-lg font-semibold mb-4">Choose Start Time</h2>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-gray-600 dark:text-white mb-4">
               Service: {booking.service?.service.name} ({booking.service?.duration} minutes)
             </p>
             <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -523,7 +523,7 @@ const futureEvents = calendarEvents.filter((event) => {
             </div>
             <button
               onClick={() => setShowTimePicker(false)}
-              className="mt-4 px-4 py-2 text-gray-600 hover:text-gray-800 border rounded"
+              className="mt-4 px-4 py-2 text-gray-600 dark:text-white hover:text-gray-800 dark:text-white border rounded"
             >
               Cancel
             </button>
@@ -534,9 +534,9 @@ const futureEvents = calendarEvents.filter((event) => {
       {/* Booking Confirmation Popup */}
       {showBookingPopup && bookingDetails && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg p-8 shadow-lg w-96">
+          <div className="bg-white dark:bg-black rounded-lg p-8 shadow-lg w-96">
             <h2 className="text-2xl font-bold mb-6 text-green-600">🎉 Booking Confirmed!</h2>
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-gray-700 dark:text:white">
               <p><strong>Salon:</strong> {bookingDetails.salon}</p>
               <p><strong>Service:</strong> {bookingDetails.service}</p>
               <p><strong>Date:</strong> {new Date(bookingDetails.date).toLocaleDateString()}</p>
@@ -558,18 +558,18 @@ const futureEvents = calendarEvents.filter((event) => {
       {/* Salon Reviews Modal */}
       {showReviewsModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg p-6 shadow-lg w-96 max-h-[80vh] overflow-y-auto">
+          <div className="bg-white dark:bg-black rounded-lg p-6 shadow-lg w-96 max-h-[80vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-bold">Reviews for {selectedSalon?.name}</h2>
               <button 
                 onClick={() => setShowReviewsModal(false)} 
-                className="text-gray-500 hover:text-gray-700 text-xl"
+                className="text-gray-500 dark:text-white hover:text-gray-700 dark:text:white text-xl"
               >
                 ×
               </button>
             </div>
             {salonReviews.length === 0 ? (
-              <p className="text-gray-500">No reviews yet.</p>
+              <p className="text-gray-500 dark:text-white">No reviews yet.</p>
             ) : (
               <div className="space-y-4">
                 {salonReviews.map((review) => (
@@ -601,7 +601,7 @@ const futureEvents = calendarEvents.filter((event) => {
                         ))}
                       </div>
                     </div>
-                    <p className="text-gray-700">{review.comment}</p>
+                    <p className="text-gray-700 dark:text:white">{review.comment}</p>
                   </div>
                 ))}
               </div>
