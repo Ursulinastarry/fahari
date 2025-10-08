@@ -294,7 +294,8 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
       )}
 
       {/* AI Chatbot Modal */}
-      {showChatbot && (
+      {!user(<p>please log in to use ai assistant</p>)}:(
+      showChatbot && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl h-[80vh] flex flex-col relative">
             <button
@@ -390,7 +391,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
             </div>
           </div>
         </div>
-      )}
+      ))
       
       <ContactUsModal 
         isOpen={showContactUs}
