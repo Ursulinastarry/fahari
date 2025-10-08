@@ -201,7 +201,10 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
       <nav className="bg-white shadow-md border-b px-6 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-purple-600">{logo && <img src={logo} alt="logo" className="h-8 w-auto" />}{title}</h1>
+<h1 className="flex items-center gap-2 text-xl font-bold text-purple-600">
+  {logo && <img src={logo} alt="logo" className="h-8 w-auto" />}
+  <span>{title}</span>
+</h1>
         <div className="flex items-center gap-4">
           {user && (
             <>
