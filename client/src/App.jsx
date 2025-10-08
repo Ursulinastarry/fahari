@@ -13,7 +13,6 @@ import ServicesPage from "./pages/owner/ServicesPage";
 import HomePage from "./pages/HomePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
-import { ThemeProvider } from "./themeContext";
 function App() {
   return (
     
