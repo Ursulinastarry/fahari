@@ -16,7 +16,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import { ThemeProvider } from "./themeContext";
 function App() {
   return (
-    <ThemeProvider>
+    
     <UserProvider>
     <BrowserRouter>
       <Routes>
@@ -37,7 +37,6 @@ function App() {
       </Routes>
     </BrowserRouter>
     </UserProvider>
-    </ThemeProvider>
   );
 }
 
