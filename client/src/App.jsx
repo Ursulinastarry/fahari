@@ -1,15 +1,4 @@
-// import FahariBeauty from "./FahariBeauty";
-// export default function App() {
-//   return <FahariBeauty />;
-  
-// }
-// export default function App() {
-//   return (
-//     <div className="h-screen flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-600 text-white text-4xl font-bold">
-//       Tailwind is Working 🎉
-//     </div>
-//   )
-//}
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -24,8 +13,10 @@ import ServicesPage from "./pages/owner/ServicesPage";
 import HomePage from "./pages/HomePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import { ThemeProvider } from "./themeContext";
 function App() {
   return (
+    <ThemeProvider>
     <UserProvider>
     <BrowserRouter>
       <Routes>
@@ -46,6 +37,7 @@ function App() {
       </Routes>
     </BrowserRouter>
     </UserProvider>
+    </ThemeProvider>
   );
 }
 
