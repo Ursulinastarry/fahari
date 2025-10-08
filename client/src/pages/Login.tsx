@@ -71,7 +71,7 @@ const Login = () => {
         </p>
         <p className="mt-4 text-center text-sm text-gray-600">
           <Link
-            to="/reset"
+            to="/forgot-password"
             className="text-indigo-600 font-medium hover:underline"
           >
             forgot password?

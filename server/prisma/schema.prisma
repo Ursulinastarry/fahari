@@ -16,6 +16,8 @@ model User {
   lastName        String
   avatar          String?
   role            UserRole           @default(CLIENT)
+  resetPasswordToken   String?
+  resetPasswordExpiry  DateTime?
   isActive        Boolean            @default(false)
   isVerified      Boolean            @default(false)
   lastLoginAt     DateTime?
@@ -155,14 +157,14 @@ model Appointment {
   status    AppointmentStatus @default(PENDING)
   notes     String?
   salonId   String
-  salonServiceId String
+  salonServiceId String?
   slotId    String            @unique
   createdAt DateTime          @default(now())
   updatedAt DateTime          @default(now()) @updatedAt
 
   salon   Salon   @relation(fields: [salonId], references: [id])
   slot    Slot    @relation(fields: [slotId], references: [id])
-  salonService SalonService @relation(fields: [salonServiceId], references: [id])  // 🔥 ADD THIS
+  salonService SalonService? @relation(fields: [salonServiceId], references: [id])  // 🔥 ADD THIS
   booking Booking?
 
   @@map("appointments")
@@ -177,7 +179,7 @@ model Booking {
   salonNotes    String?
   clientId      String
   salonId       String
-  salonServiceId     String
+  salonServiceId     String?
   appointmentId String        @unique
   slotId        String        @unique
   createdAt     DateTime      @default(now())
