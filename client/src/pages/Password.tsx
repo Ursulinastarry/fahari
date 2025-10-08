@@ -19,7 +19,7 @@ export default function PasswordInput({
   return (
     <div className="relative">
       {label && (
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-gray-700 dark:text-white">
           {label}
         </label>
       )}
@@ -29,14 +29,14 @@ export default function PasswordInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="mt-1 w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-indigo-500 p-3 border pr-10"
+        className="mt-1 w-full rounded-lg border-gray-300 dark:border-white focus:ring-2 focus:ring-indigo-500 p-3 border pr-10"
       />
 
       {/* Toggle visibility button */}
       <button
         type="button"
         onClick={() => setShowPassword((prev) => !prev)}
-        className="absolute right-3 top-[38px] text-gray-500 hover:text-gray-700"
+        className="absolute right-3 top-[38px] text-gray-500 dark:text-white hover:text-gray-700 dark:text-white"
       >
         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
       </button>

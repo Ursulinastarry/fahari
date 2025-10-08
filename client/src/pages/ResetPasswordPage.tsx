@@ -81,10 +81,10 @@ const ResetPasswordPage: React.FC = () => {
 
   if (!tokenValid) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
         <div className="max-w-md w-full text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Invalid Reset Link</h2>
-          <p className="text-gray-600 mb-6">{error}</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Invalid Reset Link</h2>
+          <p className="text-gray-600 dark:text-white mb-6">{error}</p>
           <a href="/forgot-password" className="text-indigo-600 hover:text-indigo-500">
             Request a new reset link
           </a>
@@ -94,13 +94,13 @@ const ResetPasswordPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
             Reset your password
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-white">
             Enter your new password below
           </p>
         </div>
@@ -116,13 +116,13 @@ const ResetPasswordPage: React.FC = () => {
                 required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="New password (min 8 characters)"
               />
               <button
                 type="button"
                 onClick={() => setShowNewPassword((prev) => !prev)}
-                className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
+                className="absolute right-3 top-2.5 text-gray-500 dark:text-white hover:text-gray-700"
               >
                 {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -137,13 +137,13 @@ const ResetPasswordPage: React.FC = () => {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Confirm new password"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
-                className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
+                className="absolute right-3 top-2.5 text-gray-500 dark:text-white hover:text-gray-700"
               >
                 {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
