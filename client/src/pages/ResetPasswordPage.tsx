@@ -15,7 +15,10 @@ const ResetPasswordPage: React.FC = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [tokenValid, setTokenValid] = useState(false);
-  const [showPassword,setShowPassword]=useState(false)
+
+  // Separate visibility states for each input
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -24,7 +27,6 @@ const ResetPasswordPage: React.FC = () => {
       return;
     }
 
-    // Verify token on mount
     axios
       .get(`https://fahari-production.up.railway.app/api/auth/verify-reset-token?token=${token}`)
       .then(() => {
@@ -105,14 +107,12 @@ const ResetPasswordPage: React.FC = () => {
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
-            <div>
-              <label htmlFor="newPassword" className="sr-only">
-                New Password
-              </label>
+            {/* New Password Field */}
+            <div className="relative">
               <input
                 id="newPassword"
                 name="newPassword"
-                type="password"
+                type={showNewPassword ? "text" : "password"}
                 required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -120,22 +120,20 @@ const ResetPasswordPage: React.FC = () => {
                 placeholder="New password (min 8 characters)"
               />
               <button
-        type="button"
-        onClick={() => setShowPassword((prev) => !prev)}
-        className="absolute right-3 top-[38px] text-gray-500 hover:text-gray-700"
-      >
-        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-      </button>
+                type="button"
+                onClick={() => setShowNewPassword((prev) => !prev)}
+                className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
+              >
+                {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
 
-            <div>
-              <label htmlFor="confirmPassword" className="sr-only">
-                Confirm Password
-              </label>
+            {/* Confirm Password Field */}
+            <div className="relative">
               <input
                 id="confirmPassword"
                 name="confirmPassword"
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -143,12 +141,12 @@ const ResetPasswordPage: React.FC = () => {
                 placeholder="Confirm new password"
               />
               <button
-        type="button"
-        onClick={() => setShowPassword((prev) => !prev)}
-        className="absolute right-3 top-[38px] text-gray-500 hover:text-gray-700"
-      >
-        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-      </button>
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
           </div>
 
