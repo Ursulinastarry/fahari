@@ -104,7 +104,6 @@ const handleSubmit = async (e: React.FormEvent) => {
               <option value="">Select Role</option>
               <option value="CLIENT">Client</option>
               <option value="SALON_OWNER">Salon Owner</option>
-              <option value="ADMIN">Admin</option>
             </select>
           </div>
 

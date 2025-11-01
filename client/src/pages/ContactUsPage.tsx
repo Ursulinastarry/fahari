@@ -72,7 +72,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
           {/* Contact Information */}
           <div className="bg-purple-50 rounded-lg p-6 mb-6">
             <h3 className="font-semibold text-lg mb-3 text-purple-700">Get In Touch</h3>
-            <div className="space-y-2 text-gray-700 dark:text-white">
+            <div className="space-y-2 text-gray-700 dark:text-gray-900">
               <p className="flex items-center gap-2">
                 <span>📧</span>
                 <a href="mailto:help@faharibeauty.com" className="hover:text-purple-600">
