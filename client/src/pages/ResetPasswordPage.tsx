@@ -28,7 +28,7 @@ const ResetPasswordPage: React.FC = () => {
     }
 
     axios
-      .get(`https://fahari-production.up.railway.app/api/auth/verify-reset-token?token=${token}`)
+      .get(`https://fahari-j7ac.onrender.com/api/auth/verify-reset-token?token=${token}`)
       .then(() => {
         setTokenValid(true);
         setVerifying(false);
@@ -59,7 +59,7 @@ const ResetPasswordPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        'https://fahari-production.up.railway.app/api/auth/reset-password',
+        'https://fahari-j7ac.onrender.com/api/auth/reset-password',
         { token, newPassword }
       );
       setMessage(response.data.message);

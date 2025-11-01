@@ -85,7 +85,7 @@ const SalonsPage: React.FC = () => {
   useEffect(() => {
     const fetchSalons = async () => {
       try {
-        const res = await axios.get("https://fahari-production.up.railway.app/api/salons", { withCredentials: true });
+        const res = await axios.get("https://fahari-j7ac.onrender.com/api/salons", { withCredentials: true });
         const salonsData: Salon[] = res.data.salons;
         setSalons(salonsData);
 
@@ -93,7 +93,7 @@ const SalonsPage: React.FC = () => {
         await Promise.all(
           salonsData.map(async (salon) => {
             try {
-              const ratingRes = await axios.get(`https://fahari-production.up.railway.app/api/reviews/rating/${salon.id}`, { withCredentials: true });
+              const ratingRes = await axios.get(`https://fahari-j7ac.onrender.com/api/reviews/rating/${salon.id}`, { withCredentials: true });
               ratings[salon.id] = ratingRes.data.averageRating || 0;
             } catch {
               ratings[salon.id] = 0;
@@ -114,7 +114,7 @@ const SalonsPage: React.FC = () => {
   setLoading(true);
   try {
     // ✅ Fetch salon details
-    const res = await axios.get(`https://fahari-production.up.railway.app/api/salons/${id}`, { withCredentials: true });
+    const res = await axios.get(`https://fahari-j7ac.onrender.com/api/salons/${id}`, { withCredentials: true });
     const salonData = res.data;
 
     // Extract images safely
@@ -141,7 +141,7 @@ const SalonsPage: React.FC = () => {
     });
 
     // ✅ Fetch salon slots
-    const slotsRes = await axios.get<Slot[]>(`https://fahari-production.up.railway.app/api/slots/salons/${id}`, { withCredentials: true });
+    const slotsRes = await axios.get<Slot[]>(`https://fahari-j7ac.onrender.com/api/slots/salons/${id}`, { withCredentials: true });
 
     const validSlots = slotsRes.data.map((slot) => ({
       ...slot,
@@ -250,7 +250,7 @@ const SalonsPage: React.FC = () => {
       });
 
       const res = await axios.post(
-        "https://fahari-production.up.railway.app/api/bookings",
+        "https://fahari-j7ac.onrender.com/api/bookings",
         { 
           salonId: booking.salon.id, 
           salonServiceId: booking.service.id, 
@@ -270,7 +270,7 @@ const SalonsPage: React.FC = () => {
       setShowBookingPopup(true);
 
       // Refresh slots
-      const slotsRes = await axios.get(`https://fahari-production.up.railway.app/api/slots/salons/${booking.salon.id}`, { withCredentials: true });
+      const slotsRes = await axios.get(`https://fahari-j7ac.onrender.com/api/slots/salons/${booking.salon.id}`, { withCredentials: true });
       const validSlots = slotsRes.data.map((slot: Slot) => ({
         ...slot,
         startTime: new Date(slot.startTime).toISOString(),
@@ -295,7 +295,7 @@ const SalonsPage: React.FC = () => {
   const fetchSalonReviews = async () => {
     if (!selectedSalon) return;
     try {
-      const res = await axios.get(`https://fahari-production.up.railway.app/api/reviews/salon/${selectedSalon.id}`, { withCredentials: true });
+      const res = await axios.get(`https://fahari-j7ac.onrender.com/api/reviews/salon/${selectedSalon.id}`, { withCredentials: true });
       setSalonReviews(res.data);
       setShowReviewsModal(true);
     } catch (err) {

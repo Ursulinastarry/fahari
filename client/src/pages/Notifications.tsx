@@ -28,7 +28,7 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, onClose
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get("https://fahari-production.up.railway.app/api/notifications", { 
+      const res = await axios.get("https://fahari-j7ac.onrender.com/api/notifications", { 
         withCredentials: true 
       });
       // console.log("Fetched notifications:", res.data);
@@ -53,7 +53,7 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, onClose
     try {
       // console.log("Making API call to mark as read...");
       const response = await axios.patch(
-        `https://fahari-production.up.railway.app/api/notifications/${notification.id}/read`,
+        `https://fahari-j7ac.onrender.com/api/notifications/${notification.id}/read`,
         {},
         { withCredentials: true }
       );

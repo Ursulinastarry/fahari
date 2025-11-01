@@ -17,7 +17,7 @@ const ReviewsPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("https://fahari-production.up.railway.app/api/reviews/owner", { withCredentials: true })
+      .get("https://fahari-j7ac.onrender.com/api/reviews/owner", { withCredentials: true })
       .then((res) => setReviews(res.data))
       .catch((err) => console.error("Error fetching reviews:", err));
   }, []);

@@ -13,7 +13,7 @@ const Login = () => {
       console.log("hitting login");
 
       const res = await axios.post(
-        "https://fahari-production.up.railway.app/api/users/login",
+        "https://fahari-j7ac.onrender.com/api/users/login",
         { email, password },
         { withCredentials: true }
       );

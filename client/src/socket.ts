@@ -1,7 +1,7 @@
 // src/socket.ts
 import { io } from "socket.io-client";
 
-const socket = io("https://fahari-production.up.railway.app", {
+const socket = io("https://fahari-j7ac.onrender.com", {
   withCredentials: true,
   transports: ["websocket"], // force WebSocket
 });

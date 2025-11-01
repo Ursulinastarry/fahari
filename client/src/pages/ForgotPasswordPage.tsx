@@ -15,7 +15,7 @@ const ForgotPasswordPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        'https://fahari-production.up.railway.app/api/auth/forgot-password',
+        'https://fahari-j7ac.onrender.com/api/auth/forgot-password',
         { email }
       );
       setMessage(response.data.message);

@@ -34,7 +34,7 @@ const AppointmentsPage: React.FC = () => {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("https://fahari-production.up.railway.app/api/bookings/me", {
+      const res = await axios.get("https://fahari-j7ac.onrender.com/api/bookings/me", {
         withCredentials: true,
       });
       setBookings(res.data);
@@ -50,7 +50,7 @@ const AppointmentsPage: React.FC = () => {
   const cancelBooking = async (id: string, status: string) => {
     try {
       await axios.patch(
-        `https://fahari-production.up.railway.app/api/bookings/${id}/cancel`,
+        `https://fahari-j7ac.onrender.com/api/bookings/${id}/cancel`,
         { status },
         { withCredentials: true }
       );
@@ -76,7 +76,7 @@ const AppointmentsPage: React.FC = () => {
     console.log("Sending to backend:", dateTimeToSend);
 
     const { data } = await axios.patch(
-      `https://fahari-production.up.railway.app/api/bookings/${rescheduleId}/reschedule`,
+      `https://fahari-j7ac.onrender.com/api/bookings/${rescheduleId}/reschedule`,
       { newDateTime: dateTimeToSend },
       { withCredentials: true }
     );
@@ -99,7 +99,7 @@ const AppointmentsPage: React.FC = () => {
 const fetchBookingReview = async (bookingId: string) => {
     setLoadingReview(true);
     try {
-      const res = await axios.get(`https://fahari-production.up.railway.app/api/reviews/${bookingId}`, {
+      const res = await axios.get(`https://fahari-j7ac.onrender.com/api/reviews/${bookingId}`, {
         withCredentials: true,
       });
       setSelectedReview(res.data);
@@ -357,7 +357,7 @@ const fetchBookingReview = async (bookingId: string) => {
                 formData.append("comment", comment);
                 images.forEach((file) => formData.append("reviewImages", file)); // field name must match multer config
 
-                await axios.post("https://fahari-production.up.railway.app/api/reviews", formData, {
+                await axios.post("https://fahari-j7ac.onrender.com/api/reviews", formData, {
                 withCredentials: true,
                 });
 

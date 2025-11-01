@@ -28,7 +28,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get("https://fahari-production.up.railway.app/api/users/me", { withCredentials: true });
+      const res = await axios.get("https://fahari-j7ac.onrender.com/api/users/me", { withCredentials: true });
       setUser(res.data);
     } catch (err) {
       console.error("Error fetching user:", err);

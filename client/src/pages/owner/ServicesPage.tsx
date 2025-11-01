@@ -35,10 +35,10 @@ const ServicesPage: React.FC = () => {
       }
       try {
         const [salonRes, baseRes] = await Promise.all([
-          axios.get(`https://fahari-production.up.railway.app/api/salon-services/${salonId}`, {
+          axios.get(`https://fahari-j7ac.onrender.com/api/salon-services/${salonId}`, {
             withCredentials: true,
           }),
-          axios.get("https://fahari-production.up.railway.app/api/services", {
+          axios.get("https://fahari-j7ac.onrender.com/api/services", {
             withCredentials: true,
           }),
         ]);
@@ -53,7 +53,7 @@ const ServicesPage: React.FC = () => {
 
   const deleteService = async (id: string) => {
     try {
-      await axios.delete(`https://fahari-production.up.railway.app/api/salon-services/${id}`, {
+      await axios.delete(`https://fahari-j7ac.onrender.com/api/salon-services/${id}`, {
         withCredentials: true,
       });
       setSalonServices((prev) => prev.filter((s) => s.id !== id));
@@ -87,7 +87,7 @@ const ServicesPage: React.FC = () => {
       if (isNew) {
         // Create new salon service
         const res = await axios.post(
-          `https://fahari-production.up.railway.app/api/salon-services/${salonId}`,
+          `https://fahari-j7ac.onrender.com/api/salon-services/${salonId}`,
           {
             salonId,
             serviceId: editingService.service.id, // base service id
@@ -100,7 +100,7 @@ const ServicesPage: React.FC = () => {
       } else {
         // Update existing salon service
         const res = await axios.put(
-          `https://fahari-production.up.railway.app/api/salon-services/${editingService.id}`,
+          `https://fahari-j7ac.onrender.com/api/salon-services/${editingService.id}`,
           {
             price: editingService.price,
             duration: editingService.duration,

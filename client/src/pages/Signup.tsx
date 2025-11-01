@@ -29,7 +29,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   try {
     await axios.post(
-      "https://fahari-production.up.railway.app/api/users/register",
+      "https://fahari-j7ac.onrender.com/api/users/register",
       formData,
       { withCredentials: true }
     );

@@ -33,7 +33,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
 
     try {
       await axios.post(
-        "https://fahari-production.up.railway.app/api/contact",
+        "https://fahari-j7ac.onrender.com/api/contact",
         formData,
         { withCredentials: true }
       );

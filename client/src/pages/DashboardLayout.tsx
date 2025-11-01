@@ -37,11 +37,11 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("https://fahari-production.up.railway.app/api/users/me", { withCredentials: true });
+        const res = await axios.get("https://fahari-j7ac.onrender.com/api/users/me", { withCredentials: true });
         setUser(res.data);
 
         if (res.data.role === "SALON_OWNER") {
-          const salonRes = await axios.get("https://fahari-production.up.railway.app/api/salons/owner/me", { withCredentials: true });
+          const salonRes = await axios.get("https://fahari-j7ac.onrender.com/api/salons/owner/me", { withCredentials: true });
           setSalon(salonRes.data);
         }
       } catch (err) {
@@ -73,7 +73,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
 
     const fetchNotifications = async () => {
       try {
-        const res = await axios.get("https://fahari-production.up.railway.app/api/notifications", { withCredentials: true });
+        const res = await axios.get("https://fahari-j7ac.onrender.com/api/notifications", { withCredentials: true });
         setNotifications(res.data);
       } catch (err) {
         console.error("Error fetching notifications:", err);
@@ -82,7 +82,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
 
     fetchNotifications();
 
-    socket = io("https://fahari-production.up.railway.app", {
+    socket = io("https://fahari-j7ac.onrender.com", {
       transports: ["websocket"],
       withCredentials: true,
     });
@@ -125,7 +125,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('https://fahari-production.up.railway.app/api/ai-chat', {
+      const response = await fetch('https://fahari-j7ac.onrender.com/api/ai-chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("https://fahari-production.up.railway.app/api/users/logout", {}, { withCredentials: true });
+      await axios.post("https://fahari-j7ac.onrender.com/api/users/logout", {}, { withCredentials: true });
       navigate("/login");
     } catch (err) {
       console.error("Logout failed:", err);

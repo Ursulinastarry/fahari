@@ -193,7 +193,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
         formDataToSend.append('gallery', image);
       });
 
-      const response = await fetch('https://fahari-production.up.railway.app/api/salons', {
+      const response = await fetch('https://fahari-j7ac.onrender.com/api/salons', {
         method: 'POST',
         credentials: 'include',
         body: formDataToSend,

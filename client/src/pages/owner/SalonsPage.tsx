@@ -26,7 +26,7 @@ type Salon = {
   gallery: (string | File)[];
 };
 
-const API_BASE = "https://fahari-production.up.railway.app";
+const API_BASE = "https://fahari-j7ac.onrender.com";
 
 const SalonOwnerSalons: React.FC = () => {
   const [salons, setSalons] = useState<Salon[]>([]);
