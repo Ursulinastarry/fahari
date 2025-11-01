@@ -346,7 +346,7 @@ const futureEvents = calendarEvents.filter((event) => {
               <div
                 key={salon.id}
                 onClick={() => fetchSalonDetails(salon.id)}
-                className="bg-white dark:bg-black rounded-xl shadow-md p-6 hover:shadow-lg cursor-pointer transition-shadow duration-300"
+                className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg cursor-pointer transition-shadow duration-300"
               >
                 <SalonImage
                   filename={salon.coverImage}
