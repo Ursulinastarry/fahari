@@ -4,11 +4,11 @@ import FullCalendar from "@fullcalendar/react";
 import { EventInput } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { Images, Star } from "lucide-react";
-import { DateTime } from "luxon";
+import { Star } from "lucide-react";
 import { useUser } from "../../contexts/UserContext";
 import SalonImage from "../SalonImage";
 import Review from "../Review";
+
 // Interfaces
 interface SalonService {
   id: string;
@@ -31,7 +31,7 @@ interface Salon {
   profileImage?: string;
   salonServices?: SalonService[];
   coverImage?: string;
-  gallery?: string[]; // Array of image URLs
+  gallery?: string[];
   reviews?: Review[];
 }
 
@@ -59,6 +59,18 @@ interface Review {
   images: string[];
 }
 
+interface PaymentDetails {
+  salon: string;
+  service: string;
+  date: string;
+  time: string;
+  servicePrice: number;
+  transactionFee: number;
+  totalAmount: number;
+}
+
+const TRANSACTION_FEE_PERCENTAGE = 0.02; // 2%
+
 const SalonsPage: React.FC = () => {
   const [salons, setSalons] = useState<Salon[]>([]);
   const [salonRatings, setSalonRatings] = useState<{ [key: string]: number }>({});
@@ -73,13 +85,21 @@ const SalonsPage: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
+  
   // Modal states
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [timeOptions, setTimeOptions] = useState<string[]>([]);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<string>("MPESA");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [showBookingPopup, setShowBookingPopup] = useState(false);
   const [bookingDetails, setBookingDetails] = useState<any>(null);
   const [salonReviews, setSalonReviews] = useState<any[]>([]);
   const [showReviewsModal, setShowReviewsModal] = useState(false);
+  const [checkoutRequestId, setCheckoutRequestId] = useState<string | null>(null);
+  const [isCheckingPayment, setIsCheckingPayment] = useState(false);
 
   // Fetch salons + ratings
   useEffect(() => {
@@ -98,7 +118,6 @@ const SalonsPage: React.FC = () => {
             } catch {
               ratings[salon.id] = 0;
             }
-            
           })
         );
         setSalonRatings(ratings);
@@ -111,52 +130,46 @@ const SalonsPage: React.FC = () => {
 
   // Fetch salon details + services + slots
   const fetchSalonDetails = async (id: string) => {
-  setLoading(true);
-  try {
-    // ✅ Fetch salon details
-    const res = await axios.get(`https://fahari-j7ac.onrender.com/api/salons/${id}`, { withCredentials: true });
-    const salonData = res.data;
+    setLoading(true);
+    try {
+      const res = await axios.get(`https://fahari-j7ac.onrender.com/api/salons/${id}`, { withCredentials: true });
+      const salonData = res.data;
 
-    // Extract images safely
-    const profileImage = salonData.profileImage || "/default-profile.png";
-    const coverImage = salonData.coverImage || "/default-cover.jpg";
-    const gallery = salonData.gallery || []; // Array of image URLs
+      const profileImage = salonData.profileImage || "/default-profile.png";
+      const coverImage = salonData.coverImage || "/default-cover.jpg";
+      const gallery = salonData.gallery || [];
 
-    // Store salon + images
-    setSelectedSalon({
-      ...salonData,
-      profileImage,
-      coverImage,
-      gallery,
-    });
+      setSelectedSalon({
+        ...salonData,
+        profileImage,
+        coverImage,
+        gallery,
+      });
 
-    setServices(salonData.salonServices || []);
+      setServices(salonData.salonServices || []);
 
-    // Reset booking state when switching salons
-    setBooking({
-      salon: salonData,
-      service: null,
-      slot: null,
-      selectedTime: null,
-    });
+      setBooking({
+        salon: salonData,
+        service: null,
+        slot: null,
+        selectedTime: null,
+      });
 
-    // ✅ Fetch salon slots
-    const slotsRes = await axios.get<Slot[]>(`https://fahari-j7ac.onrender.com/api/slots/salons/${id}`, { withCredentials: true });
+      const slotsRes = await axios.get<Slot[]>(`https://fahari-j7ac.onrender.com/api/slots/salons/${id}`, { withCredentials: true });
 
-    const validSlots = slotsRes.data.map((slot) => ({
-      ...slot,
-      startTime: new Date(slot.startTime).toISOString(),
-      endTime: new Date(slot.endTime).toISOString(),
-    }));
+      const validSlots = slotsRes.data.map((slot) => ({
+        ...slot,
+        startTime: new Date(slot.startTime).toISOString(),
+        endTime: new Date(slot.endTime).toISOString(),
+      }));
 
-    setSlots(mergeConsecutiveSlots(validSlots));
-  } catch (err) {
-    console.error("Error fetching salon details:", err);
-  } finally {
-    setLoading(false);
-  }
-};
-
+      setSlots(mergeConsecutiveSlots(validSlots));
+    } catch (err) {
+      console.error("Error fetching salon details:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const mergeConsecutiveSlots = (slots: Slot[]): Slot[] => {
     if (!slots.length) return [];
@@ -179,7 +192,7 @@ const SalonsPage: React.FC = () => {
   };
 
   const handleServiceClick = (service: SalonService) => {
-    if(!user){
+    if (!user) {
       alert("Please log in to book a service.");
       return;
     }
@@ -213,7 +226,7 @@ const SalonsPage: React.FC = () => {
       options.push(
         current.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false })
       );
-      current = new Date(current.getTime() + 60 * 60000); // increment by 60 mins
+      current = new Date(current.getTime() + 60 * 60000);
     }
 
     if (options.length === 0) {
@@ -230,7 +243,7 @@ const SalonsPage: React.FC = () => {
     setShowTimePicker(true);
   };
 
-  const handleTimeSelection = async (selectedTime: string) => {
+  const handleTimeSelection = (selectedTime: string) => {
     if (!booking.salon || !booking.service || !booking.slot) {
       console.error("Missing booking data:", booking);
       alert("Please select a salon, service, and slot.");
@@ -239,56 +252,181 @@ const SalonsPage: React.FC = () => {
 
     setShowTimePicker(false);
     
+    const slotDate = new Date(booking.slot.startTime).toISOString().split("T")[0];
+    const servicePrice = booking.service.price;
+    const transactionFee = Math.ceil(servicePrice * TRANSACTION_FEE_PERCENTAGE);
+    const totalAmount = servicePrice + transactionFee;
+
+    // Set payment details
+    setPaymentDetails({
+      salon: booking.salon.name,
+      service: booking.service.service.name,
+      date: slotDate,
+      time: selectedTime,
+      servicePrice,
+      transactionFee,
+      totalAmount
+    });
+
+    // Set phone number from user profile if available
+    setPhoneNumber(user?.phone || "");
+    
+    setBooking(prev => ({
+      ...prev,
+      selectedTime
+    }));
+
+    setShowPaymentModal(true);
+  };
+
+  const checkPaymentStatus = async (bookingId: string) => {
+    try {
+      const res = await axios.get(
+        `https://fahari-j7ac.onrender.com/api/payments/status/${bookingId}`,
+        { withCredentials: true }
+      );
+      
+      return res.data;
+    } catch (err) {
+      console.error("Error checking payment status:", err);
+      return null;
+    }
+  };
+
+  const pollPaymentStatus = async (bookingId: string, maxAttempts = 30) => {
+    setIsCheckingPayment(true);
+    
+    for (let i = 0; i < maxAttempts; i++) {
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
+      
+      const status = await checkPaymentStatus(bookingId);
+      
+      if (status?.status === "COMPLETED" && status?.bookingStatus === "CONFIRMED") {
+        setIsCheckingPayment(false);
+        return true;
+      } else if (status?.status === "FAILED") {
+        setIsCheckingPayment(false);
+        return false;
+      }
+    }
+    
+    setIsCheckingPayment(false);
+    return false;
+  };
+
+  const handlePaymentSubmit = async () => {
+    if (!booking.salon || !booking.service || !booking.slot || !booking.selectedTime) {
+      alert("Missing booking information");
+      return;
+    }
+
+    if (paymentMethod === "MPESA" && (!phoneNumber || phoneNumber.length < 10)) {
+      alert("Please enter a valid phone number");
+      return;
+    }
+
+    setIsProcessingPayment(true);
+
     try {
       const slotDate = new Date(booking.slot.startTime).toISOString().split("T")[0];
-      
-      console.log("Making booking with:", {
-        salonId: booking.salon.id,
-        salonServiceId: booking.service.id,
-        slotDate,
-        slotStartTime: selectedTime
-      });
 
-      const res = await axios.post(
-        "https://fahari-j7ac.onrender.com/api/bookings",
-        { 
-          salonId: booking.salon.id, 
-          salonServiceId: booking.service.id, 
-          slotDate, 
-          slotStartTime: selectedTime 
+      // Initiate payment with booking creation
+      const paymentRes = await axios.post(
+        "https://fahari-j7ac.onrender.com/api/payments/initiate",
+        {
+          salonId: booking.salon.id,
+          salonServiceId: booking.service.id,
+          slotDate,
+          slotStartTime: booking.selectedTime,
+          phoneNumber: paymentMethod === "MPESA" ? phoneNumber : undefined,
+          paymentMethod
         },
         { withCredentials: true }
       );
 
-      // Show booking confirmation
-      setBookingDetails({
-        salon: booking.salon.name,
-        service: booking.service.service.name,
-        date: slotDate,
-        time: selectedTime,
-      });
-      setShowBookingPopup(true);
+      if (paymentRes.data.success) {
+        const { bookingId, checkoutRequestId } = paymentRes.data;
 
-      // Refresh slots
-      const slotsRes = await axios.get(`https://fahari-j7ac.onrender.com/api/slots/salons/${booking.salon.id}`, { withCredentials: true });
-      const validSlots = slotsRes.data.map((slot: Slot) => ({
-        ...slot,
-        startTime: new Date(slot.startTime).toISOString(),
-        endTime: new Date(slot.endTime).toISOString(),
-      }));
-      setSlots(mergeConsecutiveSlots(validSlots));
-      
-      // Reset booking state
-      setBooking(prev => ({
-        ...prev,
-        service: null,
-        slot: null,
-        selectedTime: null
-      }));
+        if (paymentMethod === "MPESA") {
+          // For M-Pesa, poll for payment status
+          setCheckoutRequestId(checkoutRequestId);
+          alert("STK Push sent! Please enter your M-Pesa PIN on your phone.");
+          
+          const paymentSuccessful = await pollPaymentStatus(bookingId);
+          
+          if (paymentSuccessful) {
+            // Payment confirmed - show success modal
+            setBookingDetails({
+              salon: booking.salon.name,
+              service: booking.service.service.name,
+              date: slotDate,
+              time: booking.selectedTime,
+            });
+            
+            setShowPaymentModal(false);
+            setShowBookingPopup(true);
+
+            // Refresh slots
+            const slotsRes = await axios.get(
+              `https://fahari-j7ac.onrender.com/api/slots/salons/${booking.salon.id}`,
+              { withCredentials: true }
+            );
+            const validSlots = slotsRes.data.map((slot: Slot) => ({
+              ...slot,
+              startTime: new Date(slot.startTime).toISOString(),
+              endTime: new Date(slot.endTime).toISOString(),
+            }));
+            setSlots(mergeConsecutiveSlots(validSlots));
+            
+            // Reset booking state
+            setBooking(prev => ({
+              ...prev,
+              service: null,
+              slot: null,
+              selectedTime: null
+            }));
+          } else {
+            alert("Payment failed or timed out. Please try again.");
+          }
+        } else if (paymentMethod === "CASH") {
+          // For cash, booking is confirmed immediately
+          setBookingDetails({
+            salon: booking.salon.name,
+            service: booking.service.service.name,
+            date: slotDate,
+            time: booking.selectedTime,
+          });
+          
+          setShowPaymentModal(false);
+          setShowBookingPopup(true);
+
+          // Refresh slots
+          const slotsRes = await axios.get(
+            `https://fahari-j7ac.onrender.com/api/slots/salons/${booking.salon.id}`,
+            { withCredentials: true }
+          );
+          const validSlots = slotsRes.data.map((slot: Slot) => ({
+            ...slot,
+            startTime: new Date(slot.startTime).toISOString(),
+            endTime: new Date(slot.endTime).toISOString(),
+          }));
+          setSlots(mergeConsecutiveSlots(validSlots));
+          
+          // Reset booking state
+          setBooking(prev => ({
+            ...prev,
+            service: null,
+            slot: null,
+            selectedTime: null
+          }));
+        }
+      }
 
     } catch (err: any) {
-      console.error("Booking error:", err.response?.data || err);
-      alert(err.response?.data?.error || "Booking failed. Please try again.");
+      console.error("Payment/Booking error:", err.response?.data || err);
+      alert(err.response?.data?.error || "Payment failed. Please try again.");
+    } finally {
+      setIsProcessingPayment(false);
     }
   };
 
@@ -328,13 +466,12 @@ const SalonsPage: React.FC = () => {
     borderColor: slot.isAvailable ? "#34D399" : "#F87171",
     extendedProps: { isAvailable: slot.isAvailable },
   }));
-const now = new Date();
 
-// Filter out slots that ended before "now"
-const futureEvents = calendarEvents.filter((event) => {
-  const eventStart = new Date(event.start as string);
-  return eventStart >= now;
-});
+  const now = new Date();
+  const futureEvents = calendarEvents.filter((event) => {
+    const eventStart = new Date(event.start as string);
+    return eventStart >= now;
+  });
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -355,8 +492,6 @@ const futureEvents = calendarEvents.filter((event) => {
                   fallback="/images/placeholder.jpg"
                 />
                 <h2 className="text-xl font-semibold mb-2">{salon.name}</h2>
-
-  
                 <div className="flex items-center gap-1 mb-2">
                   {[...Array(5)].map((_, i) => (
                     <Star
@@ -385,30 +520,30 @@ const futureEvents = calendarEvents.filter((event) => {
           >
             ← Back to Salons
           </button>
-           {/* ✅ Gallery Section */}
-    <div className="mb-6">
-      <h3 className="text-xl font-semibold mb-3">Gallery</h3>
-      {selectedSalon?.gallery && selectedSalon.gallery.length > 0 ? (
-  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-    {selectedSalon.gallery.map((filename: string, idx: number) => (
-      <SalonImage
-        key={idx}
-        filename={filename}
-        alt={`${selectedSalon.name} gallery ${idx + 1}`}
-        className="w-full h-32 object-cover rounded-lg shadow-sm hover:opacity-90 transition cursor-pointer"
-        fallback="/images/gallery-placeholder.jpg"
-      />
-    ))}
-  </div>
-) : (
-  <p className="text-gray-500 dark:text-white">No gallery images available.</p>
-)}
-    </div>
+
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-3">Gallery</h3>
+            {selectedSalon?.gallery && selectedSalon.gallery.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {selectedSalon.gallery.map((filename: string, idx: number) => (
+                  <SalonImage
+                    key={idx}
+                    filename={filename}
+                    alt={`${selectedSalon.name} gallery ${idx + 1}`}
+                    className="w-full h-32 object-cover rounded-lg shadow-sm hover:opacity-90 transition cursor-pointer"
+                    fallback="/images/gallery-placeholder.jpg"
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 dark:text-white">No gallery images available.</p>
+            )}
+          </div>
+
           <div className="mb-6">
             <h2 className="text-3xl font-bold mb-2">{selectedSalon.name}</h2>
             <p className="text-gray-600 dark:text-white mb-4">{selectedSalon.description}</p>
             <div className="flex items-center gap-2 mb-4">
-              
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -523,10 +658,119 @@ const futureEvents = calendarEvents.filter((event) => {
             </div>
             <button
               onClick={() => setShowTimePicker(false)}
-              className="mt-4 px-4 py-2 text-gray-600 dark:text-white hover:text-gray-800 dark:text-white border rounded"
+              className="mt-4 px-4 py-2 text-gray-600 dark:text-white hover:text-gray-800 border rounded"
             >
               Cancel
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Modal */}
+      {showPaymentModal && paymentDetails && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white dark:bg-gray-900 rounded-lg p-8 shadow-xl w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Payment Details</h2>
+            
+            <div className="space-y-4 mb-6">
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Salon</p>
+                <p className="font-semibold text-gray-800 dark:text-white">{paymentDetails.salon}</p>
+              </div>
+
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Service</p>
+                <p className="font-semibold text-gray-800 dark:text-white">{paymentDetails.service}</p>
+              </div>
+
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg flex justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Date</p>
+                  <p className="font-semibold text-gray-800 dark:text-white">
+                    {new Date(paymentDetails.date).toLocaleDateString()}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Time</p>
+                  <p className="font-semibold text-gray-800 dark:text-white">{paymentDetails.time}</p>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <div className="flex justify-between mb-2">
+                  <span className="text-gray-600 dark:text-gray-400">Service Price</span>
+                  <span className="font-medium text-gray-800 dark:text-white">KSh {paymentDetails.servicePrice}</span>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-gray-600 dark:text-gray-400">Transaction Fee (2%)</span>
+                  <span className="font-medium text-gray-800 dark:text-white">KSh {paymentDetails.transactionFee}</span>
+                </div>
+                <div className="flex justify-between text-lg font-bold border-t border-gray-200 dark:border-gray-700 pt-2">
+                  <span className="text-gray-800 dark:text-white">Total Amount</span>
+                  <span className="text-blue-600 dark:text-blue-400">KSh {paymentDetails.totalAmount}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Payment Method
+              </label>
+              <select
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+              >
+                <option value="MPESA">M-Pesa</option>
+                <option value="CASH">Cash (Pay at Salon)</option>
+              </select>
+            </div>
+
+            {paymentMethod === "MPESA" && (
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  M-Pesa Phone Number
+                </label>
+                <input
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  placeholder="e.g., 0712345678"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+                />
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  You will receive an STK push request on this number
+                </p>
+              </div>
+            )}
+
+            {isCheckingPayment && (
+              <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900 rounded-lg">
+                <p className="text-sm text-blue-700 dark:text-blue-300 text-center">
+                  ⏳ Waiting for payment confirmation...
+                </p>
+              </div>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowPaymentModal(false);
+                  setPaymentDetails(null);
+                }}
+                disabled={isProcessingPayment || isCheckingPayment}
+                className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handlePaymentSubmit}
+                disabled={isProcessingPayment || isCheckingPayment || (paymentMethod === "MPESA" && !phoneNumber)}
+                className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isProcessingPayment || isCheckingPayment ? "Processing..." : "Confirm & Pay"}
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -536,12 +780,17 @@ const futureEvents = calendarEvents.filter((event) => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white dark:bg-black rounded-lg p-8 shadow-lg w-96">
             <h2 className="text-2xl font-bold mb-6 text-green-600">🎉 Booking Confirmed!</h2>
-            <div className="space-y-3 text-gray-700 dark:text:white">
+            <div className="space-y-3 text-gray-700 dark:text-white">
               <p><strong>Salon:</strong> {bookingDetails.salon}</p>
               <p><strong>Service:</strong> {bookingDetails.service}</p>
               <p><strong>Date:</strong> {new Date(bookingDetails.date).toLocaleDateString()}</p>
               <p><strong>Time:</strong> {bookingDetails.time}</p>
             </div>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
+              {paymentMethod === "MPESA" 
+                ? "Payment successful! You will receive a confirmation SMS shortly." 
+                : "Please pay at the salon when you arrive."}
+            </p>
             <button
               onClick={() => {
                 setShowBookingPopup(false);
@@ -563,7 +812,7 @@ const futureEvents = calendarEvents.filter((event) => {
               <h2 className="text-lg font-bold">Reviews for {selectedSalon?.name}</h2>
               <button 
                 onClick={() => setShowReviewsModal(false)} 
-                className="text-gray-500 dark:text-white hover:text-gray-700 dark:text:white text-xl"
+                className="text-gray-500 dark:text-white hover:text-gray-700 text-xl"
               >
                 ×
               </button>
@@ -576,14 +825,14 @@ const futureEvents = calendarEvents.filter((event) => {
                   <div key={review.id} className="border-b pb-4">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="flex items-center gap-3">
-          <Review
-                filename={typeof review.images === 'string' ? review.images : undefined}
-                alt={`${review.clientName} | ${review.rating} stars`}
-                className="w-full h-40 object-cover rounded-lg mb-3"
-                fallback="/images/default-salon.jpg"
-              />
-          <p className="font-semibold">{review.clientName}</p>
-        </div>
+                        <Review
+                          filename={typeof review.images === 'string' ? review.images : undefined}
+                          alt={`${review.clientName} | ${review.rating} stars`}
+                          className="w-full h-40 object-cover rounded-lg mb-3"
+                          fallback="/images/default-salon.jpg"
+                        />
+                        <p className="font-semibold">{review.clientName}</p>
+                      </div>
                       <p className="font-semibold">
                         {review.client?.firstName} {review.client?.lastName}
                       </p>
@@ -601,7 +850,7 @@ const futureEvents = calendarEvents.filter((event) => {
                         ))}
                       </div>
                     </div>
-                    <p className="text-gray-700 dark:text:white">{review.comment}</p>
+                    <p className="text-gray-700 dark:text-white">{review.comment}</p>
                   </div>
                 ))}
               </div>
