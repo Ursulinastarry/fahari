@@ -45,6 +45,7 @@ export const getSlots = async (req, res) => {
     }
 };
 export const getSalonSlots = asyncHandler(async (req, res) => {
+    console.log("hitting get salon slots");
     const { salonId } = req.params;
     if (!salonId) {
         res.status(400);
