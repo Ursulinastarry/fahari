@@ -208,7 +208,10 @@ model Payment {
   method             PaymentMethod
   status             PaymentStatus @default(PENDING)
   transactionId      String?       @unique
-  mpesaReceiptNumber String?
+  mpesaCheckoutRequestId  String?       @unique
+  mpesaMerchantRequestId  String?
+  mpesaReceiptNumber      String?       @unique
+  mpesaTransactionDate    DateTime?
   failureReason      String?
   processedAt        DateTime?
   bookingId          String        @unique
