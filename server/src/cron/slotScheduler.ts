@@ -93,7 +93,7 @@ cron.schedule(
 
 // Manual trigger function for testing
 export const triggerSlotGeneration = async () => {
-  console.log("🔧 Manually triggering slot generation...");
+  console.log(" Manually triggering slot generation...");
   // Copy the same logic from the midnight cron here
 };
 
