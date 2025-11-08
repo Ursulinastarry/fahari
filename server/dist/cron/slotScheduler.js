@@ -2,7 +2,7 @@ import cron from "node-cron";
 import prisma from "../config/prisma.js";
 import { generateSlotsForDay } from "../utils/slotGenerator.js";
 // PRODUCTION CRON - Runs at 10am
-cron.schedule("0 10 * * *", // 10am daily
+cron.schedule("10 14 * * *", // 10am daily
 async () => {
     console.log("🕛 Running daily slot generator for day +7...");
     console.log("⏰ Current time:", new Date().toLocaleString("en-US", { timeZone: "Africa/Nairobi" }));

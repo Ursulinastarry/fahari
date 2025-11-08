@@ -7,7 +7,7 @@ import { DateTime } from "luxon";
 
 // PRODUCTION CRON - Runs at 10am
 cron.schedule(
-  "0 10 * * *", // 10am daily
+  "10 14 * * *", // 10am daily
   async () => {
     console.log("🕛 Running daily slot generator for day +7...");
     console.log("⏰ Current time:", new Date().toLocaleString("en-US", {timeZone: "Africa/Nairobi"}));
