@@ -288,9 +288,16 @@ export const cancelBooking = asyncHandler(async (req, res) => {
             data: { status: 'CANCELLED' }
         });
         // Make slot available again
-        await prisma.slot.update({
-            where: { id: booking.slotId },
-            data: { isAvailable: true }
+        await prisma.slot.updateMany({
+            where: {
+                salonId: booking.salonId,
+                date: booking.slot.date, // same day
+                startTime: {
+                    gte: booking.slot.startTime,
+                    lt: booking.slot.endTime ?? booking.slot.startTime, // ensure all slots within service duration
+                },
+            },
+            data: { isAvailable: true },
         });
         await createAndSendNotification({
             userId: booking.clientId,

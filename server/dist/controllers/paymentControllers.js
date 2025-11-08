@@ -204,16 +204,36 @@ export const checkPaymentStatus = asyncHandler(async (req, res) => {
 // SIMPLE HELPER FOR DIRECT CANCELLATION (without req/res)
 // ======================================================================================
 async function cancelBookingDirect(bookingId) {
+    // load booking with related slot and appointmentId so we can restore slots and cancel appointment
+    const booking = await prisma.booking.findUnique({
+        where: { id: bookingId },
+        include: { slot: true },
+    });
+    if (!booking)
+        return;
     await prisma.booking.update({
         where: { id: bookingId },
         data: { status: "CANCELLED" },
     });
-    await prisma.appointment.updateMany({
-        where: { booking: { id: bookingId } },
-        data: { status: "CANCELLED" },
-    });
-    await prisma.slot.updateMany({
-        where: { booking: { id: bookingId } },
-        data: { isAvailable: true },
-    });
+    // appointment is linked via booking.appointmentId (set when booking was created)
+    if (booking.appointmentId) {
+        await prisma.appointment.updateMany({
+            where: { id: booking.appointmentId },
+            data: { status: "CANCELLED" },
+        });
+    }
+    // restore slot availability for the time range of the original slot (if present)
+    if (booking.slot) {
+        await prisma.slot.updateMany({
+            where: {
+                salonId: booking.salonId,
+                date: booking.slot.date, // same day
+                startTime: {
+                    gte: booking.slot.startTime,
+                    lt: booking.slot.endTime ?? booking.slot.startTime, // ensure all slots within service duration
+                },
+            },
+            data: { isAvailable: true },
+        });
+    }
 }
