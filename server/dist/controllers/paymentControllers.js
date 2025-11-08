@@ -41,7 +41,7 @@ export const initiatePayment = asyncHandler(async (req, res) => {
         data: {
             bookingId: booking.id,
             amount: totalAmount,
-            paymentMethod: paymentMethod,
+            method: paymentMethod,
             status: 'PENDING'
         }
     });
