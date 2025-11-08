@@ -5,9 +5,9 @@ import { DateTime } from "luxon";
 
 
 
-// PRODUCTION CRON - Runs at 10am
+// PRODUCTION CRON - Runs at midnight
 cron.schedule(
-  "10 14 * * *", // 10am daily
+  "0 0 * * *", // midnight daily
   async () => {
     console.log("🕛 Running daily slot generator for day +7...");
     console.log("⏰ Current time:", new Date().toLocaleString("en-US", {timeZone: "Africa/Nairobi"}));
@@ -97,5 +97,5 @@ export const triggerSlotGeneration = async () => {
   // Copy the same logic from the midnight cron here
 };
 
-console.log("📅 Daily slot generator cron job scheduled for 10am (Africa/Nairobi)");
+console.log("📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)");
 console.log("⏰ Current time:", new Date().toLocaleString("en-US", {timeZone: "Africa/Nairobi"}));
