@@ -146,12 +146,24 @@ export const mpesaCallback = asyncHandler(async (req, res) => {
         const metadata = Body.stkCallback.CallbackMetadata?.Item || [];
         const mpesaReceiptNumber = metadata.find((i) => i.Name === "MpesaReceiptNumber")?.Value;
         const transactionDate = metadata.find((i) => i.Name === "TransactionDate")?.Value;
+        const rawDate = metadata.find((item) => item.Name === 'TransactionDate')?.Value;
+        let parsedDate = null;
+        if (rawDate && typeof rawDate === 'number') {
+            const str = String(rawDate);
+            const year = parseInt(str.slice(0, 4));
+            const month = parseInt(str.slice(4, 6)) - 1; // JS months = 0–11
+            const day = parseInt(str.slice(6, 8));
+            const hour = parseInt(str.slice(8, 10));
+            const minute = parseInt(str.slice(10, 12));
+            const second = parseInt(str.slice(12, 14));
+            parsedDate = new Date(Date.UTC(year, month, day, hour, minute, second));
+        }
         await prisma.payment.update({
             where: { id: payment.id },
             data: {
                 status: "COMPLETED",
                 mpesaReceiptNumber,
-                mpesaTransactionDate: transactionDate ? new Date(String(transactionDate)) : null,
+                mpesaTransactionDate: parsedDate,
                 processedAt: new Date(),
             },
         });
