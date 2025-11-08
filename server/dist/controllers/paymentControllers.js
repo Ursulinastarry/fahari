@@ -228,9 +228,8 @@ async function createBookingFromPaymentData(params) {
             salonId,
             salonServiceId,
             appointmentId: appointment.id,
-            slotId: slotIds[0],
-            slotDate,
-            slotStartTime
+            slotId: slotIds[0]
+            // ✅ Removed slotDate and slotStartTime - not in schema
         },
         include: {
             salonService: {
