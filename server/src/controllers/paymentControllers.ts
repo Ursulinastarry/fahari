@@ -1,11 +1,12 @@
 import { Response } from 'express';
-import  asyncHandler  from '../middlewares/asyncHandler';
-import prisma  from '../config/prisma';
+import asyncHandler from '../middlewares/asyncHandler';
+import prisma from '../config/prisma';
 import { mpesaService } from '../services/mpesaService';
 import { DateTime } from 'luxon';
+
 const TRANSACTION_FEE_PERCENTAGE = 0.02; // 2%
 
-// Initiate payment
+// Initiate payment (ALWAYS creates booking first)
 export const initiatePayment = asyncHandler(async (req: any, res: Response) => {
   const { salonId, salonServiceId, slotDate, slotStartTime, phoneNumber, paymentMethod } = req.body;
 
@@ -31,27 +32,34 @@ export const initiatePayment = asyncHandler(async (req: any, res: Response) => {
   const totalAmount = baseAmount + transactionFee;
   const salonOwnerAmount = baseAmount;
 
-  // Create pending booking record
-  const booking = await prisma.booking.create({
+  // ✅ STEP 1: Always create booking first (regardless of payment method)
+  const booking = await createBookingFromPaymentData({
+    userId: req.user.id,
+    salonId,
+    salonServiceId,
+    slotDate,
+    slotStartTime,
+    totalAmount,
+    transactionFee,
+    salonOwnerAmount,
+    paymentMethod
+  });
+
+  // ✅ STEP 2: Create payment record linked to booking
+  const payment = await prisma.payment.create({
     data: {
-      bookingNumber: `BK-${Date.now()}`,
-      totalAmount: totalAmount,
-      transactionFee: transactionFee,
-      salonOwnerAmount: salonOwnerAmount,
-      status: 'PENDING_PAYMENT',
+      bookingId: booking.id,
+      amount: totalAmount,
       paymentMethod: paymentMethod,
-      clientId: req.user.id,
-      salonId,
-      salonServiceId,
-      slotDate,
-      slotStartTime,
-      // Don't mark slots yet - wait for payment
+      status: 'PENDING'
     } as any
   });
 
-  // Handle M-Pesa payment
+  // ✅ STEP 3: Handle payment method
   if (paymentMethod === 'MPESA') {
     if (!phoneNumber) {
+      // Rollback booking if no phone number
+      await cancelBooking(booking.id);
       return res.status(400).json({ error: 'Phone number required for M-Pesa' });
     }
 
@@ -63,13 +71,10 @@ export const initiatePayment = asyncHandler(async (req: any, res: Response) => {
         `Payment for ${salonService.service.name}`
       );
 
-      // Save M-Pesa transaction
-      await prisma.payment.create({
+      // Update payment with M-Pesa details
+      await prisma.payment.update({
+        where: { id: payment.id },
         data: {
-          bookingId: booking.id,
-          amount: totalAmount,
-          paymentMethod: 'MPESA',
-          status: 'PENDING',
           mpesaCheckoutRequestId: stkResponse.CheckoutRequestID,
           mpesaMerchantRequestId: stkResponse.MerchantRequestID,
         } as any
@@ -79,16 +84,16 @@ export const initiatePayment = asyncHandler(async (req: any, res: Response) => {
         success: true,
         message: 'Payment initiated. Please complete on your phone.',
         bookingId: booking.id,
+        bookingNumber: booking.bookingNumber,
+        paymentId: payment.id,
         checkoutRequestId: stkResponse.CheckoutRequestID,
         amount: totalAmount,
         transactionFee: transactionFee
       });
     } catch (error: any) {
       console.error('M-Pesa error:', error);
-      await prisma.booking.update({
-        where: { id: booking.id },
-        data: { status: 'CANCELLED' }
-      });
+      // Cancel booking on payment failure
+      await cancelBooking(booking.id);
       return res.status(500).json({ 
         error: 'Payment initiation failed',
         details: error.response?.data || error.message 
@@ -98,26 +103,15 @@ export const initiatePayment = asyncHandler(async (req: any, res: Response) => {
 
   // Handle Cash payment
   if (paymentMethod === 'CASH') {
-    // For cash, we confirm booking but mark payment as cash on delivery
-    await prisma.payment.create({
-      data: {
-        bookingId: booking.id,
-        amount: totalAmount,
-        paymentMethod: 'CASH',
-        status: 'PENDING', // Will be confirmed when client arrives
-      } as any
-    });
-
-    // Update booking status and mark slots
-    await completeBooking(booking.id);
-
+    // For cash, booking is confirmed immediately
     return res.status(200).json({
       success: true,
       message: 'Booking confirmed. Pay cash at the salon.',
       bookingId: booking.id,
+      bookingNumber: booking.bookingNumber,
+      paymentId: payment.id,
       amount: totalAmount,
-      transactionFee: transactionFee,
-      note: 'Transaction fee will be added to salon owner account'
+      transactionFee: transactionFee
     });
   }
 });
@@ -134,7 +128,7 @@ export const mpesaCallback = asyncHandler(async (req: any, res: Response) => {
 
   // Find payment record
   const payment = await prisma.payment.findFirst({
-    where: ({ mpesaCheckoutRequestId: CheckoutRequestID } as any),
+    where: { mpesaCheckoutRequestId: CheckoutRequestID } as any,
     include: { booking: true }
   });
 
@@ -160,21 +154,21 @@ export const mpesaCallback = asyncHandler(async (req: any, res: Response) => {
       } as any
     });
 
-    // Complete the booking
-    await completeBooking(payment.bookingId);
+    // Booking already exists, just confirm it
+    await prisma.booking.update({
+      where: { id: payment.bookingId },
+      data: { status: 'CONFIRMED' }
+    });
 
     console.log('Payment successful:', mpesaReceiptNumber);
   } else {
-    // Payment failed
+    // Payment failed - cancel booking
     await prisma.payment.update({
       where: { id: payment.id },
       data: { status: 'FAILED' }
     });
 
-    await prisma.booking.update({
-      where: { id: payment.bookingId },
-      data: { status: 'CANCELLED' }
-    });
+    await cancelBooking(payment.bookingId);
 
     console.log('Payment failed:', ResultDesc);
   }
@@ -182,7 +176,7 @@ export const mpesaCallback = asyncHandler(async (req: any, res: Response) => {
   res.status(200).json({ ResultCode: 0, ResultDesc: 'Accepted' });
 });
 
-// Check payment status
+// Check payment status by bookingId
 export const checkPaymentStatus = asyncHandler(async (req: any, res: Response) => {
   const { bookingId } = req.params;
 
@@ -196,31 +190,63 @@ export const checkPaymentStatus = asyncHandler(async (req: any, res: Response) =
   }
 
   res.json({
-    status: payment.status,
-    bookingStatus: payment.booking.status,
+    status: payment.status,              // ✅ Matches frontend
+    paymentStatus: payment.status,       // Keep for clarity
+    bookingStatus: payment.booking?.status,
+    bookingId: payment.bookingId,
+    paymentId: payment.id,
     amount: payment.amount
   });
 });
 
-// Helper: Complete booking after successful payment
-async function completeBooking(bookingId: string) {
-  const booking = await prisma.booking.findUnique({
-    where: { id: bookingId },
-    include: { salonService: { include: { service: true } }, slot:true,salon: true, client: true }
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+// Create booking with slot reservation
+async function createBookingFromPaymentData(params: {
+  userId: string;
+  salonId: string;
+  salonServiceId: string;
+  slotDate: string;
+  slotStartTime: string;
+  totalAmount: number;
+  transactionFee: number;
+  salonOwnerAmount: number;
+  paymentMethod: string;
+}) {
+  const {
+    userId,
+    salonId,
+    salonServiceId,
+    slotDate,
+    slotStartTime,
+    totalAmount,
+    transactionFee,
+    salonOwnerAmount,
+    paymentMethod
+  } = params;
+
+  // Fetch salon service
+  const salonService = await prisma.salonService.findUnique({
+    where: { id: salonServiceId },
+    include: { service: true }
   });
 
-  if (!booking) throw new Error('Booking not found');
+  if (!salonService) throw new Error('SalonService not found');
 
   const slotDuration = 60;
-  const requiredSlots = Math.ceil(booking.salonService!.duration / slotDuration);
-  const startSlot = DateTime.fromISO(`${booking.slot.date}T${booking.slot.startTime}`, { 
-    zone: 'Africa/Nairobi' 
+  const requiredSlots = Math.ceil(salonService.duration / slotDuration);
+
+  // Combine date + time
+  const startSlot = DateTime.fromISO(`${slotDate}T${slotStartTime}`, {
+    zone: 'Africa/Nairobi'
   }).toJSDate();
 
-  // Find and mark slots as unavailable
+  // Find available slots
   const slots = await prisma.slot.findMany({
     where: {
-      salonId: booking.salonId,
+      salonId,
       startTime: { gte: startSlot },
       isAvailable: true
     },
@@ -232,6 +258,7 @@ async function completeBooking(bookingId: string) {
     throw new Error('Not enough consecutive slots available');
   }
 
+  // Mark slots as booked
   const slotIds = slots.map(s => s.id);
   await prisma.slot.updateMany({
     where: { id: { in: slotIds } },
@@ -244,38 +271,81 @@ async function completeBooking(bookingId: string) {
       date: slots[0].date,
       startTime: slots[0].startTime,
       endTime: slots[slots.length - 1].endTime,
-      salonId: booking.salonId,
-      salonServiceId: booking.salonServiceId,
+      salonId,
+      salonServiceId,
       slotId: slotIds[0],
       status: 'CONFIRMED'
     }
   });
 
-  // Update booking
-  await prisma.booking.update({
-    where: { id: bookingId },
+  // Create booking
+  const booking = await prisma.booking.create({
     data: {
-      status: 'CONFIRMED',
+      bookingNumber: `BK-${Date.now()}`,
+      totalAmount,
+      transactionFee,
+      salonOwnerAmount,
+      status: paymentMethod === 'CASH' ? 'CONFIRMED' : 'PENDING_PAYMENT',
+      paymentMethod,
+      clientId: userId,
+      salonId,
+      salonServiceId,
       appointmentId: appointment.id,
-      slotId: slotIds[0]
+      slotId: slotIds[0],
+      slotDate,
+      slotStartTime
+    } as any,
+    include: {
+      salonService: {
+        include: { service: true }
+      },
+      salon: true,
+      client: true
     }
   });
 
-  // Add transaction fee to salon owner's account (for cash payments)
-  if ((booking as any).paymentMethod === 'CASH') {
-    await (prisma as any).salonOwnerBalance.upsert({
-      where: { ownerId: booking.salon.ownerId },
-      update: {
-        pendingAmount: { increment: (booking as any).transactionFee }
-      },
-      create: {
-        ownerId: booking.salon.ownerId,
-        pendingAmount: (booking as any).transactionFee,
-        availableAmount: 0
-      }
+  return booking;
+}
+
+// Cancel booking and release slots
+async function cancelBooking(bookingId: string) {
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    include: { appointment: true }
+  });
+
+  if (!booking) return;
+
+  // Update booking status
+  await prisma.booking.update({
+    where: { id: bookingId },
+    data: { status: 'CANCELLED' }
+  });
+
+  // Delete appointment
+  if (booking.appointmentId) {
+    await prisma.appointment.delete({
+      where: { id: booking.appointmentId }
     });
   }
 
-  // Send notifications (reuse your existing function)
-  // await createAndSendNotification(...);
+  // Release slots
+  const slots = await prisma.slot.findMany({
+    where: {
+      salonId: booking.salonId,
+      startTime: { 
+        gte: DateTime.fromISO(`${booking.appointment.date}T${booking.appointment.startTime}`, {
+          zone: 'Africa/Nairobi'
+        }).toJSDate()
+      },
+      isAvailable: false
+    },
+    orderBy: { startTime: 'asc' }
+  });
+
+  const slotIds = slots.map(s => s.id);
+  await prisma.slot.updateMany({
+    where: { id: { in: slotIds } },
+    data: { isAvailable: true }
+  });
 }
