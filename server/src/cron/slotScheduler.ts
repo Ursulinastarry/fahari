@@ -97,5 +97,5 @@ export const triggerSlotGeneration = async () => {
   // Copy the same logic from the midnight cron here
 };
 
-console.log("📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)");
+console.log("📅 Daily slot generator cron job scheduled for 10am (Africa/Nairobi)");
 console.log("⏰ Current time:", new Date().toLocaleString("en-US", {timeZone: "Africa/Nairobi"}));

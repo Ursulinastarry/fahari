@@ -267,7 +267,7 @@ const SalonOwnerSalons: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {salons.map((salon) => (
-            <div key={salon.id} className="bg-white dark:bg-black shadow rounded-lg p-4">
+            <div key={salon.id} className="bg-white shadow rounded-lg p-4">
               <SalonImage
                 filename={typeof salon.coverImage === 'string' ? salon.coverImage : undefined}
                 alt={salon.name}
