@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { baseUrl } from '../../config/baseUrl';
 import FullCalendar from "@fullcalendar/react";
 import { EventInput } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -105,7 +106,7 @@ const SalonsPage: React.FC = () => {
   useEffect(() => {
     const fetchSalons = async () => {
       try {
-        const res = await axios.get("https://fahari-j7ac.onrender.com/api/salons", { withCredentials: true });
+        const res = await axios.get(`${baseUrl}/api/salons`, { withCredentials: true });
         const salonsData: Salon[] = res.data.salons;
         setSalons(salonsData);
 
@@ -113,7 +114,7 @@ const SalonsPage: React.FC = () => {
         await Promise.all(
           salonsData.map(async (salon) => {
             try {
-              const ratingRes = await axios.get(`https://fahari-j7ac.onrender.com/api/reviews/rating/${salon.id}`, { withCredentials: true });
+              const ratingRes = await axios.get(`${baseUrl}/api/reviews/rating/${salon.id}`, { withCredentials: true });
               ratings[salon.id] = ratingRes.data.averageRating || 0;
             } catch {
               ratings[salon.id] = 0;
@@ -132,7 +133,7 @@ const SalonsPage: React.FC = () => {
   const fetchSalonDetails = async (id: string) => {
     setLoading(true);
     try {
-      const res = await axios.get(`https://fahari-j7ac.onrender.com/api/salons/${id}`, { withCredentials: true });
+      const res = await axios.get(`${baseUrl}/api/salons/${id}`, { withCredentials: true });
       const salonData = res.data;
 
       const profileImage = salonData.profileImage || "/default-profile.png";
@@ -155,7 +156,7 @@ const SalonsPage: React.FC = () => {
         selectedTime: null,
       });
 
-      const slotsRes = await axios.get<Slot[]>(`https://fahari-j7ac.onrender.com/api/slots/salons/${id}`, { withCredentials: true });
+      const slotsRes = await axios.get<Slot[]>(`${baseUrl}/api/slots/salons/${id}`, { withCredentials: true });
 
       const validSlots = slotsRes.data.map((slot) => ({
         ...slot,
@@ -282,7 +283,7 @@ const SalonsPage: React.FC = () => {
   const checkPaymentStatus = async (bookingId: string) => {
     try {
       const res = await axios.get(
-        `https://fahari-j7ac.onrender.com/api/payments/status/${bookingId}`,
+        `${baseUrl}/api/payments/status/${bookingId}`,
         { withCredentials: true }
       );
       
@@ -332,7 +333,7 @@ const SalonsPage: React.FC = () => {
 
       // Initiate payment with booking creation
       const paymentRes = await axios.post(
-        "https://fahari-j7ac.onrender.com/api/payments/initiate",
+        `${baseUrl}/api/payments/initiate`,
         {
           salonId: booking.salon.id,
           salonServiceId: booking.service.id,
@@ -368,7 +369,7 @@ const SalonsPage: React.FC = () => {
 
             // Refresh slots
             const slotsRes = await axios.get(
-              `https://fahari-j7ac.onrender.com/api/slots/salons/${booking.salon.id}`,
+              `${baseUrl}/api/slots/salons/${booking.salon.id}`,
               { withCredentials: true }
             );
             const validSlots = slotsRes.data.map((slot: Slot) => ({
@@ -402,7 +403,7 @@ const SalonsPage: React.FC = () => {
 
           // Refresh slots
           const slotsRes = await axios.get(
-            `https://fahari-j7ac.onrender.com/api/slots/salons/${booking.salon.id}`,
+            `${baseUrl}/api/slots/salons/${booking.salon.id}`,
             { withCredentials: true }
           );
           const validSlots = slotsRes.data.map((slot: Slot) => ({
@@ -433,7 +434,7 @@ const SalonsPage: React.FC = () => {
   const fetchSalonReviews = async () => {
     if (!selectedSalon) return;
     try {
-      const res = await axios.get(`https://fahari-j7ac.onrender.com/api/reviews/salon/${selectedSalon.id}`, { withCredentials: true });
+      const res = await axios.get(`${baseUrl}/api/reviews/salon/${selectedSalon.id}`, { withCredentials: true });
       setSalonReviews(res.data);
       setShowReviewsModal(true);
     } catch (err) {

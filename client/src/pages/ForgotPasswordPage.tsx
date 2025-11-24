@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { baseUrl } from '../config/baseUrl';
 
 const ForgotPasswordPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ const ForgotPasswordPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        'https://fahari-j7ac.onrender.com/api/auth/forgot-password',
+        `${baseUrl}/api/auth/forgot-password`,
         { email }
       );
       setMessage(response.data.message);

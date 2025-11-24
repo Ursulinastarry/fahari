@@ -1,6 +1,6 @@
 // src/config/api.ts
 const API_CONFIG = {
-  baseURL: (import.meta as any).env?.VITE_API_URL || "https://fahari-j7ac.onrender.com",
+  baseURL: (import.meta as any).env?.VITE_API_BASE_URL || "https://fahari-j7ac.onrender.com",
   imagesPath: "/uploads/salons",
 };
 

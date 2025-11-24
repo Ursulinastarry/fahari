@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { baseUrl } from '../config/baseUrl';
 import { Eye, EyeOff } from "lucide-react";
 
 const ResetPasswordPage: React.FC = () => {
@@ -28,7 +29,7 @@ const ResetPasswordPage: React.FC = () => {
     }
 
     axios
-      .get(`https://fahari-j7ac.onrender.com/api/auth/verify-reset-token?token=${token}`)
+      .get(`${baseUrl}/api/auth/verify-reset-token?token=${token}`)
       .then(() => {
         setTokenValid(true);
         setVerifying(false);
@@ -59,7 +60,7 @@ const ResetPasswordPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        'https://fahari-j7ac.onrender.com/api/auth/reset-password',
+        `${baseUrl}/api/auth/reset-password`,
         { token, newPassword }
       );
       setMessage(response.data.message);

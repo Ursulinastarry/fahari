@@ -13,7 +13,12 @@
     "noEmit": false,
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": [
+        "*"
+      ],
+      "@app/*": [
+        "src/*"
+      ]
     }
   },
   "tsc-alias": {
@@ -22,7 +27,6 @@
       "extension": ".js"
     }
   },
-
   "include": [
     "src/**/*.ts"
   ],

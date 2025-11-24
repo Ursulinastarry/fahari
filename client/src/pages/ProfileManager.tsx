@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Edit3, Camera, X, Save, Mail, Phone, MapPin, User } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
 import Avatar from './avatars';
+import { baseUrl } from '../config/baseUrl';
 const ProfileComponent = ({ user = useUser().user, onClose }: { user: any; onClose: any; }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
@@ -45,7 +46,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       }
 
       ;
-      const response = await fetch(`https://fahari-j7ac.onrender.com/api/users/${user!.id}`, {
+      const response = await fetch(`${baseUrl}/api/users/${user!.id}`, {
         method: 'PUT',
         credentials: 'include',
         body: formData,

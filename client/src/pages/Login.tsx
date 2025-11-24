@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { baseUrl } from '../config/baseUrl';
 import { useNavigate, Link } from "react-router-dom";
 import PasswordInput from "./Password";
 const Login = () => {
@@ -13,7 +14,7 @@ const Login = () => {
       console.log("hitting login");
 
       const res = await axios.post(
-        "https://fahari-j7ac.onrender.com/api/users/login",
+        `${baseUrl}/api/users/login`,
         { email, password },
         { withCredentials: true }
       );

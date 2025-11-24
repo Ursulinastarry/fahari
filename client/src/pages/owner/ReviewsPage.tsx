@@ -1,6 +1,7 @@
 // src/pages/owner/ReviewsPage.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { baseUrl } from '../../config/baseUrl';
 import { Star } from "lucide-react"; // star icon
 import Review from "../Review";
 interface Review {
@@ -17,7 +18,7 @@ const ReviewsPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("https://fahari-j7ac.onrender.com/api/reviews/owner", { withCredentials: true })
+      .get(`${baseUrl}/api/reviews/owner`, { withCredentials: true })
       .then((res) => setReviews(res.data))
       .catch((err) => console.error("Error fetching reviews:", err));
   }, []);

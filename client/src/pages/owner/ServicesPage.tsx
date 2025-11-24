@@ -1,6 +1,7 @@
 // src/pages/owner/ServicesPage.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { baseUrl } from '../../config/baseUrl';
 import { useParams } from "react-router-dom";
 
 interface BaseService {
@@ -35,10 +36,10 @@ const ServicesPage: React.FC = () => {
       }
       try {
         const [salonRes, baseRes] = await Promise.all([
-          axios.get(`https://fahari-j7ac.onrender.com/api/salon-services/${salonId}`, {
+          axios.get(`${baseUrl}/api/salon-services/${salonId}`, {
             withCredentials: true,
           }),
-          axios.get("https://fahari-j7ac.onrender.com/api/services", {
+          axios.get(`${baseUrl}/api/services`, {
             withCredentials: true,
           }),
         ]);
@@ -53,7 +54,7 @@ const ServicesPage: React.FC = () => {
 
   const deleteService = async (id: string) => {
     try {
-      await axios.delete(`https://fahari-j7ac.onrender.com/api/salon-services/${id}`, {
+      await axios.delete(`${baseUrl}/api/salon-services/${id}`, {
         withCredentials: true,
       });
       setSalonServices((prev) => prev.filter((s) => s.id !== id));
@@ -87,7 +88,7 @@ const ServicesPage: React.FC = () => {
       if (isNew) {
         // Create new salon service
         const res = await axios.post(
-          `https://fahari-j7ac.onrender.com/api/salon-services/${salonId}`,
+          `${baseUrl}/api/salon-services/${salonId}`,
           {
             salonId,
             serviceId: editingService.service.id, // base service id
@@ -100,7 +101,7 @@ const ServicesPage: React.FC = () => {
       } else {
         // Update existing salon service
         const res = await axios.put(
-          `https://fahari-j7ac.onrender.com/api/salon-services/${editingService.id}`,
+          `${baseUrl}/api/salon-services/${editingService.id}`,
           {
             price: editingService.price,
             duration: editingService.duration,

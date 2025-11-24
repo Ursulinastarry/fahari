@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PasswordInput from "./Password";
+
+declare const process: {
+  env: {
+    REACT_APP_BASE_URL?: string;
+  };
+};
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -28,8 +35,11 @@ const [confirmPassword, setConfirmPassword] = useState("");
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   try {
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+    if (!baseUrl) throw new Error("REACT_APP_BASE_URL not defined in environment");
+
     await axios.post(
-      "https://fahari-j7ac.onrender.com/api/users/register",
+      `${baseUrl}/api/users/register`,
       formData,
       { withCredentials: true }
     );

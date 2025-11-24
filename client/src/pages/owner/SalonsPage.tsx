@@ -26,7 +26,8 @@ type Salon = {
   gallery: (string | File)[];
 };
 
-const API_BASE = "https://fahari-j7ac.onrender.com";
+import { baseUrl } from '../../config/baseUrl';
+const API_BASE = baseUrl;
 
 const SalonOwnerSalons: React.FC = () => {
   const [salons, setSalons] = useState<Salon[]>([]);

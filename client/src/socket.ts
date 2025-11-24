@@ -1,7 +1,8 @@
 // src/socket.ts
 import { io } from "socket.io-client";
+import { baseUrl } from "./config/baseUrl";
 
-const socket = io("https://fahari-j7ac.onrender.com", {
+const socket = io(baseUrl, {
   withCredentials: true,
   transports: ["websocket"], // force WebSocket
 });

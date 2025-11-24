@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Camera, Upload, X } from "lucide-react";
 import { useUser } from '../../contexts/UserContext';
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from '../../config/baseUrl';
 
 interface CreateSalonFormProps {
   onSalonCreated?: (salonData: any) => void;
@@ -193,7 +194,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
         formDataToSend.append('gallery', image);
       });
 
-      const response = await fetch('https://fahari-j7ac.onrender.com/api/salons', {
+      const response = await fetch(`${baseUrl}/api/salons`, {
         method: 'POST',
         credentials: 'include',
         body: formDataToSend,

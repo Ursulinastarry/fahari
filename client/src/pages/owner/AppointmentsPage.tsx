@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { baseUrl } from '../../config/baseUrl';
 import { DateTime } from "luxon";
 import { Star } from "lucide-react";
 
@@ -30,7 +31,7 @@ const AppointmentsPage: React.FC = () => {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("https://fahari-j7ac.onrender.com/api/bookings/owner", {
+      const res = await axios.get(`${baseUrl}/api/bookings/owner`, {
         withCredentials: true,
       });
       setBookings(res.data);
@@ -46,7 +47,7 @@ const AppointmentsPage: React.FC = () => {
   const cancelBooking = async (id: string, status: string) => {
     try {
       await axios.patch(
-        `https://fahari-j7ac.onrender.com/api/bookings/${id}/cancel`,
+        `${baseUrl}/api/bookings/${id}/cancel`,
         { status },
         { withCredentials: true }
       );
@@ -65,7 +66,7 @@ const AppointmentsPage: React.FC = () => {
 
   try {
     const { data } = await axios.patch(
-      `https://fahari-j7ac.onrender.com/api/bookings/${rescheduleId}/reschedule`,
+      `${baseUrl}/api/bookings/${rescheduleId}/reschedule`,
       { newDateTime },
       { withCredentials: true }
     );
@@ -89,7 +90,7 @@ const AppointmentsPage: React.FC = () => {
   const fetchBookingReview = async (bookingId: string) => {
     setLoadingReview(true);
     try {
-      const res = await axios.get(`https://fahari-j7ac.onrender.com/api/reviews/${bookingId}`, {
+      const res = await axios.get(`${baseUrl}/api/reviews/${bookingId}`, {
         withCredentials: true,
       });
       setSelectedReview(res.data);

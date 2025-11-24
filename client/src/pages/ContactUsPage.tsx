@@ -1,6 +1,7 @@
 // src/components/ContactUsModal.tsx
 import React, { useState } from "react";
 import axios from "axios";
+import { baseUrl } from "../config/baseUrl";
 
 interface ContactUsModalProps {
   isOpen: boolean;
@@ -33,7 +34,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
 
     try {
       await axios.post(
-        "https://fahari-j7ac.onrender.com/api/contact",
+        `${baseUrl}/api/contact`,
         formData,
         { withCredentials: true }
       );

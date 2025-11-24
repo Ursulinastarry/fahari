@@ -1,6 +1,7 @@
 // src/pages/owner/StatisticsPage.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { baseUrl } from '../../config/baseUrl';
 import {
   LineChart,
   Line,
@@ -22,7 +23,7 @@ const StatisticsPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("https://fahari-j7ac.onrender.com/api/bookings/owner", { withCredentials: true })
+      .get(`${baseUrl}/api/bookings/owner`, { withCredentials: true })
       .then((res) => setBookings(res.data))
       .catch((err) => console.error("Error fetching bookings:", err));
   }, []);

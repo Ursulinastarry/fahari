@@ -1,6 +1,7 @@
 // src/pages/AdminDashboard.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { baseUrl } from '../config/baseUrl';
 import DashboardLayout from "./DashboardLayout";
 
 interface User {
@@ -17,7 +18,7 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("https://fahari-j7ac.onrender.com/api/users", { withCredentials: true });
+        const res = await axios.get(`${baseUrl}/api/users`, { withCredentials: true });
         setUsers(res.data);
       } catch (err) {
         console.error("Error fetching users:", err);
@@ -28,7 +29,7 @@ const AdminDashboard: React.FC = () => {
 
  const approveUser = async (id: string) => {
   await axios.put(
-    `https://fahari-j7ac.onrender.com/api/users/${id}/approve`,
+    `${baseUrl}/api/users/${id}/approve`,
     {}, // no body, so pass empty object
     { withCredentials: true }
   );
@@ -37,7 +38,7 @@ const AdminDashboard: React.FC = () => {
 
 const suspendUser = async (id: string) => {
   await axios.put(
-    `https://fahari-j7ac.onrender.com/api/users/${id}/suspend`,
+    `${baseUrl}/api/users/${id}/suspend`,
     {},
     { withCredentials: true }
   );
@@ -46,7 +47,7 @@ const suspendUser = async (id: string) => {
 
 const deleteUser = async (id: string) => {
   await axios.delete(
-    `https://fahari-j7ac.onrender.com/api/users/${id}`,
+    `${baseUrl}/api/users/${id}`,
     { withCredentials: true }
   );
   setUsers(users.filter(u => u.id !== id));

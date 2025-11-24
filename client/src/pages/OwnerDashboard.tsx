@@ -8,6 +8,7 @@ import ReviewsPage from "./owner/ReviewsPage";
 import SalonOwnerSalons from "./owner/SalonsPage";
 import CreateSalonForm from "./owner/CreateSalonForm";
 import React, { useState, useEffect } from "react";
+import { baseUrl } from '../config/baseUrl';
 
 const OwnerDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
@@ -22,7 +23,7 @@ const OwnerDashboard: React.FC = () => {
     const checkSalon = async () => {
       try {
         // Replace this endpoint with your actual salon check API
-        const response = await fetch('https://fahari-j7ac.onrender.com/api/salons/owner/me', {
+        const response = await fetch(`${baseUrl}/api/salons/owner/me`, {
           credentials: 'include' // Include cookies for authentication
         });
         
