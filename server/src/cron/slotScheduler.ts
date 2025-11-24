@@ -91,7 +91,7 @@ import { DateTime } from "luxon";
 //   { timezone: "Africa/Nairobi" }
 // );
 cron.schedule(
-  "30 20 * * *", // 8:30 PM daily
+  "45 20 * * *", // 8:30 PM daily
   async () => {
     console.log("🕣 Running 7-day slot generator…");
     console.log(
