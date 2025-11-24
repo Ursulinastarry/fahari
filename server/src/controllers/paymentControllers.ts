@@ -31,7 +31,7 @@ export const initiatePayment = asyncHandler(async (req: any, res: Response) => {
 
   // ✅ Create booking using existing controller logic
   // (We just call its internal logic manually; it can also be refactored into a shared service)
-  const booking = await prisma.$transaction(async (tx) => {
+  const booking = await prisma.$transaction(async (tx: { slot: { findMany: (arg0: { where: { salonId: any; startTime: { gte: Date; }; isAvailable: boolean; }; orderBy: { startTime: string; }; take: number; }) => any; updateMany: (arg0: { where: { id: { in: any; }; }; data: { isAvailable: boolean; }; }) => any; }; appointment: { create: (arg0: { data: { date: any; startTime: any; endTime: any; salonId: any; salonServiceId: any; slotId: any; status: string; }; }) => any; }; booking: { create: (arg0: { data: { bookingNumber: string; totalAmount: any; transactionFee: number; salonOwnerAmount: any; status: string; paymentMethod: any; clientId: any; salonId: any; salonServiceId: any; appointmentId: any; slotId: any; }; include: { salon: boolean; salonService: { include: { service: boolean; }; }; }; }) => any; }; }) => {
     const slotDuration = 60;
     const requiredSlots = Math.ceil(salonService.duration / slotDuration);
     const startSlot = DateTime.fromISO(`${slotDate}T${slotStartTime}`, {
@@ -48,7 +48,7 @@ export const initiatePayment = asyncHandler(async (req: any, res: Response) => {
       throw new Error("Not enough consecutive slots available");
     }
 
-    const slotIds = slots.map((s) => s.id);
+    const slotIds = slots.map((s: { id: any; }) => s.id);
     await tx.slot.updateMany({ where: { id: { in: slotIds } }, data: { isAvailable: false } });
 
     const appointment = await tx.appointment.create({

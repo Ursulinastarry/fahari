@@ -153,7 +153,7 @@ export const searchServices = asyncHandler(async (req: Request, res: Response) =
     });
     
     // Filter out services with no available salons
-    const filteredServices = services.filter(service => service.salonServices.length > 0);
+    const filteredServices = services.filter((service: { salonServices: string | any[]; }) => service.salonServices.length > 0);
     
     res.json(filteredServices);
   } catch (error: any) {

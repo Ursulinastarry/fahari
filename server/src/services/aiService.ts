@@ -20,7 +20,7 @@ export const getBookingsData = async (userId: string, userRole: string, status?:
         where: { ownerId: userId },
         select: { id: true },
       });
-      where.salonId = { in: ownedSalons.map((s) => s.id) };
+      where.salonId = { in: ownedSalons.map((s: { id: any; }) => s.id) };
     }
   } else if (userRole === "ADMIN" && salonId) {
     where.salonId = salonId;
@@ -203,8 +203,8 @@ export const getOwnerServicesService = async (userId: string): Promise<OwnerServ
   });
 
   // Flatten and normalize the services
-  const services = salons.flatMap((salon) =>
-    salon.salonServices.map((ss) => ({
+  const services = salons.flatMap((salon: { salonServices: any[]; }) =>
+    salon.salonServices.map((ss: { id: any; price: any; duration: any; service: { id: any; name: any; isActive: any; }; }) => ({
       id: ss.id,
       price: ss.price,
       duration: ss.duration,
@@ -264,7 +264,7 @@ export const getOwnerSalonsService = async (userId: string): Promise<any[]> => {
   });
 
   // Calculate average ratings and return properly typed data
-  return salons.map((salon) => ({
+  return salons.map((salon: { id: any; name: any; city: any; location: any; owner: any; salonServices: any; reviews: any[]; }) => ({
     id: salon.id,
     name: salon.name,
     city: salon.city,
@@ -274,7 +274,7 @@ export const getOwnerSalonsService = async (userId: string): Promise<any[]> => {
     reviews: salon.reviews,
     averageRating:
       salon.reviews.length > 0
-        ? salon.reviews.reduce((sum, r) => sum + r.rating, 0) / salon.reviews.length
+        ? salon.reviews.reduce((sum: any, r: { rating: any; }) => sum + r.rating, 0) / salon.reviews.length
         : 0,
   }));
 };
@@ -353,7 +353,7 @@ export const getAllSalonsService = async (): Promise<any[]> => {
   });
 
   // Calculate average ratings and return properly typed data
-  return salons.map((salon) => ({
+  return salons.map((salon: { id: any; name: any; city: any; location: any; owner: any; salonServices: any; reviews: any[]; }) => ({
     id: salon.id,
     name: salon.name,
     city: salon.city,
@@ -363,7 +363,7 @@ export const getAllSalonsService = async (): Promise<any[]> => {
     reviews: salon.reviews,
     averageRating:
       salon.reviews.length > 0
-        ? salon.reviews.reduce((sum, r) => sum + r.rating, 0) / salon.reviews.length
+        ? salon.reviews.reduce((sum: any, r: { rating: any; }) => sum + r.rating, 0) / salon.reviews.length
         : 0,
   }));
 };

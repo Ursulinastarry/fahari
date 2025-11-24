@@ -59,17 +59,17 @@ export const getReminders = asyncHandler(async (req: Request, res: Response) => 
         where: { clientId: userId },
         select: { id: true }
       });
-      where.bookingId = { in: clientBookings.map(b => b.id) };
+      where.bookingId = { in: clientBookings.map((b: { id: any; }) => b.id) };
     } else if (userRole === 'SALON_OWNER') {
       const ownedSalons = await prisma.salon.findMany({
         where: { ownerId: userId },
         select: { id: true }
       });
       const salonBookings = await prisma.booking.findMany({
-        where: { salonId: { in: ownedSalons.map(s => s.id) } },
+        where: { salonId: { in: ownedSalons.map((s: { id: any; }) => s.id) } },
         select: { id: true }
       });
-      where.bookingId = { in: salonBookings.map(b => b.id) };
+      where.bookingId = { in: salonBookings.map((b: { id: any; }) => b.id) };
     }
     
     const reminders = await prisma.reminder.findMany({
