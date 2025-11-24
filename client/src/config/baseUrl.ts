@@ -19,3 +19,12 @@ if (raw) {
 export const baseUrl: string = resolved;
 
 export default baseUrl;
+
+// Helpful runtime debug in dev only — will appear in browser console
+try {
+	if (typeof window !== 'undefined') {
+		console.log('[config/baseUrl] resolved baseUrl ->', baseUrl);
+	}
+} catch (_) {
+	// ignore
+}
