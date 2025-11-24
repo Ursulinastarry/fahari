@@ -4,7 +4,7 @@ import { generateSlotsForDay } from "../utils/slotGenerator";
 import { DateTime } from "luxon";
 // PRODUCTION CRON - Runs at midnight
 cron.schedule(
-  "0 21 * * *", // 9pm daily
+  "* * * * *", 
   async () => {
     const DAYS_AHEAD = 7; // change this number to generate for a different number of upcoming days
     console.log(`🕘 Running daily slot generator for the next ${DAYS_AHEAD} days (every day at 21:00 Africa/Nairobi)`);
@@ -93,5 +93,5 @@ export const triggerSlotGeneration = async () => {
   // Copy the same logic from the midnight cron here
 };
 
-console.log("📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)");
+// console.log("📅 Daily slot generator cron job scheduled for midnight (Africa/Nairobi)");
 console.log("⏰ Current time:", new Date().toLocaleString("en-US", {timeZone: "Africa/Nairobi"}));
