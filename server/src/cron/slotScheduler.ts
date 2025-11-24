@@ -110,7 +110,7 @@ cron.schedule(
 
       const today = new Date();
 
-      // Generate for the next 7 days (tomorrow -> +7)
+      // 🔄 Generate for the next 7 days
       for (let offset = 1; offset <= 7; offset++) {
         const targetDay = new Date(today.getTime());
         targetDay.setDate(today.getDate() + offset);
@@ -119,16 +119,7 @@ cron.schedule(
 
         for (const salon of salons) {
           try {
-            // 👉 Check if slots already exist for this salon & day
-            const alreadyHasSlots = await slotsExistForDay(salon.id, targetDay);
-            if (alreadyHasSlots) {
-              console.log(
-                `ℹ️ Slots already exist for ${salon.name} on ${targetDay.toDateString()}, skipping…`
-              );
-              continue;
-            }
-
-            const weekday = targetDay.getDay(); // 0=Sunday, 1=Monday...
+            const weekday = targetDay.getDay(); // 0 = Sun, 1 = Mon...
             let openHour = 9,
               closeHour = 17;
 
@@ -139,7 +130,7 @@ cron.schedule(
             );
 
             if (businessHours.weekdays && businessHours.weekends) {
-              // --- Format 1: compact ---
+              // --- Format 1: compact (weekdays / weekends) ---
               if (weekday >= 1 && weekday <= 5) {
                 [openHour, closeHour] = businessHours.weekdays
                   .split("-")
@@ -154,7 +145,7 @@ cron.schedule(
                   );
               }
             } else {
-              // --- Format 2: per-day ---
+              // --- Format 2: per-day { monday: {...}, tuesday: {...} } ---
               const dayMap = [
                 "sunday",
                 "monday",
@@ -164,8 +155,8 @@ cron.schedule(
                 "friday",
                 "saturday",
               ];
-              const todayKey = dayMap[weekday];
-              const dayConfig = businessHours[todayKey];
+              const key = dayMap[weekday];
+              const dayConfig = businessHours[key];
 
               if (!dayConfig || dayConfig.closed) {
                 console.log(
@@ -190,8 +181,9 @@ cron.schedule(
             );
 
             await generateSlotsForDay(salon.id, targetDay, openHour, closeHour);
+
             console.log(
-              `✅ Slots generated for ${salon.name} on ${targetDay.toDateString()}`
+              `✅ Slots generated for ${salon.name} for ${targetDay.toDateString()}`
             );
           } catch (err) {
             console.error(
@@ -201,9 +193,7 @@ cron.schedule(
           }
         }
 
-        console.log(
-          `🎉 Completed slot generation cycle for ${targetDay.toDateString()}`
-        );
+        console.log(`🎉 Completed slot generation for ${targetDay.toDateString()}`);
       }
     } catch (err) {
       console.error("❌ Failed to fetch salons:", err);
@@ -211,32 +201,6 @@ cron.schedule(
   },
   { timezone: "Africa/Nairobi" }
 );
-
-/**
- * Helper: check if slots already exist for a salon on a given day.
- * 🔧 Adjust model/field names to match your schema.
- */
-async function slotsExistForDay(salonId: string, targetDay: Date): Promise<boolean> {
-  // Normalize to start/end of day
-  const startOfDay = new Date(targetDay);
-  startOfDay.setHours(0, 0, 0, 0);
-
-  const endOfDay = new Date(targetDay);
-  endOfDay.setHours(23, 59, 59, 999);
-
-  // ⚠️ Example using a hypothetical `slot` model with `salonId` and `startTime`
-  const count = await prisma.slot.count({
-    where: {
-      salonId,
-      startTime: {
-        gte: startOfDay,
-        lte: endOfDay,
-      },
-    },
-  });
-
-  return count > 0;
-}
 
 // Manual trigger function for testing
 export const triggerSlotGeneration = async () => {
