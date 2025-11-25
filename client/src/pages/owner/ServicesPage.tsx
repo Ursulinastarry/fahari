@@ -142,23 +142,23 @@ const ServicesPage: React.FC = () => {
       </div>
 
       {salonServices.length === 0 ? (
-        <p className="text-gray-500 dark:text-white">No services added yet.</p>
+        <p className="text-gray-500 dark:text-slate-100">No services added yet.</p>
       ) : (
         <div className="grid md:grid-cols-2 gap-4">
           {salonServices.map((s) => (
             <div
               key={s.id}
-              className="p-4 border rounded-lg bg-white dark:bg-black shadow flex flex-col justify-between"
+              className="p-4 border rounded-lg bg-white dark:bg-slate-800 shadow flex flex-col justify-between"
             >
               <div>
                 <h3 className="font-semibold text-lg">{s.service.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-white">{s.duration} mins</p>
+                <p className="text-sm text-gray-600 dark:text-slate-100">{s.duration} mins</p>
                 <p className="font-bold text-purple-600">KES {s.price}</p>
                 <span
                   className={`inline-block mt-2 px-3 py-1 text-sm rounded-full ${
                     s.service.isActive
                       ? "bg-green-100 text-green-600"
-                      : "bg-gray-200 text-gray-500 dark:text-white"
+                      : "bg-gray-200 text-gray-500 dark:text-slate-100"
                   }`}
                 >
                   {s.service.isActive ? "Active" : "Inactive"}
@@ -190,7 +190,7 @@ const ServicesPage: React.FC = () => {
       {/* Modal */}
       {editingService && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-black p-6 rounded-lg w-full max-w-md shadow-lg">
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-lg w-full max-w-md shadow-lg">
             <h3 className="text-xl font-bold mb-4">
               {isNew ? "Add New Service" : "Edit Service"}
             </h3>

@@ -504,17 +504,17 @@ const SalonsPage: React.FC = () => {
                       }`}
                     />
                   ))}
-                  <span className="text-gray-500 dark:text-white text-sm ml-2">
+                  <span className="text-gray-500 dark:text-slate-400 text-sm ml-2">
                     {(salonRatings[salon.id] || 0).toFixed(1)}
                   </span>
                 </div>
-                <p className="text-gray-500 dark:text-white">{salon.city}, {salon.location}</p>
+                <p className="text-gray-500 dark:text-slate-400">{salon.city}, {salon.location}</p>
               </div>
             ))}
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-black shadow-lg rounded-xl p-6">
+        <div className="bg-white dark:bg-slate-800 shadow-lg rounded-xl p-6">
           <button 
             onClick={goBackToSalons} 
             className="text-indigo-600 hover:underline mb-4 font-medium"
@@ -537,13 +537,13 @@ const SalonsPage: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 dark:text-white">No gallery images available.</p>
+              <p className="text-gray-500 dark:text-slate-400">No gallery images available.</p>
             )}
           </div>
 
           <div className="mb-6">
             <h2 className="text-3xl font-bold mb-2">{selectedSalon.name}</h2>
-            <p className="text-gray-600 dark:text-white mb-4">{selectedSalon.description}</p>
+            <p className="text-gray-600 dark:text-slate-100 mb-4">{selectedSalon.description}</p>
             <div className="flex items-center gap-2 mb-4">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
@@ -556,7 +556,7 @@ const SalonsPage: React.FC = () => {
                     }`}
                   />
                 ))}
-                <span className="text-gray-500 dark:text-white text-sm ml-1">
+                <span className="text-gray-500 dark:text-slate-400 text-sm ml-1">
                   {(salonRatings[selectedSalon.id] || 0).toFixed(1)}
                 </span>
               </div>
@@ -573,14 +573,14 @@ const SalonsPage: React.FC = () => {
           <div className="mb-8">
             <h3 className="text-xl font-semibold mb-4">Services</h3>
             {services.length === 0 ? (
-              <p className="text-gray-500 dark:text-white">No services available.</p>
+              <p className="text-gray-500 dark:text-slate-400">No services available.</p>
             ) : (
               <div className="grid gap-4">
                 {services.map((salonService) => (
                   <div key={salonService.id} className="flex justify-between items-center p-4 border rounded-lg hover:bg-gray-50">
                     <div>
                       <span className="font-medium text-lg">{salonService.service.name}</span>
-                      <p className="text-gray-600 dark:text-white">KSh {salonService.price} • {salonService.duration} minutes</p>
+                      <p className="text-gray-600 dark:text-slate-300">KSh {salonService.price} • {salonService.duration} minutes</p>
                     </div>
                     <button
                       onClick={() => handleServiceClick(salonService)}
@@ -611,7 +611,7 @@ const SalonsPage: React.FC = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4">Available Time Slots</h3>
             {slots.length === 0 ? (
-              <p className="text-gray-500 dark:text-white">No slots available.</p>
+              <p className="text-gray-500 dark:text-slate-400">No slots available.</p>
             ) : (
               <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin]}
@@ -641,9 +641,9 @@ const SalonsPage: React.FC = () => {
       {/* Time Picker Modal */}
       {showTimePicker && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white dark:bg-black rounded-lg p-6 shadow-lg w-96 max-h-96 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-lg w-96 max-h-96 overflow-y-auto">
             <h2 className="text-lg font-semibold mb-4">Choose Start Time</h2>
-            <p className="text-sm text-gray-600 dark:text-white mb-4">
+            <p className="text-sm text-gray-600 dark:text-slate-300 mb-4">
               Service: {booking.service?.service.name} ({booking.service?.duration} minutes)
             </p>
             <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -659,7 +659,7 @@ const SalonsPage: React.FC = () => {
             </div>
             <button
               onClick={() => setShowTimePicker(false)}
-              className="mt-4 px-4 py-2 text-gray-600 dark:text-white hover:text-gray-800 border rounded"
+              className="mt-4 px-4 py-2 text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 border rounded"
             >
               Cancel
             </button>
@@ -670,44 +670,44 @@ const SalonsPage: React.FC = () => {
       {/* Payment Modal */}
       {showPaymentModal && paymentDetails && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg p-8 shadow-xl w-full max-w-md">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Payment Details</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-8 shadow-xl w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-slate-100">Payment Details</h2>
             
             <div className="space-y-4 mb-6">
-              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+              <div className="bg-gray-50 dark:bg-slate-800 p-4 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Salon</p>
-                <p className="font-semibold text-gray-800 dark:text-white">{paymentDetails.salon}</p>
+                <p className="font-semibold text-gray-800 dark:text-slate-100">{paymentDetails.salon}</p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+              <div className="bg-gray-50 dark:bg-slate-800 p-4 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Service</p>
-                <p className="font-semibold text-gray-800 dark:text-white">{paymentDetails.service}</p>
+                <p className="font-semibold text-gray-800 dark:text-slate-100">{paymentDetails.service}</p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg flex justify-between">
+              <div className="bg-gray-50 dark:bg-slate-800 p-4 rounded-lg flex justify-between">
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Date</p>
-                  <p className="font-semibold text-gray-800 dark:text-white">
+                  <p className="font-semibold text-gray-800 dark:text-slate-100">
                     {new Date(paymentDetails.date).toLocaleDateString()}
                   </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Time</p>
-                  <p className="font-semibold text-gray-800 dark:text-white">{paymentDetails.time}</p>
+                  <p className="font-semibold text-gray-800 dark:text-slate-100">{paymentDetails.time}</p>
                 </div>
               </div>
 
               <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                 <div className="flex justify-between mb-2">
                   <span className="text-gray-600 dark:text-gray-400">Service Price</span>
-                  <span className="font-medium text-gray-800 dark:text-white">KSh {paymentDetails.servicePrice}</span>
+                  <span className="font-medium text-gray-800 dark:text-slate-100">KSh {paymentDetails.servicePrice}</span>
                 </div>
                 <div className="flex justify-between mb-2">
                   <span className="text-gray-600 dark:text-gray-400">Transaction Fee (2%)</span>
-                  <span className="font-medium text-gray-800 dark:text-white">KSh {paymentDetails.transactionFee}</span>
+                  <span className="font-medium text-gray-800 dark:text-slate-100">KSh {paymentDetails.transactionFee}</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold border-t border-gray-200 dark:border-gray-700 pt-2">
-                  <span className="text-gray-800 dark:text-white">Total Amount</span>
+                  <span className="text-gray-800 dark:text-slate-100">Total Amount</span>
                   <span className="text-blue-600 dark:text-blue-400">KSh {paymentDetails.totalAmount}</span>
                 </div>
               </div>
@@ -720,7 +720,7 @@ const SalonsPage: React.FC = () => {
               <select
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-100 dark:border-gray-700"
               >
                 <option value="MPESA">M-Pesa</option>
                 <option value="CASH">Cash (Pay at Salon)</option>
@@ -737,7 +737,7 @@ const SalonsPage: React.FC = () => {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="e.g., 0712345678"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-100 dark:border-gray-700"
                 />
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   You will receive an STK push request on this number
@@ -779,9 +779,9 @@ const SalonsPage: React.FC = () => {
       {/* Booking Confirmation Popup */}
       {showBookingPopup && bookingDetails && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white dark:bg-black rounded-lg p-8 shadow-lg w-96">
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-8 shadow-lg w-96">
             <h2 className="text-2xl font-bold mb-6 text-green-600">🎉 Booking Confirmed!</h2>
-            <div className="space-y-3 text-gray-700 dark:text-white">
+            <div className="space-y-3 text-gray-700 dark:text-slate-100">
               <p><strong>Salon:</strong> {bookingDetails.salon}</p>
               <p><strong>Service:</strong> {bookingDetails.service}</p>
               <p><strong>Date:</strong> {new Date(bookingDetails.date).toLocaleDateString()}</p>
@@ -808,18 +808,18 @@ const SalonsPage: React.FC = () => {
       {/* Salon Reviews Modal */}
       {showReviewsModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white dark:bg-black rounded-lg p-6 shadow-lg w-96 max-h-[80vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-lg w-96 max-h-[80vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-bold">Reviews for {selectedSalon?.name}</h2>
               <button 
                 onClick={() => setShowReviewsModal(false)} 
-                className="text-gray-500 dark:text-white hover:text-gray-700 text-xl"
+                className="text-gray-500 dark:text-slate-100 hover:text-gray-700 text-xl"
               >
                 ×
               </button>
             </div>
             {salonReviews.length === 0 ? (
-              <p className="text-gray-500 dark:text-white">No reviews yet.</p>
+              <p className="text-gray-500 dark:text-slate-100">No reviews yet.</p>
             ) : (
               <div className="space-y-4">
                 {salonReviews.map((review) => (
@@ -851,7 +851,7 @@ const SalonsPage: React.FC = () => {
                         ))}
                       </div>
                     </div>
-                    <p className="text-gray-700 dark:text-white">{review.comment}</p>
+                    <p className="text-gray-700 dark:text-slate-100">{review.comment}</p>
                   </div>
                 ))}
               </div>

@@ -21,7 +21,7 @@ const ClientDashboard: React.FC = () => {
           className={`pb-2 px-4 font-medium ${
             activeTab === "home"
               ? "border-b-2 border-indigo-600 text-indigo-600"
-              : "text-gray-500 dark:text-white hover:text-indigo-600"
+              : "text-gray-500 dark:text-slate-400 hover:text-indigo-600"
           }`}
         >
           Home
@@ -31,7 +31,7 @@ const ClientDashboard: React.FC = () => {
           className={`pb-2 px-4 font-medium ${
             activeTab === "salons"
               ? "border-b-2 border-indigo-600 text-indigo-600"
-              : "text-gray-500 dark:text-white hover:text-indigo-600"
+              : "text-gray-500 dark:text-slate-400 hover:text-indigo-600"
           }`}
         >
           Salons
@@ -43,7 +43,7 @@ const ClientDashboard: React.FC = () => {
     className={`pb-2 px-4 font-medium ${
       activeTab === "appointments"
         ? "border-b-2 border-indigo-600 text-indigo-600"
-        : "text-gray-500 dark:text-white hover:text-indigo-600"
+        : "text-gray-500 dark:text-slate-400 hover:text-indigo-600"
     }`}
   >
     My Appointments

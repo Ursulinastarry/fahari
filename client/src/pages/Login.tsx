@@ -30,14 +30,14 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-slate-900">
+      <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8">
+        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-slate-100 mb-6">
           Login
         </h2>
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-white">Email</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-100">Email</label>
             <input
               type="email"
               value={email}

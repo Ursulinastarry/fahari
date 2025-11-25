@@ -56,31 +56,31 @@ const deleteUser = async (id: string) => {
 
   return (
     <DashboardLayout title="Admin Dashboard">
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Admin Dashboard</h1>
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-8">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-slate-100 mb-6">Admin Dashboard</h1>
 
       {/* Stats Section */}
       <div className="grid gap-6 md:grid-cols-3 mb-8">
-        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6">
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-white">Total Users</h2>
-          <p className="text-gray-500 dark:text-white">{users.length}</p>
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6">
+          <h2 className="text-lg font-semibold text-gray-700 dark:text-slate-100">Total Users</h2>
+          <p className="text-gray-500 dark:text-slate-400">{users.length}</p>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6">
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-white">Salon Owners</h2>
-          <p className="text-gray-500 dark:text-white">{users.filter(u => u.role === "SALON_OWNER").length}</p>
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6">
+          <h2 className="text-lg font-semibold text-gray-700 dark:text-slate-100">Salon Owners</h2>
+          <p className="text-gray-500 dark:text-slate-400">{users.filter(u => u.role === "SALON_OWNER").length}</p>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6">
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-white">Pending Approvals</h2>
-          <p className="text-gray-500 dark:text-white">{users.filter(u => !u.isActive).length}</p>
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6">
+          <h2 className="text-lg font-semibold text-gray-700 dark:text-slate-100">Pending Approvals</h2>
+          <p className="text-gray-500 dark:text-slate-400">{users.filter(u => !u.isActive).length}</p>
         </div>
       </div>
 
       {/* Users Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 overflow-x-auto">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 overflow-x-auto">
         <h2 className="text-xl font-semibold mb-4">Manage Users</h2>
         <table className="w-full text-left">
           <thead>
-            <tr className="bg-gray-100 text-gray-700 dark:text-white">
+            <tr className="bg-gray-100 text-gray-700 dark:bg-slate-900 dark:text-slate-100">
               <th className="p-3">ID</th>
               <th className="p-3">Name</th>
               <th className="p-3">Email</th>

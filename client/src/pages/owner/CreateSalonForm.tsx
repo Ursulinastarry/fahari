@@ -259,7 +259,7 @@ const CreateSalonForm: React.FC<CreateSalonFormProps> = ({ onSalonCreated }) => 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-700 py-8">
       <div className="max-w-4xl mx-auto px-4">
-        <div className="bg-white dark:bg-black shadow-lg rounded-lg p-6">
+        <div className="bg-white dark:bg-slate-800 shadow-lg rounded-lg p-6">
           <div className="mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Create Your Salon</h2>
             <p className="text-gray-600 dark:text-white">Set up your salon profile to start managing your business</p>

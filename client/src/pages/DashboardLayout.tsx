@@ -199,9 +199,9 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
       {/* Navbar */}
-      <nav className="bg-white dark:bg-gray-900 px-6 py-4 flex justify-between items-center">
+      <nav className="bg-white dark:bg-slate-800 px-6 py-4 flex justify-between items-center">
 <h1 className="flex items-center gap-2 text-xl font-bold text-purple-600">
   {logo && <img src={logo} alt="logo" className="h-8 w-auto" />}
   <span>{title}</span>
@@ -211,7 +211,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
             <>
               <button
                 onClick={() => setShowNotifications(true)}
-                className="relative text-gray-600 dark:text-white hover:text-purple-600"
+                className="relative text-gray-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400"
               >
                 🔔
               </button>
@@ -226,14 +226,14 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
            {user &&(
           <button
             onClick={() => setShowChatbot(true)}
-            className="text-gray-600 dark:text-white hover:text-purple-600"
+            className="text-gray-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400"
           >
             AI Assistant
           </button>
            )}
           <button
             onClick={() => setShowContactUs(true)}
-            className="text-gray-600 dark:text-white hover:text-purple-600"
+            className="text-gray-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400"
           >
             Contact us
           </button>
@@ -242,14 +242,14 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
             user ? (
               <button
                 onClick={handleLogout}
-                className="text-gray-600 dark:text-white hover:text-red-600"
+                className="text-gray-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400"
               >
                 Logout
               </button>
             ) : (
               <button
                 onClick={handleLogin}
-                className="text-gray-600 dark:text-white hover:text-purple-600"
+                className="text-gray-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400"
               >
                 Login
               </button>
@@ -264,10 +264,10 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
       {/* Profile Modal */}
       {showProfile && user && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 w-full max-w-lg relative">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 w-full max-w-lg relative">
             <button
               onClick={() => setShowProfile(false)}
-              className="absolute top-4 right-4 text-gray-500 dark:text-gray-50 hover:text-gray-800 dark:text-white"
+              className="absolute top-4 right-4 text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200"
             >
               ✕
             </button>
@@ -297,23 +297,23 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
       {/* AI Chatbot Modal */}
       {showChatbot && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-2xl h-[80vh] flex flex-col relative">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl w-full max-w-2xl h-[80vh] flex flex-col relative">
             <button
               onClick={handleCloseChatbot}
-              className="absolute top-4 right-4 z-10 text-gray-500 dark:text-gray-50 hover:text-gray-800 dark:text-white"
+              className="absolute top-4 right-4 z-10 text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200"
             >
               <X size={24} />
             </button>
             
             <div className="flex flex-col h-full bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl overflow-hidden">
               {/* Header */}
-              <div className="bg-white dark:bg-gray-900 shadow-md p-4 flex items-center gap-3">
+              <div className="bg-white dark:bg-slate-800 shadow-md p-4 flex items-center gap-3">
                 <div className={`w-10 h-10 bg-gradient-to-r ${getRoleColor()} rounded-full flex items-center justify-center`}>
                   <Bot className="text-white" size={24} />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-gray-800 dark:text-white">{getRoleTitle()}</h1>
-                  <p className="text-sm text-gray-500 dark:text-gray-50">Powered by AI</p>
+                  <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">{getRoleTitle()}</h1>
+                  <p className="text-sm text-gray-500 dark:text-slate-400">Powered by AI</p>
                 </div>
               </div>
 
@@ -339,7 +339,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
                       className={`max-w-[70%] px-4 py-3 rounded-2xl ${
                         msg.role === 'user'
                           ? 'bg-blue-500 text-white'
-                          : 'bg-white dark:bg-gray-900 text-gray-800 dark:text-white shadow-sm'
+                          : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-100 shadow-sm'
                       }`}
                     >
                       <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
@@ -352,7 +352,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
                     <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${getRoleColor()} flex items-center justify-center`}>
                       <Bot className="text-white" size={18} />
                     </div>
-                    <div className="bg-white dark:bg-gray-900 px-4 py-3 rounded-2xl shadow-sm">
+                    <div className="bg-white dark:bg-slate-800 px-4 py-3 rounded-2xl shadow-sm">
                       <Loader2 className="animate-spin text-purple-500" size={20} />
                     </div>
                   </div>
@@ -362,7 +362,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
               </div>
 
               {/* Input */}
-              <div className="bg-white dark:bg-gray-900 border-t p-4">
+              <div className="bg-white dark:bg-slate-800 border-t dark:border-slate-700 p-4">
                 <div className="flex gap-2">
                   <input
                     type="text"

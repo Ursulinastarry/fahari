@@ -29,13 +29,13 @@ const ForgotPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900 px-4">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-slate-100">
             Forgot your password?
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-50">
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-slate-400">
             Enter your email and we'll send you a reset link
           </p>
         </div>
@@ -53,7 +53,7 @@ const ForgotPasswordPage: React.FC = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Email address"
             />
           </div>

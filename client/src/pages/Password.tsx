@@ -19,7 +19,7 @@ export default function PasswordInput({
   return (
     <div className="relative">
       {label && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-white">
+        <label className="block text-sm font-medium text-gray-700 dark:text-slate-100">
           {label}
         </label>
       )}

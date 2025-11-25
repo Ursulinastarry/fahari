@@ -56,24 +56,24 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-2xl relative max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-2xl relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 dark:text-gray-50 hover:text-gray-800 dark:text-white text-2xl"
+          className="absolute top-4 right-4 text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-100 text-2xl"
         >
           ✕
         </button>
 
         <div className="p-8">
           <h2 className="text-3xl font-bold mb-2 text-purple-600">Contact Us</h2>
-          <p className="text-gray-600 dark:text-white mb-6">
+          <p className="text-gray-600 dark:text-slate-100 mb-6">
             Have a question or feedback? We'd love to hear from you!
           </p>
 
           {/* Contact Information */}
           <div className="bg-purple-50 rounded-lg p-6 mb-6">
             <h3 className="font-semibold text-lg mb-3 text-purple-700">Get In Touch</h3>
-            <div className="space-y-2 text-gray-700 dark:text-gray-900">
+            <div className="space-y-2 text-gray-700 dark:text-slate-100">
               <p className="flex items-center gap-2">
                 <span>📧</span>
                 <a href="mailto:help@faharibeauty.com" className="hover:text-purple-600">
