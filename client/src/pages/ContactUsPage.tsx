@@ -71,7 +71,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
           </p>
 
           {/* Contact Information */}
-          <div className="bg-purple-50 rounded-lg p-6 mb-6">
+          <div className="bg-purple-50 dark:bg-slate-700 rounded-lg p-6 mb-6">
             <h3 className="font-semibold text-lg mb-3 text-purple-700">Get In Touch</h3>
             <div className="space-y-2 text-gray-700 dark:text-slate-100">
               <p className="flex items-center gap-2">
@@ -94,7 +94,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
           {/* Contact Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-1">
                 Name
               </label>
               <input
@@ -103,13 +103,13 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Your full name"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-1">
                 Email
               </label>
               <input
@@ -118,13 +118,13 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="your.email@example.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-1">
                 Subject
               </label>
               <input
@@ -133,13 +133,13 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 value={formData.subject}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="What is this about?"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-1">
                 Message
               </label>
               <textarea
@@ -148,7 +148,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 onChange={handleChange}
                 required
                 rows={5}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
                 placeholder="Tell us more..."
               />
             </div>
