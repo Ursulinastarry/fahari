@@ -65,18 +65,18 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
         </button>
 
         <div className="p-8">
-          <h2 className="text-3xl font-bold mb-2 text-purple-600">Contact Us</h2>
+          <h2 className="text-3xl font-bold mb-2 text-pink-600">Contact Us</h2>
           <p className="text-gray-600 dark:text-slate-100 mb-6">
             Have a question or feedback? We'd love to hear from you!
           </p>
 
           {/* Contact Information */}
-          <div className="bg-purple-50 dark:bg-slate-700 rounded-lg p-6 mb-6">
-            <h3 className="font-semibold text-lg mb-3 text-purple-700">Get In Touch</h3>
+          <div className="bg-pink-50 dark:bg-slate-700 rounded-lg p-6 mb-6">
+            <h3 className="font-semibold text-lg mb-3 text-pink-700">Get In Touch</h3>
             <div className="space-y-2 text-gray-700 dark:text-slate-100">
               <p className="flex items-center gap-2">
                 <span>📧</span>
-                <a href="mailto:help@faharibeauty.com" className="hover:text-purple-600">
+                <a href="mailto:help@faharibeauty.com" className="hover:text-pink-600">
                   help@faharibeauty.com
                 </a>
               </p>
@@ -103,7 +103,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="Your full name"
               />
             </div>
@@ -118,7 +118,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="your.email@example.com"
               />
             </div>
@@ -133,7 +133,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 value={formData.subject}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="What is this about?"
               />
             </div>
@@ -148,7 +148,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 onChange={handleChange}
                 required
                 rows={5}
-                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none"
                 placeholder="Tell us more..."
               />
             </div>
@@ -172,7 +172,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
               className={`w-full py-3 rounded-lg font-semibold text-white transition ${
                 isSubmitting
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-purple-600 hover:bg-purple-700"
+                  : "bg-pink-600 hover:bg-pink-700"
               }`}
             >
               {isSubmitting ? "Sending..." : "Send Message"}

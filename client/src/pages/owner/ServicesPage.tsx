@@ -153,7 +153,7 @@ const ServicesPage: React.FC = () => {
               <div>
                 <h3 className="font-semibold text-lg">{s.service.name}</h3>
                 <p className="text-sm text-gray-600 dark:text-slate-100">{s.duration} mins</p>
-                <p className="font-bold text-purple-600">KES {s.price}</p>
+                <p className="font-bold text-pink-600">KES {s.price}</p>
                 <span
                   className={`inline-block mt-2 px-3 py-1 text-sm rounded-full ${
                     s.service.isActive

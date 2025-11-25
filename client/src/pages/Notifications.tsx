@@ -108,7 +108,7 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, onClose
         </button>
         
         <div className="p-6 border-b">
-          <h2 className="text-2xl font-bold text-purple-600">
+          <h2 className="text-2xl font-bold text-pink-600">
             Notifications
             {unreadCount > 0 && (
               <span className="ml-2 bg-red-500 text-white text-sm px-2 py-1 rounded-full">

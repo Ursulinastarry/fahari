@@ -168,10 +168,10 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
   };
 
   const getRoleColor = () => {
-    if (!user) return 'from-purple-500 to-blue-500';
+    if (!user) return 'from-pink-500 to-blue-500';
     if (user.role === 'ADMIN') return 'from-red-500 to-pink-500';
     if (user.role === 'SALON_OWNER') return 'from-green-500 to-emerald-500';
-    return 'from-purple-500 to-blue-500';
+    return 'from-pink-500 to-blue-500';
   };
 
   const getRoleTitle = () => {
@@ -202,7 +202,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
       {/* Navbar */}
       <nav className="bg-white dark:bg-slate-800 px-6 py-4 flex justify-between items-center">
-<h1 className="flex items-center gap-2 text-xl font-bold text-purple-600">
+<h1 className="flex items-center gap-2 text-xl font-bold text-pink-600">
   {logo && <img src={logo} alt="logo" className="h-8 w-auto" />}
   <span>{title}</span>
 </h1>
@@ -211,7 +211,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
             <>
               <button
                 onClick={() => setShowNotifications(true)}
-                className="relative text-gray-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400"
+                className="relative text-gray-600 dark:text-slate-400 hover:text-pink-600 dark:hover:text-pink-400"
               >
                 🔔
               </button>
@@ -226,14 +226,14 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
            {user &&(
           <button
             onClick={() => setShowChatbot(true)}
-            className="text-gray-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400"
+            className="text-gray-600 dark:text-slate-400 hover:text-pink-600 dark:hover:text-pink-400"
           >
             AI Assistant
           </button>
            )}
           <button
             onClick={() => setShowContactUs(true)}
-            className="text-gray-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400"
+            className="text-gray-600 dark:text-slate-400 hover:text-pink-600 dark:hover:text-pink-400"
           >
             Contact us
           </button>
@@ -249,7 +249,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
             ) : (
               <button
                 onClick={handleLogin}
-                className="text-gray-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400"
+                className="text-gray-600 dark:text-slate-400 hover:text-pink-600 dark:hover:text-pink-400"
               >
                 Login
               </button>
@@ -272,7 +272,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
               ✕
             </button>
             <div>
-              <h2 className="text-2xl font-bold mb-4 text-purple-600">Profile</h2>
+              <h2 className="text-2xl font-bold mb-4 text-pink-600">Profile</h2>
               <p><span className="font-semibold">Name:</span> {user.firstName} {user.lastName}</p>
               <p><span className="font-semibold">Email:</span> {user.email}</p>
               <p><span className="font-semibold">Phone:</span> {user.phone}</p>
@@ -305,7 +305,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
               <X size={24} />
             </button>
             
-            <div className="flex flex-col h-full bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl overflow-hidden">
+            <div className="flex flex-col h-full bg-gradient-to-br from-pink-50 to-blue-50 rounded-xl overflow-hidden">
               {/* Header */}
               <div className="bg-white dark:bg-slate-800 shadow-md p-4 flex items-center gap-3">
                 <div className={`w-10 h-10 bg-gradient-to-r ${getRoleColor()} rounded-full flex items-center justify-center`}>
@@ -353,7 +353,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
                       <Bot className="text-white" size={18} />
                     </div>
                     <div className="bg-white dark:bg-slate-800 px-4 py-3 rounded-2xl shadow-sm">
-                      <Loader2 className="animate-spin text-purple-500" size={20} />
+                      <Loader2 className="animate-spin text-pink-500" size={20} />
                     </div>
                   </div>
                 )}
@@ -376,7 +376,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
                         ? "Ask about platform stats, salons, or users..."
                         : "Ask about services, availability, or bookings..."
                     }
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-500"
                     disabled={loading}
                   />
                   <button

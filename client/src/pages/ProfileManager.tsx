@@ -77,7 +77,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="relative bg-gradient-to-br from-indigo-500 to-purple-600 px-6 py-8 rounded-t-2xl">
+        <div className="relative bg-gradient-to-br from-indigo-500 to-pink-600 px-6 py-8 rounded-t-2xl">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-white dark:text-slate-100 hover:bg-white dark:bg-slate-700 hover:bg-opacity-20 rounded-full p-2 transition-colors"
@@ -264,7 +264,7 @@ const CircularProfileButton = ({ user, onClick }: { user: any; onClick: any; }) 
           fallback="/images/default-salon.jpg"
         />
       ) : (
-        <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+        <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-pink-500 flex items-center justify-center">
           <span className="text-white dark:text-gray-900 font-medium text-sm">
             {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
           </span>
