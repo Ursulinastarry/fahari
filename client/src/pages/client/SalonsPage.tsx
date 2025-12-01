@@ -27,6 +27,7 @@ interface Salon {
   id: string;
   name: string;
   description?: string;
+  phone: string;
   city: string;
   location: string;
   profileImage?: string;
@@ -544,6 +545,8 @@ const SalonsPage: React.FC = () => {
           <div className="mb-6">
             <h2 className="text-3xl font-bold mb-2">{selectedSalon.name}</h2>
             <p className="text-gray-600 dark:text-slate-100 mb-4">{selectedSalon.description}</p>
+            <p className="text-gray-600 dark:text-slate-100 mb-4">{selectedSalon.phone}</p>
+
             <div className="flex items-center gap-2 mb-4">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
