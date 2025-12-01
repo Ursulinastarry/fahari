@@ -23,7 +23,7 @@ export const initiatePayment = asyncHandler(async (req, res) => {
     const baseAmount = salonService.price;
     const transactionFee = Math.ceil(baseAmount * TRANSACTION_FEE_PERCENTAGE);
     const totalAmount = baseAmount + transactionFee;
-    // ✅ Create booking using existing controller logic
+    //  Create booking using existing controller logic
     // (We just call its internal logic manually; it can also be refactored into a shared service)
     const booking = await prisma.$transaction(async (tx) => {
         const slotDuration = 60;
@@ -116,6 +116,22 @@ export const initiatePayment = asyncHandler(async (req, res) => {
         }
     }
     // CASH Payment
+    const salonOwnerId = booking.salon.ownerId;
+    await prisma.salonOwnerBalance.upsert({
+        where: {
+            ownerId: salonOwnerId,
+        },
+        update: {
+            pendingAmount: {
+                increment: transactionFee,
+            },
+        },
+        create: {
+            ownerId: salonOwnerId,
+            availableAmount: 0,
+            pendingAmount: transactionFee,
+        },
+    });
     return res.status(200).json({
         success: true,
         message: "Booking confirmed. Pay cash at the salon.",

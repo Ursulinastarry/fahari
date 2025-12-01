@@ -29,7 +29,7 @@ export const initiatePayment = asyncHandler(async (req: any, res: Response) => {
   const transactionFee = Math.ceil(baseAmount * TRANSACTION_FEE_PERCENTAGE);
   const totalAmount = baseAmount + transactionFee;
 
-  // ✅ Create booking using existing controller logic
+  //  Create booking using existing controller logic
   // (We just call its internal logic manually; it can also be refactored into a shared service)
   const booking = await prisma.$transaction(async (tx: { slot: { findMany: (arg0: { where: { salonId: any; startTime: { gte: Date; }; isAvailable: boolean; }; orderBy: { startTime: string; }; take: number; }) => any; updateMany: (arg0: { where: { id: { in: any; }; }; data: { isAvailable: boolean; }; }) => any; }; appointment: { create: (arg0: { data: { date: any; startTime: any; endTime: any; salonId: any; salonServiceId: any; slotId: any; status: string; }; }) => any; }; booking: { create: (arg0: { data: { bookingNumber: string; totalAmount: any; transactionFee: number; salonOwnerAmount: any; status: string; paymentMethod: any; clientId: any; salonId: any; salonServiceId: any; appointmentId: any; slotId: any; }; include: { salon: boolean; salonService: { include: { service: boolean; }; }; }; }) => any; }; }) => {
     const slotDuration = 60;
@@ -137,15 +137,32 @@ export const initiatePayment = asyncHandler(async (req: any, res: Response) => {
   }
 
   // CASH Payment
-  return res.status(200).json({
-    success: true,
-    message: "Booking confirmed. Pay cash at the salon.",
-    bookingId: booking.id,
-    bookingNumber: booking.bookingNumber,
-    paymentId: payment.id,
-    amount: totalAmount,
-    transactionFee,
-  });
+  const salonOwnerId = booking.salon.ownerId; 
+await prisma.salonOwnerBalance.upsert({
+  where: {
+    ownerId: salonOwnerId,
+  },
+  update: {
+    pendingAmount: {
+      increment: transactionFee,
+    },
+  },
+  create: {
+    ownerId: salonOwnerId,
+    availableAmount: 0,
+    pendingAmount: transactionFee,
+  },
+});
+
+return res.status(200).json({
+  success: true,
+  message: "Booking confirmed. Pay cash at the salon.",
+  bookingId: booking.id,
+  bookingNumber: booking.bookingNumber,
+  paymentId: payment.id,
+  amount: totalAmount,
+  transactionFee,
+});
 });
 
 // ======================================================================================
