@@ -122,7 +122,7 @@ export const verifySalon = asyncHandler(async (req: UserRequest, res: Response) 
   const { id } = req.params;
 
   const { rows } = await pool.query(
-    `UPDATE salons SET "isVerified" = true WHERE id = $1 RETURNING *`,
+    `UPDATE salons SET "isVerified" = true, "isActive" = true WHERE id = $1 RETURNING *`,
     [id]
   );
 
@@ -153,7 +153,7 @@ export const suspendSalon = asyncHandler(async (req: UserRequest, res: Response)
   const { id } = req.params;
 
   const { rows } = await pool.query(
-    `UPDATE salons SET "isVerified" = false WHERE id = $1 RETURNING *`,
+    `UPDATE salons SET "isActive" = false WHERE id = $1 RETURNING *`,
     [id]
   );
 

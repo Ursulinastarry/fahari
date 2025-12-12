@@ -7,7 +7,7 @@ async () => {
     console.log("🕛 Running daily slot generator for day +7...");
     console.log("⏰ Current time:", new Date().toLocaleString("en-US", { timeZone: "Africa/Nairobi" }));
     try {
-        const salons = await prisma.salon.findMany();
+        const salons = await prisma.salon.findMany({ where: { isActive: true } });
         console.log(`📍 Found ${salons.length} salons`);
         if (salons.length === 0) {
             console.log("⚠️ No salons found in database");

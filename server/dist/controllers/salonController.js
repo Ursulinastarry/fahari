@@ -102,7 +102,7 @@ export const verifySalon = asyncHandler(async (req, res) => {
         return res.status(403).json({ message: "Only admins can approve salons" });
     }
     const { id } = req.params;
-    const { rows } = await pool.query(`UPDATE salons SET "isVerified" = true WHERE id = $1 RETURNING *`, [id]);
+    const { rows } = await pool.query(`UPDATE salons SET "isVerified" = true, "isActive" = true WHERE id = $1 RETURNING *`, [id]);
     if (!rows.length)
         return res.status(404).json({ message: "Salon not found" });
     const salon = rows[0];
@@ -124,7 +124,7 @@ export const suspendSalon = asyncHandler(async (req, res) => {
         return res.status(403).json({ message: "Only admins can suspend salons" });
     }
     const { id } = req.params;
-    const { rows } = await pool.query(`UPDATE salons SET "isVerified" = false WHERE id = $1 RETURNING *`, [id]);
+    const { rows } = await pool.query(`UPDATE salons SET "isActive" = false WHERE id = $1 RETURNING *`, [id]);
     if (!rows.length)
         return res.status(404).json({ message: "User not found" });
     const salon = rows[0];
