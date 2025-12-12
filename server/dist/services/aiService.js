@@ -75,9 +75,9 @@ export const getMyBookingsService = async (userId) => {
     return rows;
 };
 export const getSalonsService = async (query) => {
-    const { city, location, isActive = true, page = 1, limit = 10 } = query;
+    const { city, location, isActive = true, isVerified = true, page = 1, limit = 10 } = query;
     const skip = (Number(page) - 1) * Number(limit);
-    const where = { isActive: Boolean(isActive) };
+    const where = { isActive: Boolean(isActive), isVerified: Boolean(isVerified) };
     if (city)
         where.city = city;
     if (location)

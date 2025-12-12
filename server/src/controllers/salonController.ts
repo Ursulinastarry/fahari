@@ -8,6 +8,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { getSalonsService } from "@/services/aiService";
+import { createAndSendNotification } from "@/services/notificationService";
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -90,13 +91,87 @@ export const createSalon = async (req: UserRequest, res: Response) => {
         }
       }
     });
+    await createAndSendNotification({
+  role: "ADMIN",
+  title: "New salon registration",
+  message: `New salon ${salon.name} registered and is awaiting approval.`,
+  type: "GENERAL",
+  data: { id: salon.id, email: salon.email },
+  sendEmail: true,
+  emailTo: "admin@faharibeauty.com"
+});
 
+  // Notify the salon owner
+  await createAndSendNotification({
+    userId: userId,
+    title: "Salon pending approval",
+    message: "Thanks for registering your salon with us! An admin will review your salon shortly to ensure the safety of our customers.",
+    type: "GENERAL",
+  });
     res.status(201).json(salon);
   } catch (error: any) {
     console.error("❌ Error creating salon:", error);
     res.status(500).json({ message: error.message });
   }
 };
+export const verifySalon = asyncHandler(async (req: UserRequest, res: Response) => {
+  if (!req.user || req.user.role !== "ADMIN") {
+    return res.status(403).json({ message: "Only admins can approve salons" });
+  }
+
+  const { id } = req.params;
+
+  const { rows } = await pool.query(
+    `UPDATE salons SET "isVerified" = true WHERE id = $1 RETURNING *`,
+    [id]
+  );
+
+  if (!rows.length) return res.status(404).json({ message: "Salon not found" });
+
+  const salon = rows[0];
+
+  await createAndSendNotification({
+    userId: salon.ownerId,
+    title: "Salon verified!",
+    message: "You can now log in and manage your salon.",
+    type: "GENERAL",
+    sendEmail: true,
+    emailTo: salon.email,
+  });
+
+  res.json({ message: "Salon approved successfully", salon });
+});
+
+/**
+ * Suspend a salon(Admins only)
+ */
+export const suspendSalon = asyncHandler(async (req: UserRequest, res: Response) => {
+  if (!req.user || req.user.role !== "ADMIN") {
+    return res.status(403).json({ message: "Only admins can suspend salons" });
+  }
+
+  const { id } = req.params;
+
+  const { rows } = await pool.query(
+    `UPDATE salons SET "isVerified" = false WHERE id = $1 RETURNING *`,
+    [id]
+  );
+
+  if (!rows.length) return res.status(404).json({ message: "User not found" });
+
+  const salon = rows[0];
+
+  await createAndSendNotification({
+    userId: salon.ownerId,
+    title: "Salon suspended",
+    message: "Your salon has been suspended. Please contact support.",
+    type: "GENERAL",
+    sendEmail: true,
+    emailTo: salon.email,
+  });
+
+  res.json({ message: "Salon suspended successfully", salon });
+});
 export const getSalons = async (req: Request, res: Response) => {
   try {
     const data = await getSalonsService(req.query);
