@@ -41,6 +41,7 @@ const generateToken = (res, id, role) => {
 };
 /** Create a new user */
 export const createUser = asyncHandler(async (req, res) => {
+    console.log("🔥 createUser endpoint hit with body:", req.body);
     const { email, phone, password, firstName, lastName, role } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
