@@ -1,5 +1,5 @@
 // src/config/baseUrl.ts
-const raw = (import.meta as any).env?.VITE_API_BASE_URL || (import.meta as any).env?.REACT_APP_BASE_URL;
+const raw = (import.meta as any).env?.VITE_API_BASE_URL ;
 
 function ensureProtocol(value?: string | null) {
 	if (!value) return value;

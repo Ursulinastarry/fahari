@@ -5,7 +5,7 @@ import PasswordInput from "./Password";
 
 declare const process: {
   env: {
-    REACT_APP_BASE_URL?: string;
+    VITE_API_BASE_URL?: string;
   };
 };
 
@@ -35,8 +35,8 @@ const [confirmPassword, setConfirmPassword] = useState("");
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   try {
-    const baseUrl = process.env.REACT_APP_BASE_URL;
-    if (!baseUrl) throw new Error("REACT_APP_BASE_URL not defined in environment");
+    const baseUrl = process.env.VITE_API_BASE_URL;
+    if (!baseUrl) throw new Error("VITE_API_BASE_URL not defined in environment");
 
     await axios.post(
       `${baseUrl}/api/users/register`,
