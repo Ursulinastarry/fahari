@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PasswordInput from "./Password";
-
-declare const process: {
-  env: {
-    VITE_API_BASE_URL?: string;
-  };
-};
+import baseUrl from "../config/baseUrl";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -35,9 +30,6 @@ const [confirmPassword, setConfirmPassword] = useState("");
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   try {
-    const baseUrl = process.env.VITE_API_BASE_URL;
-    if (!baseUrl) throw new Error("VITE_API_BASE_URL not defined in environment");
-
     await axios.post(
       `${baseUrl}/api/users/register`,
       formData,
