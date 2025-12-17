@@ -35,7 +35,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       formData,
       { withCredentials: true }
     );
-    alert("Signup successful, wait for admin approval!");
+    alert("Signup successful! Login to continue.");
     navigate("/"); // 👈 redirect after success
   } catch (err: any) {
     alert(err.response?.data?.message || "Signup failed");
