@@ -93,6 +93,10 @@ export const createUser = asyncHandler(async (req:Request, res:Response) => {
 export const loginUser = asyncHandler(async (req:Request, res:Response) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+
   const { rows } = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
   if (!rows.length) return res.status(401).json({ message: "Invalid email or password" });
 
