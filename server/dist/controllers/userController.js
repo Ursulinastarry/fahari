@@ -13,7 +13,7 @@ dotenv.config();
 //Debugging  - check if env var are loaded correctly  
 const jwtSecret = process.env.ACCESS_TOKEN_SECRET;
 const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
-const generateToken = (res, id, role) => {
+const generateToken = async (res, id, role) => {
     if (!jwtSecret || !refreshSecret) {
         throw new Error("ACCESS_TOKEN_SECRET or REFRESH_TOKEN_SECRET is not defined in environment variables");
     }
@@ -49,24 +49,24 @@ export const createUser = asyncHandler(async (req, res) => {
      VALUES ($1, $2, $3, $4, $5, $6)
      RETURNING id, email, "firstName", "lastName", role, "isActive"`, [email, phone, hashedPassword, firstName, lastName, role.toUpperCase()]);
     const user = rows[0];
-    await createAndSendNotification({
-        role: "ADMIN",
-        title: "New user registration",
-        message: `New user ${user.email} registered and is awaiting approval.`,
-        type: "GENERAL",
-        data: { id: user.id, email: user.email },
-        sendEmail: true,
-        emailTo: "admin@faharibeauty.com"
-    });
+    //   await createAndSendNotification({
+    //   role: "ADMIN",
+    //   title: "New user registration",
+    //   message: `New user ${user.email} registered and is awaiting approval.`,
+    //   type: "GENERAL",
+    //   data: { id: user.id, email: user.email },
+    //   sendEmail: true,
+    //   emailTo: "admin@faharibeauty.com"
+    // });
     // Notify the user
     await createAndSendNotification({
         userId: user.id,
         title: "Account pending approval",
-        message: "Thanks for signing up! An admin will review your account shortly.",
+        message: "Thanks for signing up! Log in to continue.",
         type: "GENERAL",
     });
     res.status(201).json({
-        message: "Account created. Please wait for admin approval.",
+        message: "Account created. Login to continue.",
         user,
     });
 });

@@ -11,7 +11,7 @@ const ClientDashboard: React.FC = () => {
 
   return (
 <DashboardLayout 
-  title="Fahari Beauty"
+  title="Fahari Beauty System"
   logo="/logo.png" // or logo={<YourLogoComponent />}
 >     
  {/* Navbar inside dashboard */}
