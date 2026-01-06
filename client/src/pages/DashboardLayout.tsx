@@ -7,12 +7,26 @@ import { useUser } from "../contexts/UserContext";
 import ProfileManager from "./ProfileManager";
 import NotificationsModal from "./Notifications";
 import ContactUsModal from "./ContactUsPage";
-import { Bot, Send, Loader2, User, X } from "lucide-react";
+import { Bot, Send, Loader2, User, X, Bell } from "lucide-react";
 
 interface Props {
   title: string;
   children: ReactNode;
   logo?: string;
+}
+interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  createdAt: string;
+  read: boolean;
+  // add any other fields your API returns
+}
+
+interface NotificationsModalProps {
+  isOpen: boolean;                     // whether the modal is visible
+  onClose: () => void;                 // function to close the modal
+  notifications: Notification[];       // array of notifications
 }
 
 const DashboardLayout: React.FC<Props> = ({ title, logo, children }) => {
@@ -53,7 +67,7 @@ const DashboardLayout: React.FC<Props> = ({ title, logo, children }) => {
   useEffect(() => {
     if (!user) return;
 
-    let socket: Socket | undefined;
+    let socket: Socket | null = null;
 
     axios
       .get(`${baseUrl}/api/notifications`, { withCredentials: true })
@@ -66,7 +80,7 @@ const DashboardLayout: React.FC<Props> = ({ title, logo, children }) => {
     );
 
     return () => {
-      if (socket) socket.disconnect();
+      socket?.disconnect();
     };
   }, [user]);
 
@@ -118,16 +132,33 @@ const DashboardLayout: React.FC<Props> = ({ title, logo, children }) => {
       <nav className="flex justify-between p-4 bg-white">
         <h1 className="font-bold text-pink-600">{title}</h1>
 
-        <div className="flex gap-4">
-          {user && <ProfileManager />}
-          {user && <button onClick={() => setShowChatbot(true)}>AI</button>}
-          <button onClick={() => setShowContactUs(true)}>Contact</button>
-          {user ? (
-            <button onClick={handleLogout}>Logout</button>
-          ) : (
-            <button onClick={() => navigate("/login")}>Login</button>
-          )}
-        </div>
+        <div className="flex gap-4 items-center">
+  {user && (
+    <button
+      onClick={() => setShowNotifications(true)}
+      className="relative"
+    >
+      <Bell size={20} />
+
+      {notifications.length > 0 && (
+        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">
+          {notifications.length}
+        </span>
+      )}
+    </button>
+  )}
+
+  {user && <ProfileManager />}
+  {user && <button onClick={() => setShowChatbot(true)}>AI</button>}
+  <button onClick={() => setShowContactUs(true)}>Contact</button>
+
+  {user ? (
+    <button onClick={handleLogout}>Logout</button>
+  ) : (
+    <button onClick={() => navigate("/login")}>Login</button>
+  )}
+</div>
+
       </nav>
 
       <main className="p-6">{children}</main>
@@ -159,6 +190,10 @@ const DashboardLayout: React.FC<Props> = ({ title, logo, children }) => {
           </div>
         </div>
       )}
+      <NotificationsModal
+  isOpen={showNotifications}
+  onClose={() => setShowNotifications(false)}
+/>
 
       <ContactUsModal isOpen={showContactUs} onClose={() => setShowContactUs(false)} />
     </div>
