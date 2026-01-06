@@ -277,7 +277,7 @@ const SalonOwnerSalons: React.FC = () => {
                 fallback="/images/default-salon.jpg"
                 onClick={() => navigate(`/salon-services/${salon.id}`)}
               />
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-lg flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-lg flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100 pointer-events-none">
                 <span className="text-white font-semibold text-lg">Manage Your Services</span>
               </div>
               </div>
