@@ -17,7 +17,6 @@ const [password, setPassword] = useState("");
 const [confirmPassword, setConfirmPassword] = useState("");
 
   const passwordsMatch = password && confirmPassword && password === confirmPassword;
-  console.log("password",password);
   const handleChange = (
   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 ) => {
@@ -30,18 +29,25 @@ const [confirmPassword, setConfirmPassword] = useState("");
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
+
+  if (!passwordsMatch) {
+    alert("Passwords do not match!");
+    return;
+  }
+
   try {
     await axios.post(
       `${baseUrl}/api/users/register`,
-      formData,
+      { ...formData, password }, // <-- include the password from state
       { withCredentials: true }
     );
     alert("Signup successful! Login to continue.");
-    navigate("/login"); // 👈 redirect after success
+    navigate("/login");
   } catch (err: any) {
     alert(err.response?.data?.message || "Signup failed");
   }
 };
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-slate-900">
