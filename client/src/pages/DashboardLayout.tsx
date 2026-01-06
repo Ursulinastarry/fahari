@@ -38,6 +38,8 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+       await new Promise(r => setTimeout(r, 50)); // wait 50ms
+
         const res = await axios.get(`${baseUrl}/api/users/me`, { withCredentials: true });
         setUser(res.data);
 
