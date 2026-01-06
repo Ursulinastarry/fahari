@@ -17,6 +17,7 @@ const [password, setPassword] = useState("");
 const [confirmPassword, setConfirmPassword] = useState("");
 
   const passwordsMatch = password && confirmPassword && password === confirmPassword;
+  console.log("password",password);
   const handleChange = (
   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 ) => {

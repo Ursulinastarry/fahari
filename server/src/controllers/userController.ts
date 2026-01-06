@@ -55,7 +55,7 @@ export const createUser = asyncHandler(async (req:Request, res:Response) => {
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-
+  console.log(password, hashedPassword);
   const { rows } = await pool.query(
     `INSERT INTO users (email, phone, password, "firstName", "lastName", role)
      VALUES ($1, $2, $3, $4, $5, $6)
