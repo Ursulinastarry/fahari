@@ -44,9 +44,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     await fetchUser();
   };
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  // useEffect(() => {
+  //   fetchUser();
+  // }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser, loading, refreshUser }}>
