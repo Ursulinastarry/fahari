@@ -269,6 +269,7 @@ const SalonOwnerSalons: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {salons.map((salon) => (
             <div key={salon.id} className="bg-white shadow rounded-lg p-4">
+              <div className="relative group">
               <SalonImage
                 filename={typeof salon.coverImage === 'string' ? salon.coverImage : undefined}
                 alt={salon.name}
@@ -276,21 +277,25 @@ const SalonOwnerSalons: React.FC = () => {
                 fallback="/images/default-salon.jpg"
                 onClick={() => navigate(`/salon-services/${salon.id}`)}
               />
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-lg flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
+                <span className="text-white font-semibold text-lg">Manage Your Services</span>
+              </div>
+              </div>
               <h2 className="font-semibold text-lg">{salon.name}</h2>
               <p className="text-sm text-gray-600 dark:text-slate-100 mb-2">{salon.city}</p>
               <div className="flex gap-2">
-                <button
-                  onClick={() => handleEditClick(salon)}
-                  className="bg-yellow-500 text-white px-3 py-1 rounded"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(salon.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded"
-                >
-                  Delete
-                </button>
+              <button
+                onClick={() => handleEditClick(salon)}
+                className="bg-yellow-500 text-white px-3 py-1 rounded"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(salon.id)}
+                className="bg-red-500 text-white px-3 py-1 rounded"
+              >
+                Delete
+              </button>
               </div>
             </div>
           ))}
