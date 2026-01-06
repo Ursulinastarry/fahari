@@ -3,6 +3,7 @@ import asyncHandler from "./asyncHandler.js";
 import jwt from "jsonwebtoken";
 import { pool } from "../index.js";
 export const protect = asyncHandler(async (req, res, next) => {
+    console.log("🔒 Protect middleware invoked");
     let token;
     // 1. Try Authorization header
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {

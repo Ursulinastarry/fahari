@@ -6,7 +6,7 @@ import { UserRequest } from "../utils/types/userTypes";
 import { Response, NextFunction } from "express";
 
 export const protect = asyncHandler(async (req: UserRequest, res: Response, next: NextFunction) => {
- 
+ console.log("🔒 Protect middleware invoked");
 
   let token;
 

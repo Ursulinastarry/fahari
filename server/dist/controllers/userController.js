@@ -72,6 +72,7 @@ export const createUser = asyncHandler(async (req, res) => {
 });
 /** Login user and return JWT */
 export const loginUser = asyncHandler(async (req, res) => {
+    console.log("login hit");
     const { email, password } = req.body;
     if (!email || !password) {
         return res.status(400).json({ message: "Email and password are required" });
