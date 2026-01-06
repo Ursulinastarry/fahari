@@ -9,6 +9,7 @@ import SalonOwnerSalons from "./owner/SalonsPage";
 import CreateSalonForm from "./owner/CreateSalonForm";
 import React, { useState, useEffect } from "react";
 import { baseUrl } from '../config/baseUrl';
+import { useNavigate } from "react-router-dom";
 
 const OwnerDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
@@ -30,22 +31,20 @@ const OwnerDashboard: React.FC = () => {
         console.log('Salon check response status:', response.status);
         
         if (response.ok) {
-          const data = await response.json();
-          console.log('Salon check response data:', data);
-          
-          // Check different possible response formats
-          const hasSalonData = !!(data.salon || data.id || (Array.isArray(data) && data.length > 0));
-          console.log('Has salon:', hasSalonData);
-          setHasSalon(hasSalonData);
-        } else if (response.status === 404) {
-          console.log('No salon found (404)');
-          setHasSalon(false); // No salon found
-        } else {
-          console.log('Unexpected response status:', response.status);
-          const errorData = await response.text();
-          console.log('Error response:', errorData);
-          setHasSalon(false);
-        }
+  const data = await response.json();
+  setHasSalon(!!(data.salon || data.id || (Array.isArray(data) && data.length > 0)));
+} else if (response.status === 404) {
+  // No salon found, user is still authenticated
+  setHasSalon(false);
+} else if (response.status === 401) {
+  const navigate = useNavigate();
+  // User is actually not logged in
+  navigate("/login"); // or your logic
+} else {
+  console.log('Unexpected status', response.status);
+  setHasSalon(false);
+}
+
       } catch (error) {
         console.error("Error checking salon:", error);
         setHasSalon(false);

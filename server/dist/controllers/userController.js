@@ -307,13 +307,25 @@ const deleteFileIfExists = (filePath) => {
 };
 /** Delete user */
 export const deleteUser = asyncHandler(async (req, res) => {
+    const client = await pool.connect();
     try {
-        const { rowCount } = await pool.query(`DELETE FROM users WHERE id = $1`, [req.params.id]);
-        if (!rowCount)
+        await client.query('BEGIN');
+        // First, delete notifications for the user
+        await client.query(`DELETE FROM notifications WHERE "userId" = $1`, [req.params.id]);
+        // Then, delete the user
+        const { rowCount } = await client.query(`DELETE FROM users WHERE id = $1`, [req.params.id]);
+        if (!rowCount) {
+            await client.query('ROLLBACK');
             return res.status(404).json({ message: "User not found" });
-        res.json({ message: "User deleted successfully" });
+        }
+        await client.query('COMMIT');
+        res.json({ message: "User and their notifications deleted successfully" });
     }
     catch (error) {
+        await client.query('ROLLBACK');
         res.status(500).json({ message: error.message });
+    }
+    finally {
+        client.release();
     }
 });
