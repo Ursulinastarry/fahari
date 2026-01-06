@@ -53,7 +53,7 @@ const DashboardLayout: React.FC<Props> = ({ title,logo, children }) => {
       }
     };
 
-    fetchUser();
+    // fetchUser();
   }, []);
 
   // Initialize welcome message when user is loaded
