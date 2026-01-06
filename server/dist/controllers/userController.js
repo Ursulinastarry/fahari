@@ -79,7 +79,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     }
     const { rows } = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
     if (!rows.length)
-        return res.status(401).json({ message: "Invalid email or password" });
+        return res.status(401).json({ message: "Email not found!" });
     const user = rows[0];
     if (!user.isActive) {
         return res.status(403).json({
