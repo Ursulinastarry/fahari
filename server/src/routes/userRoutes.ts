@@ -4,10 +4,10 @@ import { protect } from "../middlewares/protect";
 import { uploadUserAvatar } from "../middlewares/upload";
 const router = express.Router();
 
-router.get("/me", protect,getMe);
 router.post("/register", createUser);
 router.post("/login", loginUser);
 router.post("/logout",logoutUser);
+router.get("/me", protect,getMe);
 router.put("/:id/approve", protect,approveUser);
 router.put("/:id/suspend", protect,suspendUser);
 router.get("/",  getAllUsers);
