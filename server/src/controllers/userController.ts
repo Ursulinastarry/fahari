@@ -29,14 +29,14 @@ const generateToken = async (res: Response, id: string, role: string) => {
       res.cookie("access_token", accessToken, {
           httpOnly: true,
           secure: true,
-          sameSite: "lax",
+          sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000 // 1 day in ms
       });
 
       res.cookie("refresh_token", refreshToken, {
           httpOnly: true,
           secure: true,
-          sameSite: "lax",
+          sameSite: "none",
           maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
 
