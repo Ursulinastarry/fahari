@@ -19,7 +19,7 @@ export default function HomePage() {
     <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 text-white">
       Book Smarter. <br /> Glow Brighter.
     </h1>
-    <p className="text-lg md:text-xl text-gray-200 dark:text-slate-300 max-w-2xl mb-8">
+    <p className="text-lg md:text-xl text-gray-200 dark:text-gray-300 max-w-2xl mb-8">
       Let <span className="font-semibold text-pink-300">Fahari AI</span>{" "}
       guide you to the perfect salon experience—fast, simple, and stress-free.
     </p>
@@ -43,7 +43,7 @@ export default function HomePage() {
 
 
       {/* How It Works */}
-      <section className="grid md:grid-cols-3 gap-8 px-10 py-20 bg-white dark:bg-slate-800 shadow-inner">
+      <section className="grid md:grid-cols-3 gap-8 px-10 py-20 bg-white dark:bg-gray-900 shadow-inner">
         {[
           {
             icon: <MessageCircle className="w-10 h-10 text-pink-600" />,
@@ -67,7 +67,7 @@ export default function HomePage() {
           >
             {item.icon}
             <h3 className="text-xl font-semibold mt-4 mb-2">{item.title}</h3>
-            <p className="text-gray-600  dark:text-slate-300">{item.desc}</p>
+            <p className="text-gray-600  dark:text-gray-300">{item.desc}</p>
           </div>
         ))}
       </section>
@@ -120,9 +120,9 @@ export default function HomePage() {
           ].map((review, idx) => (
             <div
               key={idx}
-              className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow hover:shadow-md transition"
+              className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow hover:shadow-md transition"
             >
-              <p className="text-gray-600  dark:text-slate-300 italic mb-4">"{review.text}"</p>
+              <p className="text-gray-600  dark:text-gray-300 italic mb-4">"{review.text}"</p>
               <h4 className="font-semibold">{review.name}</h4>
             </div>
           ))}
@@ -134,13 +134,13 @@ export default function HomePage() {
         <h2 className="text-4xl font-bold mb-6">
           Ready to book your glow-up?
         </h2>
-        <button className="px-8 py-4 bg-white dark:bg-slate-800 text-pink-700 rounded-2xl shadow-lg hover:bg-gray-100 transition">
+        <button className="px-8 py-4 bg-white dark:bg-gray-900 text-pink-700 rounded-2xl shadow-lg hover:bg-gray-100 transition">
           Start with AI Assistant
         </button>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-100 text-gray-600  dark:text-slate-400 py-10 text-center">
+      <footer className="bg-gray-100 text-gray-600  dark:text-gray-400 py-10 text-center">
   <p className="text-sm mb-4">
     © {new Date().getFullYear()} Fahari AI Salon Booking. All rights reserved.
   </p>

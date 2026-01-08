@@ -56,24 +56,24 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-2xl relative max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-2xl relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-100 text-2xl"
+          className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white text-2xl"
         >
           ✕
         </button>
 
         <div className="p-8">
           <h2 className="text-3xl font-bold mb-2 text-pink-600">Contact Us</h2>
-          <p className="text-gray-600 dark:text-slate-100 mb-6">
+          <p className="text-gray-600 dark:text-white mb-6">
             Have a question or feedback? We'd love to hear from you!
           </p>
 
           {/* Contact Information */}
-          <div className="bg-pink-50 dark:bg-slate-700 rounded-lg p-6 mb-6">
+          <div className="bg-pink-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
             <h3 className="font-semibold text-lg mb-3 text-pink-700">Get In Touch</h3>
-            <div className="space-y-2 text-gray-700 dark:text-slate-100">
+            <div className="space-y-2 text-gray-700 dark:text-white">
               <p className="flex items-center gap-2">
                 <span>📧</span>
                 <a href="mailto:help@faharibeauty.com" className="hover:text-pink-600">
@@ -94,7 +94,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
           {/* Contact Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
                 Name
               </label>
               <input
@@ -103,13 +103,13 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-gray-900 dark:text-white dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="Your full name"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
                 Email
               </label>
               <input
@@ -118,13 +118,13 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-gray-900 dark:text-white dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="your.email@example.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
                 Subject
               </label>
               <input
@@ -133,13 +133,13 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 value={formData.subject}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-gray-900 dark:text-white dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="What is this about?"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
                 Message
               </label>
               <textarea
@@ -148,7 +148,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose }) => {
                 onChange={handleChange}
                 required
                 rows={5}
-                className="w-full px-4 py-2 border border-gray-300 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-2 border border-gray-300 dark:bg-gray-900 dark:text-white dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none"
                 placeholder="Tell us more..."
               />
             </div>

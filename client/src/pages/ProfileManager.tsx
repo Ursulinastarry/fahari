@@ -75,12 +75,12 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="relative bg-gradient-to-br from-indigo-500 to-pink-600 px-6 py-8 rounded-t-2xl">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-white dark:text-slate-100 hover:bg-white dark:bg-slate-700 hover:bg-opacity-20 rounded-full p-2 transition-colors"
+            className="absolute top-4 right-4 text-white dark:text-white hover:bg-white dark:bg-gray-800 hover:bg-opacity-20 rounded-full p-2 transition-colors"
           >
             <X size={20} />
           </button>
@@ -88,7 +88,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           <div className="text-center">
             {/* Profile Image */}
             <div className="relative inline-block mb-4">
-              <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white dark:border-slate-700 shadow-lg bg-white dark:bg-slate-800">
+              <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-lg bg-white dark:bg-gray-900">
                 {avatarPreview ? (
                   <Avatar
                 filename={typeof user.avatar === 'string' ? user.avatar : undefined}
@@ -97,8 +97,8 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 fallback="/images/default-salon.jpg"
               />
                 ) : (
-                  <div className="w-full h-full bg-gray-200 dark:bg-slate-800 flex items-center justify-center">
-                    <User className="text-gray-400 dark:text-slate-400" size={32} />
+                  <div className="w-full h-full bg-gray-200 dark:bg-gray-900 flex items-center justify-center">
+                    <User className="text-gray-400 dark:text-gray-400" size={32} />
                   </div>
                 )}
               </div>
@@ -143,7 +143,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             <div className="flex justify-center space-x-3">
                 <button
                 onClick={handleCancel}
-                className="bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-100 px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
+                className="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-white px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
               >
                 Cancel
               </button>
@@ -162,7 +162,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           <div className="space-y-4">
             {/* Name */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white">
                 Full Name
               </label>
               {isEditing ? (
@@ -174,16 +174,16 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 />
               ) : (
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
-                  <User className="text-gray-400 dark:text-slate-400" size={18} />
-                  <span className="text-gray-800 dark:text-slate-100">{user.firstName} {user.lastName}</span>
+                <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <User className="text-gray-400 dark:text-gray-400" size={18} />
+                  <span className="text-gray-800 dark:text-white">{user.firstName} {user.lastName}</span>
                 </div>
               )}
             </div>
 
             {/* Email */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white">
                 Email Address
               </label>
               {isEditing ? (
@@ -195,16 +195,16 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 />
               ) : (
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
-                  <Mail className="text-gray-400 dark:text-slate-400" size={18} />
-                  <span className="text-gray-800 dark:text-slate-100">{user.email}</span>
+                <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <Mail className="text-gray-400 dark:text-gray-400" size={18} />
+                  <span className="text-gray-800 dark:text-white">{user.email}</span>
                 </div>
               )}
             </div>
 
             {/* Phone */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-slate-100">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white">
                 Phone Number
               </label>
               {isEditing ? (
@@ -216,9 +216,9 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 />
               ) : (
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
-                  <Phone className="text-gray-400 dark:text-slate-400" size={18} />
-                  <span className="text-gray-800 dark:text-slate-100">{user.phone}</span>
+                <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <Phone className="text-gray-400 dark:text-gray-400" size={18} />
+                  <span className="text-gray-800 dark:text-white">{user.phone}</span>
                 </div>
               )}
             </div>
@@ -228,7 +228,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
           {/* Additional Info */}
           <div className="pt-4 border-t border-gray-200">
-            <div className="text-center text-sm text-gray-500 dark:text-slate-400">
+            <div className="text-center text-sm text-gray-500 dark:text-gray-400">
             Member since{" "}
 {new Date(user.createdAt).toLocaleString("en-US", {
   year: "numeric",

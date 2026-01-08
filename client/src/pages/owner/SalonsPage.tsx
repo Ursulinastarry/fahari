@@ -282,7 +282,7 @@ const SalonOwnerSalons: React.FC = () => {
               </div>
               </div>
               <h2 className="font-semibold text-lg">{salon.name}</h2>
-              <p className="text-sm text-gray-600 dark:text-slate-100 mb-2">{salon.city}</p>
+              <p className="text-sm text-gray-600 dark:text-white mb-2">{salon.city}</p>
               <div className="flex gap-2">
               <button
                 onClick={() => handleEditClick(salon)}
@@ -305,11 +305,11 @@ const SalonOwnerSalons: React.FC = () => {
       {/* Edit Modal */}
       {formOpen && selectedSalon && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg w-full max-w-4xl my-8">
+          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg w-full max-w-4xl my-8">
             <div className="p-6 max-h-[85vh] overflow-y-auto">
               <div className="mb-6">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-slate-100 mb-2">Edit Salon</h2>
-                <p className="text-gray-600 dark:text-slate-100">Update your salon information</p>
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Edit Salon</h2>
+                <p className="text-gray-600 dark:text-white">Update your salon information</p>
               </div>
 
               {error && (
@@ -321,11 +321,11 @@ const SalonOwnerSalons: React.FC = () => {
               <form onSubmit={handleSave} className="space-y-8">
                 {/* Basic Information */}
                 <div className="space-y-6">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-slate-100 border-b pb-2">Basic Information</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white border-b pb-2">Basic Information</h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-2">
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                         Salon Name <span className="text-red-500">*</span>
                       </label>
                       <input
@@ -340,7 +340,7 @@ const SalonOwnerSalons: React.FC = () => {
                     </div>
 
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-2">
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                         Phone Number <span className="text-red-500">*</span>
                       </label>
                       <input
@@ -356,7 +356,7 @@ const SalonOwnerSalons: React.FC = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-2">
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                       Business Email <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -371,7 +371,7 @@ const SalonOwnerSalons: React.FC = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-2">
+                    <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                       Description
                     </label>
                     <textarea
@@ -387,10 +387,10 @@ const SalonOwnerSalons: React.FC = () => {
 
                 {/* Location */}
                 <div className="space-y-6">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-slate-100 border-b pb-2">Location</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white border-b pb-2">Location</h3>
                   
                   <div>
-                    <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-2">
+                    <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                       Street Address <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -406,7 +406,7 @@ const SalonOwnerSalons: React.FC = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="city" className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-2">
+                      <label htmlFor="city" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                         City <span className="text-red-500">*</span>
                       </label>
                       <input
@@ -421,7 +421,7 @@ const SalonOwnerSalons: React.FC = () => {
                     </div>
 
                     <div>
-                      <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-2">
+                      <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                         Location/Area
                       </label>
                       <input
@@ -438,11 +438,11 @@ const SalonOwnerSalons: React.FC = () => {
 
                 {/* Images */}
                 <div className="space-y-6">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-slate-100 border-b pb-2">Images</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white border-b pb-2">Images</h3>
                   
                   {/* Profile Image */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-3">Profile Image</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-white mb-3">Profile Image</label>
                     <div className="flex items-center space-x-6">
                       {profilePreview ? (
                         <div className="relative">
@@ -461,7 +461,7 @@ const SalonOwnerSalons: React.FC = () => {
                         </div>
                       ) : (
                         <div className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                          <Camera className="text-gray-400 dark:text-slate-100" size={28} />
+                          <Camera className="text-gray-400 dark:text-white" size={28} />
                         </div>
                       )}
                       <div>
@@ -482,7 +482,7 @@ const SalonOwnerSalons: React.FC = () => {
 
                   {/* Cover Image */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-3">Cover Image</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-white mb-3">Cover Image</label>
                     <div className="space-y-4">
                       {coverPreview ? (
                         <div className="relative">
@@ -501,7 +501,7 @@ const SalonOwnerSalons: React.FC = () => {
                         </div>
                       ) : (
                         <div className="w-full h-48 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                          <Camera className="text-gray-400 dark:text-slate-100" size={36} />
+                          <Camera className="text-gray-400 dark:text-white" size={36} />
                         </div>
                       )}
                       <label htmlFor="coverImage" className="cursor-pointer bg-indigo-50 text-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-100 inline-flex items-center space-x-2 font-medium">
@@ -520,7 +520,7 @@ const SalonOwnerSalons: React.FC = () => {
 
                   {/* Gallery */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-100 mb-3">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-white mb-3">
                       Gallery Images (Max 10)
                     </label>
                     <div className="space-y-4">
@@ -557,7 +557,7 @@ const SalonOwnerSalons: React.FC = () => {
                         className="hidden"
                         disabled={galleryPreviews.length >= 10}
                       />
-                      <p className="text-sm text-gray-500 dark:text-slate-100">
+                      <p className="text-sm text-gray-500 dark:text-white">
                         ({galleryPreviews.length}/10 images)
                       </p>
                     </div>
@@ -566,12 +566,12 @@ const SalonOwnerSalons: React.FC = () => {
 
                 {/* Business Hours */}
                 <div className="space-y-6">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-slate-100 border-b pb-2">Business Hours</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white border-b pb-2">Business Hours</h3>
                   <div className="space-y-4">
                     {daysOfWeek.map((day) => (
                       <div key={day} className="flex items-center space-x-6 p-4 bg-gray-50 dark:bg-gray-600 rounded-lg">
                         <div className="w-24">
-                          <span className="text-sm font-medium text-gray-700 dark:text-slate-100 capitalize">{day}</span>
+                          <span className="text-sm font-medium text-gray-700 dark:text-white capitalize">{day}</span>
                         </div>
                         <label className="flex items-center">
                           <input
@@ -580,7 +580,7 @@ const SalonOwnerSalons: React.FC = () => {
                             onChange={(e) => handleHoursChange(day, 'closed', !e.target.checked)}
                             className="mr-3 w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                           />
-                          <span className="text-sm text-gray-600 dark:text-slate-100">Open</span>
+                          <span className="text-sm text-gray-600 dark:text-white">Open</span>
                         </label>
                         {!selectedSalon.businessHours[day]?.closed ? (
                           <div className="flex items-center space-x-3">
@@ -590,7 +590,7 @@ const SalonOwnerSalons: React.FC = () => {
                               onChange={(e) => handleHoursChange(day, 'open', e.target.value)}
                               className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
-                            <span className="text-gray-500 dark:text-slate-100">to</span>
+                            <span className="text-gray-500 dark:text-white">to</span>
                             <input
                               type="time"
                               value={selectedSalon.businessHours[day]?.close || "18:00"}
@@ -599,7 +599,7 @@ const SalonOwnerSalons: React.FC = () => {
                             />
                           </div>
                         ) : (
-                          <span className="text-gray-400 dark:text-slate-100 text-sm ml-8">Closed</span>
+                          <span className="text-gray-400 dark:text-white text-sm ml-8">Closed</span>
                         )}
                       </div>
                     ))}
@@ -611,7 +611,7 @@ const SalonOwnerSalons: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleCloseModal}
-                    className="bg-gray-200 text-gray-700 dark:text-slate-100 px-8 py-3 rounded-lg hover:bg-gray-300 font-medium"
+                    className="bg-gray-200 text-gray-700 dark:text-white px-8 py-3 rounded-lg hover:bg-gray-300 font-medium"
                   >
                     Cancel
                   </button>

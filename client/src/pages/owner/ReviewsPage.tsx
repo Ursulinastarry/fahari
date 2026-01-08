@@ -34,7 +34,7 @@ const ReviewsPage: React.FC = () => {
       <h1 className="text-2xl font-bold mb-6">⭐ Customer Reviews</h1>
 
       {/* Summary */}
-      <div className="bg-white dark:bg-slate-800 shadow rounded-xl p-6 mb-6 flex items-center gap-6">
+      <div className="bg-white dark:bg-gray-900 shadow rounded-xl p-6 mb-6 flex items-center gap-6">
         <div>
           <p className="text-lg font-semibold">Average Rating</p>
           <div className="flex items-center mt-2">
@@ -51,7 +51,7 @@ const ReviewsPage: React.FC = () => {
             <span className="ml-3 text-lg font-bold">{avgRating}/5</span>
           </div>
         </div>
-        <p className="text-gray-600 dark:text-slate-100">{reviews.length} total reviews</p>
+        <p className="text-gray-600 dark:text-white">{reviews.length} total reviews</p>
       </div>
 
       {/* Reviews list */}
@@ -59,7 +59,7 @@ const ReviewsPage: React.FC = () => {
   {reviews.map((review) => (
     <div
       key={review.id}
-      className="bg-white dark:bg-slate-800 shadow rounded-lg p-4 flex justify-between items-start gap-4"
+      className="bg-white dark:bg-gray-900 shadow rounded-lg p-4 flex justify-between items-start gap-4"
     >
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-3">
@@ -83,17 +83,17 @@ const ReviewsPage: React.FC = () => {
           ))}
         </div>
 
-        <p className="text-gray-700 dark:text-slate-100">{review.comment}</p>
+        <p className="text-gray-700 dark:text-white">{review.comment}</p>
       </div>
 
-      <p className="text-xs text-gray-500 dark:text-slate-100">
+      <p className="text-xs text-gray-500 dark:text-white">
         {new Date(review.createdAt).toLocaleDateString()}
       </p>
     </div>
   ))}
 
   {reviews.length === 0 && (
-    <p className="text-gray-500 dark:text-slate-100 text-center">No reviews yet.</p>
+    <p className="text-gray-500 dark:text-white text-center">No reviews yet.</p>
   )}
 </div>
     </div>

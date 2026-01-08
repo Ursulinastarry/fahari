@@ -88,9 +88,9 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, onClose
       return `${baseStyles} bg-yellow-50 border-l-4 border-yellow-400`;
     }
     if (notification.isRead) {
-      return `${baseStyles} bg-gray-50 dark:bg-slate-800 opacity-75`;
+      return `${baseStyles} bg-gray-50 dark:bg-gray-900 opacity-75`;
     }
-    return `${baseStyles} bg-white dark:bg-slate-800 border-l-4 border-blue-400`;
+    return `${baseStyles} bg-white dark:bg-gray-900 border-l-4 border-blue-400`;
   };
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
@@ -99,10 +99,10 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, onClose
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col relative">
+      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 z-10"
+          className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-slate-200 z-10"
         >
           ✕
         </button>
@@ -121,11 +121,11 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, onClose
         <div className="flex-1 overflow-y-auto p-6">
           {loading ? (
             <div className="flex justify-center items-center h-32">
-              <p className="text-lg text-gray-600 dark:text-slate-400">Loading notifications...</p>
+              <p className="text-lg text-gray-600 dark:text-gray-400">Loading notifications...</p>
             </div>
           ) : notifications.length === 0 ? (
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-8 text-center">
-              <p className="text-gray-500 dark:text-slate-400 text-lg">No notifications yet</p>
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-8 text-center">
+              <p className="text-gray-500 dark:text-gray-400 text-lg">No notifications yet</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -145,17 +145,17 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, onClose
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
-                        <h3 className={`font-semibold ${notification.isRead ? "text-gray-500 dark:text-slate-400" : "text-gray-700"}`}>
+                        <h3 className={`font-semibold ${notification.isRead ? "text-gray-500 dark:text-gray-400" : "text-gray-700"}`}>
                           {notification.title}
                           {!notification.isRead && (
                             <span className="ml-2 w-2 h-2 bg-blue-500 rounded-full inline-block"></span>
                           )}
                         </h3>
-                        <p className={`mt-1 ${notification.isRead ? "text-gray-400 dark:text-slate-500" : "text-gray-600 dark:text-slate-300"}`}>
+                        <p className={`mt-1 ${notification.isRead ? "text-gray-400 dark:text-gray-500" : "text-gray-600 dark:text-gray-300"}`}>
                           {notification.message}
                         </p>
                         {notification.createdAt && (
-                          <p className="text-xs text-gray-400 dark:text-slate-500 mt-2">
+                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
                             {new Date(notification.createdAt).toLocaleDateString()} at{" "}
                             {new Date(notification.createdAt).toLocaleTimeString()}
                           </p>

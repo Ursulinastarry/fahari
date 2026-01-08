@@ -50,9 +50,9 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-slate-900">
-      <div className="w-full max-w-lg bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-slate-100 mb-6">
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-black">
+      <div className="w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8">
+        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
           Create Account
         </h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
@@ -102,7 +102,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         <p className="text-red-500 text-sm">Passwords do not match</p>
       )}
           <div className="mb-4">
-            <label className="block text-gray-700 dark:text-slate-100 text-sm font-bold mb-2">Role</label>
+            <label className="block text-gray-700 dark:text-white text-sm font-bold mb-2">Role</label>
             <select
               name="role"
               value={formData.role}

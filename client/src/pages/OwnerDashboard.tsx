@@ -89,7 +89,7 @@ const OwnerDashboard: React.FC = () => {
           className={`pb-2 px-4 font-medium ${
             activeTab === "statistics"
               ? "border-b-2 border-indigo-600 text-indigo-600"
-              : "text-gray-500 dark:text-slate-400 hover:text-indigo-600"
+              : "text-gray-500 dark:text-gray-400 hover:text-indigo-600"
           }`}
         >
           Statistics & Performance
@@ -99,7 +99,7 @@ const OwnerDashboard: React.FC = () => {
           className={`pb-2 px-4 font-medium ${
             activeTab === "services"
               ? "border-b-2 border-indigo-600 text-indigo-600"
-              : "text-gray-500 dark:text-slate-400 hover:text-indigo-600"
+              : "text-gray-500 dark:text-gray-400 hover:text-indigo-600"
           }`}
         >
           Services
@@ -109,7 +109,7 @@ const OwnerDashboard: React.FC = () => {
           className={`pb-2 px-4 font-medium ${
             activeTab === "appointments"
               ? "border-b-2 border-indigo-600 text-indigo-600"
-              : "text-gray-500 dark:text-slate-400 hover:text-indigo-600"
+              : "text-gray-500 dark:text-gray-400 hover:text-indigo-600"
           }`}
         >
           Appointments
@@ -119,7 +119,7 @@ const OwnerDashboard: React.FC = () => {
           className={`pb-2 px-4 font-medium ${
             activeTab === "reviews"
               ? "border-b-2 border-indigo-600 text-indigo-600"
-              : "text-gray-500 dark:text-slate-400 hover:text-indigo-600"
+              : "text-gray-500 dark:text-gray-400 hover:text-indigo-600"
           }`}
         >
           Reviews
@@ -129,7 +129,7 @@ const OwnerDashboard: React.FC = () => {
           className={`pb-2 px-4 font-medium ${
             activeTab === "salons"
               ? "border-b-2 border-indigo-600 text-indigo-600"
-              : "text-gray-500 dark:text-slate-400 hover:text-indigo-600"
+              : "text-gray-500 dark:text-gray-400 hover:text-indigo-600"
           }`}
         >
           Salons
