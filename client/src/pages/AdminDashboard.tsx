@@ -25,38 +25,21 @@ const AdminDashboard: React.FC = () => {
   const [salons, setSalons] = useState<Salon[]>([]);
   const [activeTab, setActiveTab] = useState<'users' | 'salons'>('users');
   const [loading, setLoading] = useState(true);
-  const [usersError, setUsersError] = useState<string | null>(null);
-  const [salonsError, setSalonsError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      setUsersError(null);
-      setSalonsError(null);
       
       try {
-        const [usersRes, salonsRes] = await Promise.allSettled([
+        const [usersRes, salonsRes] = await Promise.all([
           axios.get(`${baseUrl}/api/users`, { withCredentials: true }),
           axios.get(`${baseUrl}/api/salons`, { withCredentials: true })
         ]);
 
-        if (usersRes.status === 'fulfilled') {
-          setUsers(usersRes.value.data);
-        } else {
-          console.error("Error fetching users:", usersRes.reason);
-          setUsersError("Failed to load users data");
-        }
-
-        if (salonsRes.status === 'fulfilled') {
-          setSalons(salonsRes.value.data);
-        } else {
-          console.error("Error fetching salons:", salonsRes.reason);
-          setSalonsError("Failed to load salons data");
-        }
+        setUsers(usersRes.data);
+        setSalons(salonsRes.data);
       } catch (err) {
-        console.error("Unexpected error:", err);
-        setUsersError("An unexpected error occurred");
-        setSalonsError("An unexpected error occurred");
+        console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
       }
@@ -74,7 +57,6 @@ const AdminDashboard: React.FC = () => {
       setUsers(users.map(u => u.id === id ? { ...u, isActive: true } : u));
     } catch (err) {
       console.error("Error approving user:", err);
-      alert("Failed to approve user. Please try again.");
     }
   };
 
@@ -88,7 +70,6 @@ const AdminDashboard: React.FC = () => {
       setUsers(users.map(u => u.id === id ? { ...u, isActive: false } : u));
     } catch (err) {
       console.error("Error suspending user:", err);
-      alert("Failed to suspend user. Please try again.");
     }
   };
 
@@ -105,7 +86,6 @@ const AdminDashboard: React.FC = () => {
       setUsers(users.filter(u => u.id !== id));
     } catch (err) {
       console.error("Error deleting user:", err);
-      alert("Failed to delete user. Please try again.");
     }
   };
 
@@ -119,7 +99,6 @@ const AdminDashboard: React.FC = () => {
       setSalons(salons.map(s => s.id === id ? { ...s, isActive: true } : s));
     } catch (err) {
       console.error("Error approving salon:", err);
-      alert("Failed to approve salon. The feature may not be available on the live server yet.");
     }
   };
 
@@ -133,7 +112,6 @@ const AdminDashboard: React.FC = () => {
       setSalons(salons.map(s => s.id === id ? { ...s, isActive: false } : s));
     } catch (err) {
       console.error("Error suspending salon:", err);
-      alert("Failed to suspend salon. The feature may not be available on the live server yet.");
     }
   };
 
@@ -142,53 +120,37 @@ const AdminDashboard: React.FC = () => {
       <div className="min-h-screen bg-gray-50 dark:bg-black p-8">
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Admin Dashboard</h1>
 
-        {loading && (
+        {loading ? (
           <div className="text-center py-8">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
             <p className="mt-2 text-gray-600 dark:text-gray-400">Loading dashboard data...</p>
           </div>
-        )}
-
-        {!loading && (
+        ) : (
           <>
-            {/* Global Error Messages */}
-            {(usersError || salonsError) && (
-              <div className="bg-yellow-100 dark:bg-yellow-900 border border-yellow-400 text-yellow-700 dark:text-yellow-200 px-4 py-3 rounded mb-6">
-                <strong className="font-bold">Warning:</strong>
-                <span className="block sm:inline"> Some data failed to load.</span>
-                {usersError && <p className="text-sm mt-1">Users: {usersError}</p>}
-                {salonsError && <p className="text-sm mt-1">Salons: {salonsError}</p>}
-              </div>
-            )}
-
             {/* Stats Section */}
             <div className="grid gap-6 md:grid-cols-4 mb-8">
               <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6">
                 <h2 className="text-lg font-semibold text-gray-700 dark:text-white">Total Users</h2>
                 <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">
-                  {usersError ? "—" : users.length}
+                  {users.length}
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6">
                 <h2 className="text-lg font-semibold text-gray-700 dark:text-white">Salon Owners</h2>
                 <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">
-                  {usersError ? "—" : users.filter(u => u.role === "SALON_OWNER").length}
+                  {users.filter(u => u.role === "SALON_OWNER").length}
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6">
                 <h2 className="text-lg font-semibold text-gray-700 dark:text-white">Total Salons</h2>
                 <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">
-                  {salonsError ? "—" : salons.length}
+                  {salons.length}
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6">
                 <h2 className="text-lg font-semibold text-gray-700 dark:text-white">Pending Approvals</h2>
                 <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">
-                  {(usersError && salonsError) ? "—" : 
-                    (usersError ? salons.filter(s => !s.isActive).length :
-                    salonsError ? users.filter(u => !u.isActive).length :
-                    users.filter(u => !u.isActive).length + salons.filter(s => !s.isActive).length)
-                  }
+                  {users.filter(u => !u.isActive).length + salons.filter(s => !s.isActive).length}
                 </p>
               </div>
             </div>
@@ -223,14 +185,7 @@ const AdminDashboard: React.FC = () => {
             {activeTab === 'users' && (
               <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 overflow-x-auto">
                 <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Manage Users</h2>
-                {usersError ? (
-                  <div className="text-center py-8">
-                    <p className="text-red-600 dark:text-red-400">{usersError}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                      This feature may not be available on the live server yet.
-                    </p>
-                  </div>
-                ) : users.length === 0 ? (
+                {users.length === 0 ? (
                   <div className="text-center py-8">
                     <p className="text-gray-500 dark:text-gray-400">No users found.</p>
                   </div>
@@ -300,14 +255,7 @@ const AdminDashboard: React.FC = () => {
             {activeTab === 'salons' && (
               <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 overflow-x-auto">
                 <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Manage Salons</h2>
-                {salonsError ? (
-                  <div className="text-center py-8">
-                    <p className="text-red-600 dark:text-red-400">{salonsError}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                      This feature may not be available on the live server yet.
-                    </p>
-                  </div>
-                ) : salons.length === 0 ? (
+                {salons.length === 0 ? (
                   <div className="text-center py-8">
                     <p className="text-gray-500 dark:text-gray-400">No salons found.</p>
                   </div>
