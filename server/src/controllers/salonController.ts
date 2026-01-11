@@ -105,7 +105,7 @@ export const createSalon = async (req: UserRequest, res: Response) => {
   await createAndSendNotification({
     userId: userId,
     title: "Salon pending approval",
-    message: "Thanks for registering your salon with us! An admin will review your salon shortly to ensure the safety of our customers.",
+    message: "Thanks for registering your salon with us! Contact us to verify your salon!.",
     type: "GENERAL",
     sendEmail: true,
     emailTo: salon.email || undefined

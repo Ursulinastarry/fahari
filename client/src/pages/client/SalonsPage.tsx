@@ -30,6 +30,7 @@ interface Salon {
   phone: string;
   city: string;
   location: string;
+  isVerified: boolean;
   profileImage?: string;
   salonServices?: SalonService[];
   coverImage?: string;
@@ -483,33 +484,38 @@ const SalonsPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {salons.map((salon) => (
               <div
-                key={salon.id}
-                onClick={() => fetchSalonDetails(salon.id)}
-                className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg cursor-pointer transition-shadow duration-300"
+          key={salon.id}
+          onClick={() => fetchSalonDetails(salon.id)}
+          className="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 hover:shadow-lg cursor-pointer transition-shadow duration-300 relative"
               >
-                <SalonImage
-                  filename={salon.coverImage}
-                  alt={`${salon.name} cover`}
-                  className="rounded-lg mb-4 w-full h-40 object-cover"
-                  fallback="/images/placeholder.jpg"
-                />
-                <h2 className="text-xl font-semibold mb-2">{salon.name}</h2>
-                <div className="flex items-center gap-1 mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-4 w-4 ${
-                        i < Math.round(salonRatings[salon.id] || 0) 
-                          ? "text-yellow-400 fill-yellow-400" 
-                          : "text-gray-300"
-                      }`}
-                    />
-                  ))}
-                  <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">
-                    {(salonRatings[salon.id] || 0).toFixed(1)}
-                  </span>
-                </div>
-                <p className="text-gray-500 dark:text-gray-400">{salon.city}, {salon.location}</p>
+          {salon.isVerified && (
+            <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+              ✓ Verified
+            </div>
+          )}
+          <SalonImage
+            filename={salon.coverImage}
+            alt={`${salon.name} cover`}
+            className="rounded-lg mb-4 w-full h-40 object-cover"
+            fallback="/images/placeholder.jpg"
+          />
+          <h2 className="text-xl font-semibold mb-2">{salon.name}</h2>
+          <div className="flex items-center gap-1 mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`h-4 w-4 ${
+            i < Math.round(salonRatings[salon.id] || 0) 
+              ? "text-yellow-400 fill-yellow-400" 
+              : "text-gray-300"
+                }`}
+              />
+            ))}
+            <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">
+              {(salonRatings[salon.id] || 0).toFixed(1)}
+            </span>
+          </div>
+          <p className="text-gray-500 dark:text-gray-400">{salon.city}, {salon.location}</p>
               </div>
             ))}
           </div>
