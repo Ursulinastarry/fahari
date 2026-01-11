@@ -24,70 +24,109 @@ const AdminDashboard: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [salons, setSalons] = useState<Salon[]>([]);
   const [activeTab, setActiveTab] = useState<'users' | 'salons'>('users');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const res = await axios.get(`${baseUrl}/api/users`, { withCredentials: true });
-        setUsers(res.data);
+        const [usersRes, salonsRes] = await Promise.allSettled([
+          axios.get(`${baseUrl}/api/users`, { withCredentials: true }),
+          axios.get(`${baseUrl}/api/salons`, { withCredentials: true })
+        ]);
+
+        if (usersRes.status === 'fulfilled') {
+          setUsers(usersRes.value.data);
+        } else {
+          console.error("Error fetching users:", usersRes.reason);
+          setError("Failed to load users data");
+        }
+
+        if (salonsRes.status === 'fulfilled') {
+          setSalons(salonsRes.value.data);
+        } else {
+          console.error("Error fetching salons:", salonsRes.reason);
+          setError("Failed to load salons data");
+        }
       } catch (err) {
-        console.error("Error fetching users:", err);
+        console.error("Unexpected error:", err);
+        setError("An unexpected error occurred");
+      } finally {
+        setLoading(false);
       }
     };
-    const fetchSalons = async () => {
-      try {
-        const res = await axios.get(`${baseUrl}/api/salons`, { withCredentials: true });
-        setSalons(res.data);
-      } catch (err) {
-        console.error("Error fetching salons:", err);
-      }
-    };
-    fetchUsers();
-    fetchSalons();
+    fetchData();
   }, []);
 
- const approveUser = async (id: string) => {
-  await axios.put(
-    `${baseUrl}/api/users/${id}/approve`,
-    {}, // no body, so pass empty object
-    { withCredentials: true }
-  );
-  setUsers(users.map(u => u.id === id ? { ...u, isActive: true } : u));
+const approveUser = async (id: string) => {
+  try {
+    await axios.put(
+      `${baseUrl}/api/users/${id}/approve`,
+      {}, // no body, so pass empty object
+      { withCredentials: true }
+    );
+    setUsers(users.map(u => u.id === id ? { ...u, isActive: true } : u));
+  } catch (err) {
+    console.error("Error approving user:", err);
+    alert("Failed to approve user. Please try again.");
+  }
 };
 
 const suspendUser = async (id: string) => {
-  await axios.put(
-    `${baseUrl}/api/users/${id}/suspend`,
-    {},
-    { withCredentials: true }
-  );
-  setUsers(users.map(u => u.id === id ? { ...u, isActive: false } : u));
+  try {
+    await axios.put(
+      `${baseUrl}/api/users/${id}/suspend`,
+      {},
+      { withCredentials: true }
+    );
+    setUsers(users.map(u => u.id === id ? { ...u, isActive: false } : u));
+  } catch (err) {
+    console.error("Error suspending user:", err);
+    alert("Failed to suspend user. Please try again.");
+  }
 };
 
 const deleteUser = async (id: string) => {
-  await axios.delete(
-    `${baseUrl}/api/users/${id}`,
-    { withCredentials: true }
-  );
-  setUsers(users.filter(u => u.id !== id));
+  try {
+    await axios.delete(
+      `${baseUrl}/api/users/${id}`,
+      { withCredentials: true }
+    );
+    setUsers(users.filter(u => u.id !== id));
+  } catch (err) {
+    console.error("Error deleting user:", err);
+    alert("Failed to delete user. Please try again.");
+  }
 };
 
 const approveSalon = async (id: string) => {
-  await axios.put(
-    `${baseUrl}/api/salons/${id}/approve`,
-    {},
-    { withCredentials: true }
-  );
-  setSalons(salons.map(s => s.id === id ? { ...s, isActive: true } : s));
+  try {
+    await axios.put(
+      `${baseUrl}/api/salons/${id}/approve`,
+      {},
+      { withCredentials: true }
+    );
+    setSalons(salons.map(s => s.id === id ? { ...s, isActive: true } : s));
+  } catch (err) {
+    console.error("Error approving salon:", err);
+    alert("Failed to approve salon. The feature may not be available on the live server yet.");
+  }
 };
 
 const suspendSalon = async (id: string) => {
-  await axios.put(
-    `${baseUrl}/api/salons/${id}/suspend`,
-    {},
-    { withCredentials: true }
-  );
-  setSalons(salons.map(s => s.id === id ? { ...s, isActive: false } : s));
+  try {
+    await axios.put(
+      `${baseUrl}/api/salons/${id}/suspend`,
+      {},
+      { withCredentials: true }
+    );
+    setSalons(salons.map(s => s.id === id ? { ...s, isActive: false } : s));
+  } catch (err) {
+    console.error("Error suspending salon:", err);
+    alert("Failed to suspend salon. The feature may not be available on the live server yet.");
+  }
 };
 
 
@@ -95,6 +134,24 @@ const suspendSalon = async (id: string) => {
     <DashboardLayout title="Admin Dashboard">
       <div className="min-h-screen bg-gray-50 dark:bg-black p-8">
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Admin Dashboard</h1>
+
+        {loading && (
+          <div className="text-center py-8">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <p className="mt-2 text-gray-600 dark:text-gray-400">Loading dashboard data...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-red-100 dark:bg-red-900 border border-red-400 text-red-700 dark:text-red-200 px-4 py-3 rounded mb-6">
+            <strong className="font-bold">Error:</strong>
+            <span className="block sm:inline"> {error}</span>
+            <p className="text-sm mt-1">Some features may not be available on the live server yet.</p>
+          </div>
+        )}
+
+        {!loading && !error && (
+          <>
 
       {/* Stats Section */}
       <div className="grid gap-6 md:grid-cols-4 mb-8">
@@ -254,6 +311,8 @@ const suspendSalon = async (id: string) => {
           </table>
         </div>
       )}
+          </>
+        )}
     </div>
     </DashboardLayout>
   );
