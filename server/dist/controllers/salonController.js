@@ -89,6 +89,8 @@ export const createSalon = async (req, res) => {
             title: "Salon pending approval",
             message: "Thanks for registering your salon with us! An admin will review your salon shortly to ensure the safety of our customers.",
             type: "GENERAL",
+            sendEmail: true,
+            emailTo: salon.email || undefined
         });
         res.status(201).json(salon);
     }
@@ -97,7 +99,7 @@ export const createSalon = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-export const verifySalon = asyncHandler(async (req, res) => {
+export const approveSalon = asyncHandler(async (req, res) => {
     if (!req.user || req.user.role !== "ADMIN") {
         return res.status(403).json({ message: "Only admins can approve salons" });
     }
@@ -112,7 +114,7 @@ export const verifySalon = asyncHandler(async (req, res) => {
         message: "You can now log in and manage your salon.",
         type: "GENERAL",
         sendEmail: true,
-        emailTo: salon.email,
+        emailTo: salon.email || undefined,
     });
     res.json({ message: "Salon approved successfully", salon });
 });
@@ -134,7 +136,7 @@ export const suspendSalon = asyncHandler(async (req, res) => {
         message: "Your salon has been suspended. Please contact support.",
         type: "GENERAL",
         sendEmail: true,
-        emailTo: salon.email,
+        emailTo: salon.email || undefined,
     });
     res.json({ message: "Salon suspended successfully", salon });
 });

@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { getSalons, getSalon,  createSalon, updateSalon, deleteSalon, getMySalon } from '../controllers/salonController';
+import { getSalons, getSalon,  createSalon, updateSalon, deleteSalon, getMySalon, approveSalon, suspendSalon } from '../controllers/salonController';
 import { protect } from '../middlewares/protect';
 import { uploadSalonImages, handleUploadError }  from '../middlewares/upload'; // Add this line to import the upload middleware
 import { uploadSalonMedia } from '../controllers/salonController';
@@ -28,6 +28,8 @@ router.post(
 
 router.get('/owner/me',protect,getMySalon)
 router.get('/:id', getSalon);
+router.put('/:id/approve', protect, approveSalon);
+router.put('/:id/suspend', protect, suspendSalon);
 router.put(
   "/:id",protect,
   uploadSalonMedia.fields([
