@@ -36,10 +36,18 @@ const AdminDashboard: React.FC = () => {
           axios.get(`${baseUrl}/api/salons`, { withCredentials: true })
         ]);
 
-        setUsers(usersRes.data);
-        setSalons(salonsRes.data);
+        // Handle different response structures
+        const usersData = usersRes.data?.data || usersRes.data?.users || usersRes.data;
+        const salonsData = salonsRes.data?.data || salonsRes.data?.salons || salonsRes.data;
+
+        // Ensure data is always an array
+        setUsers(Array.isArray(usersData) ? usersData : []);
+        setSalons(Array.isArray(salonsData) ? salonsData : []);
       } catch (err) {
         console.error("Error fetching data:", err);
+        // Set to empty arrays on error
+        setUsers([]);
+        setSalons([]);
       } finally {
         setLoading(false);
       }

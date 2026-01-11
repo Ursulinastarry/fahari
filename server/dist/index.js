@@ -34,8 +34,6 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 const allowedOrigins = [
-    "http://localhost:5173",
-    "https://fahari.vercel.app",
     "https://faharibeauty.com"
 ];
 // console.log("hitting cors")

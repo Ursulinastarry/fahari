@@ -5,7 +5,7 @@ export let io;
 export function initSocket(server) {
     io = new Server(server, {
         cors: {
-            origin: "http://localhost:5173", // 👈 explicit, not "*"
+            origin: "http://faharibeauty.com",
             methods: ["GET", "POST"],
             credentials: true,
         },
