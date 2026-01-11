@@ -79,7 +79,7 @@ model Salon {
   latitude        Float?
   longitude       Float?
   businessHours   Json
-  isActive        Boolean          @default(false)
+  isActive        Boolean          @default(true)
   isVerified      Boolean          @default(false)
   averageRating   Float            @default(0)
   totalReviews    Int              @default(0)
