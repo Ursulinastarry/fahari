@@ -84,6 +84,11 @@ export const createBooking = asyncHandler(async (req, res) => {
         data: { bookingId: booking.id, bookingNumber: booking.bookingNumber },
         sendEmail: true,
         emailTo: user.email,
+        sendPush: true,
+    });
+    const salonOwner = await prisma.user.findUnique({
+        where: { id: booking.salon.ownerId },
+        select: { email: true },
     });
     await createAndSendNotification({
         userId: booking.salon.ownerId,
@@ -92,7 +97,8 @@ export const createBooking = asyncHandler(async (req, res) => {
         type: "BOOKING_CONFIRMATION",
         data: { bookingId: booking.id, client: booking.clientId },
         sendEmail: true,
-        emailTo: user.email,
+        emailTo: salonOwner?.email || "",
+        sendPush: true,
     });
     res.status(201).json({ booking, bookedSlots: slotIds, appointment });
 });

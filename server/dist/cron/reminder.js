@@ -45,6 +45,7 @@ cron.schedule("* * * * *", async () => {
                 data: { bookingId: booking.id },
                 sendEmail: true,
                 emailTo: booking.client.email,
+                sendPush: true,
             });
             console.log(`✅ Sent reminder to ${booking.client.email} for booking ${booking.id}`);
         }

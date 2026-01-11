@@ -2,6 +2,7 @@
 import { pool } from "../index.js";
 import { io } from "../realtime/socket.js";
 import axios from "axios";
+import { sendPushNotification, sendPushNotificationToRole } from "./pushNotificationService.js";
 // Cache tokens and account ID
 let cachedAccessToken = undefined;
 let tokenExpiry = 0;
@@ -115,7 +116,7 @@ async function sendNotificationEmail(to, title, message, data) {
     }
 }
 export async function createAndSendNotification(payload) {
-    const { userId, role, title, message, type = "GENERAL", data, sendEmail = false, emailTo, } = payload;
+    const { userId, role, title, message, type = "GENERAL", data, sendEmail = false, emailTo, sendPush = false, } = payload;
     // 🔹 Role-based notification (broadcast to multiple users)
     if (role) {
         const { rows: users } = await pool.query(`SELECT id, email FROM users WHERE role = $1`, [role]);
@@ -136,6 +137,15 @@ export async function createAndSendNotification(payload) {
         if (sendEmail && emailTo) {
             await sendNotificationEmail(emailTo, title, message, data);
         }
+        // 🔹 Send push notifications if requested
+        if (sendPush) {
+            try {
+                await sendPushNotificationToRole(role, { title, body: message, data });
+            }
+            catch (error) {
+                console.error('Error sending push notification to role:', error);
+            }
+        }
         return;
     }
     // 🔹 Single-user notification
@@ -154,6 +164,15 @@ export async function createAndSendNotification(payload) {
         // 🔹 Send email if requested
         if (sendEmail && emailTo) {
             await sendNotificationEmail(emailTo, title, message, data);
+        }
+        // 🔹 Send push notification if requested
+        if (sendPush) {
+            try {
+                await sendPushNotification(userId, { title, body: message, data });
+            }
+            catch (error) {
+                console.error('Error sending push notification:', error);
+            }
         }
         return notif;
     }

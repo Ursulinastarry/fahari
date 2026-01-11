@@ -13,7 +13,17 @@ import ServicesPage from "./pages/owner/ServicesPage";
 import HomePage from "./pages/HomePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import { useEffect } from 'react';
+import { registerServiceWorker } from './utils/pushNotifications';
 function App() {
+  useEffect(() => {
+    // Register service worker for push notifications
+    if ('serviceWorker' in navigator) {
+      registerServiceWorker().catch(console.error);
+    }
+  }, []);
+
+  return (
   return (
     
     <UserProvider>

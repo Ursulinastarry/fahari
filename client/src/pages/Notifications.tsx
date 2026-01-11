@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { baseUrl } from "../config/baseUrl";
+import PushNotifications from "../components/PushNotifications";
 
 interface Notification {
   id: string;
@@ -116,6 +117,10 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ isOpen, onClose
               </span>
             )}
           </h2>
+        </div>
+
+        <div className="p-6 border-b">
+          <PushNotifications />
         </div>
 
         <div className="flex-1 overflow-y-auto p-6">

@@ -108,7 +108,13 @@ if (!salonServiceId) {
     data: { bookingId: booking.id, bookingNumber: booking.bookingNumber },
     sendEmail: true,
     emailTo: user.email,
+    sendPush: true,
   });
+  const salonOwner = await prisma.user.findUnique({
+    where: { id: booking.salon.ownerId },
+    select: { email: true },
+  });
+  
   await createAndSendNotification({
     userId: booking.salon.ownerId,
     title: "New Booking",
@@ -116,7 +122,8 @@ if (!salonServiceId) {
     type: "BOOKING_CONFIRMATION",
     data: { bookingId: booking.id, client: booking.clientId },
     sendEmail: true,
-    emailTo: user.email,
+    emailTo: salonOwner?.email || "",
+    sendPush: true,
   });
   res.status(201).json({ booking, bookedSlots: slotIds, appointment });
 });

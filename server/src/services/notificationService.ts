@@ -2,6 +2,7 @@
 import { pool } from "../index";
 import { io } from "../realtime/socket";
 import axios from "axios";
+import { sendPushNotification, sendPushNotificationToRole } from "./pushNotificationService";
 
 /**
  * SETUP INSTRUCTIONS FOR ZOHO OAUTH:
@@ -43,6 +44,7 @@ export type NotifyPayload = {
   data?: Record<string, any>;
   sendEmail?: boolean;
   emailTo?: string;
+  sendPush?: boolean;
 };
 
 // Cache tokens and account ID
@@ -197,6 +199,7 @@ export async function createAndSendNotification(payload: NotifyPayload) {
     data,
     sendEmail = false,
     emailTo,
+    sendPush = false,
   } = payload;
 
   // 🔹 Role-based notification (broadcast to multiple users)
@@ -229,6 +232,15 @@ export async function createAndSendNotification(payload: NotifyPayload) {
       await sendNotificationEmail(emailTo, title, message, data);
     }
 
+    // 🔹 Send push notifications if requested
+    if (sendPush) {
+      try {
+        await sendPushNotificationToRole(role, { title, body: message, data });
+      } catch (error) {
+        console.error('Error sending push notification to role:', error);
+      }
+    }
+
     return;
   }
 
@@ -253,6 +265,15 @@ export async function createAndSendNotification(payload: NotifyPayload) {
     // 🔹 Send email if requested
     if (sendEmail && emailTo) {
       await sendNotificationEmail(emailTo, title, message, data);
+    }
+
+    // 🔹 Send push notification if requested
+    if (sendPush) {
+      try {
+        await sendPushNotification(userId, { title, body: message, data });
+      } catch (error) {
+        console.error('Error sending push notification:', error);
+      }
     }
 
     return notif;
