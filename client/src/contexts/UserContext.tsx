@@ -17,7 +17,7 @@ interface User {
 interface UserContextType {
   user: User | null;
   loading: boolean;
-  refreshUser: () => Promise<void>;
+  refreshUser: () => Promise<User | null>;
   logout: () => Promise<void>;
 }
 
@@ -34,8 +34,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         withCredentials: true,
       });
       setUser(res.data);
+      return res.data;
     } catch {
       setUser(null);
+      return null;
     } finally {
       setLoading(false);
     }

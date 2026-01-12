@@ -26,16 +26,14 @@ const Login = () => {
       );
 
       // 2️⃣ Sync user context from backend
-      await refreshUser();
+      const user = await refreshUser();
 
-      // 3️⃣ Get fresh user to decide where to go
-      const res = await axios.get(`${baseUrl}/api/users/me`, {
-        withCredentials: true,
-      });
+      if (!user) {
+        alert("Failed to get user data after login");
+        return;
+      }
 
-      const user = res.data;
-
-      // 4️⃣ Role-based navigation
+      // 3️⃣ Role-based navigation
       switch (user.role) {
         case "CLIENT":
           navigate("/");
