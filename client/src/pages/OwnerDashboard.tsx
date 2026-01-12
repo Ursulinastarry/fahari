@@ -1,5 +1,5 @@
 // src/pages/OwnerDashboard.tsx
-import { Routes, Route, NavLink } from "react-router-dom";
+import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
 import DashboardLayout from "./DashboardLayout";
 import StatisticsPage from "./owner/StatisticsPage";
 import ServicesPage from "./owner/ServicesPage";
@@ -9,43 +9,40 @@ import SalonOwnerSalons from "./owner/SalonsPage";
 import CreateSalonForm from "./owner/CreateSalonForm";
 import React, { useState, useEffect } from "react";
 import { baseUrl } from '../config/baseUrl';
-import { useNavigate } from "react-router-dom";
 
 const OwnerDashboard: React.FC = () => {
+  const navigate = useNavigate(); // ✅ Move useNavigate to top level
+  
   const [activeTab, setActiveTab] = useState<
     "statistics" | "services" | "appointments" | "reviews" | "salons"
   >("statistics");
-
+  
   const [hasSalon, setHasSalon] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if owner has a salon
     const checkSalon = async () => {
       try {
-        // Replace this endpoint with your actual salon check API
         const response = await fetch(`${baseUrl}/api/salons/owner/me`, {
-          credentials: 'include' // Include cookies for authentication
+          credentials: 'include'
         });
         
         console.log('Salon check response status:', response.status);
         
         if (response.ok) {
-  const data = await response.json();
-  setHasSalon(!!(data.salon || data.id || (Array.isArray(data) && data.length > 0)));
-} else if (response.status === 404) {
-  // No salon found, user is still authenticated
-  setHasSalon(false);
-} else if (response.status === 401) {
-  // User is actually not logged in
-  navigate("/login"); // or your logic
-} else {
-  console.log('Unexpected status', response.status);
-  setHasSalon(false);
-}
-
+          const data = await response.json();
+          setHasSalon(!!(data.salon || data.id || (Array.isArray(data) && data.length > 0)));
+        } else if (response.status === 404) {
+          // No salon found, user is still authenticated
+          setHasSalon(false);
+        } else if (response.status === 401) {
+          // User is not logged in - redirect to login
+          navigate("/login");
+        } else {
+          console.log('Unexpected status', response.status);
+          setHasSalon(false);
+        }
       } catch (error) {
         console.error("Error checking salon:", error);
         setHasSalon(false);
@@ -55,7 +52,7 @@ const OwnerDashboard: React.FC = () => {
     };
 
     checkSalon();
-  }, []);
+  }, [navigate]); // ✅ Add navigate to dependencies
 
   const handleSalonCreated = (salonData: any) => {
     setHasSalon(true);
@@ -95,16 +92,6 @@ const OwnerDashboard: React.FC = () => {
         >
           Statistics & Performance
         </button>
-        {/* <button
-          onClick={() => setActiveTab("services")}
-          className={`pb-2 px-4 font-medium ${
-            activeTab === "services"
-              ? "border-b-2 border-indigo-600 text-indigo-600"
-              : "text-gray-500 dark:text-gray-400 hover:text-indigo-600"
-          }`}
-        >
-          Services
-        </button> */}
         <button
           onClick={() => setActiveTab("appointments")}
           className={`pb-2 px-4 font-medium ${
