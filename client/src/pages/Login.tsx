@@ -19,19 +19,16 @@ const Login = () => {
 
     try {
       // 1️⃣ Login (sets cookie)
-      await axios.post(
+      const loginRes = await axios.post(
         `${baseUrl}/api/users/login`,
         { email, password },
         { withCredentials: true }
       );
 
-      // 2️⃣ Sync user context from backend
-      const user = await refreshUser();
+      const user = loginRes.data.user;
 
-      if (!user) {
-        alert("Failed to get user data after login");
-        return;
-      }
+      // 2️⃣ Sync user context from backend (optional, since we have user data)
+      await refreshUser(); // Still call to update context, but don't rely on return value
 
       // 3️⃣ Role-based navigation
       switch (user.role) {
