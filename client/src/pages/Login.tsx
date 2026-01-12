@@ -25,12 +25,18 @@ const Login = () => {
         { withCredentials: true }
       );
 
-      const user = loginRes.data.user;
+      // 2️⃣ Small delay to ensure token is set
+      await new Promise(resolve => setTimeout(resolve, 100));
 
-      // 2️⃣ Sync user context from backend (optional, since we have user data)
-      await refreshUser(); // Still call to update context, but don't rely on return value
+      // 3️⃣ Sync user context from backend
+      const user = await refreshUser();
 
-      // 3️⃣ Role-based navigation
+      if (!user) {
+        alert("Failed to get user data after login");
+        return;
+      }
+
+      // 4️⃣ Role-based navigation
       switch (user.role) {
         case "CLIENT":
           navigate("/");
