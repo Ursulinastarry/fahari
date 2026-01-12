@@ -10,14 +10,17 @@ interface User {
   phone: string;
   role: string;
   isActive: boolean;
+  isVerified: boolean;
   avatar?: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 interface UserContextType {
   user: User | null;
   loading: boolean;
   refreshUser: () => Promise<User | null>;
+  setUser: (user: User | null) => void; // ✅ Added setter
   logout: () => Promise<void>;
 }
 
@@ -45,7 +48,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     await axios.post(`${baseUrl}/api/users/logout`, {}, { withCredentials: true });
-    setUser(null); // 💥 instantly clears ALL UI
+    setUser(null);
   };
 
   useEffect(() => {
@@ -57,7 +60,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, loading, refreshUser: fetchUser, logout }}>
+    <UserContext.Provider value={{ 
+      user, 
+      loading, 
+      refreshUser: fetchUser, 
+      setUser, // ✅ Expose setter
+      logout 
+    }}>
       {children}
     </UserContext.Provider>
   );

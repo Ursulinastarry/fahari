@@ -9,32 +9,31 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
-  const { refreshUser } = useUser(); // ✅ correct API
+  const { setUser } = useUser(); // ✅ Use setUser instead of refreshUser
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // 1️⃣ Login (sets cookie)
+      // 1️⃣ Login - backend now returns full user object
       const loginRes = await axios.post(
         `${baseUrl}/api/users/login`,
         { email, password },
         { withCredentials: true }
       );
 
-      // 2️⃣ Small delay to ensure token is set
-      await new Promise(resolve => setTimeout(resolve, 300));
-
-      // 3️⃣ Sync user context from backend
-      const user = await refreshUser();
+      // 2️⃣ Get user data from login response
+      const user = loginRes.data.user;
 
       if (!user) {
-        alert("Failed to get user data after login");
+        alert("Login failed - no user data returned");
         return;
       }
+
+      // 3️⃣ Update context with user data
+      setUser(user);
 
       // 4️⃣ Role-based navigation
       switch (user.role) {
@@ -58,15 +57,15 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-black">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-pink-50 p-4">
+      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
+        <h2 className="mb-6 text-center text-3xl font-bold text-gray-800">
           Login
         </h2>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-white">
+            <label className="block text-sm font-medium text-gray-700">
               Email
             </label>
             <input
@@ -80,29 +79,30 @@ const Login = () => {
 
           <PasswordInput
             value={password}
-            onChange={setPassword}
-            label="Password"
-            placeholder="••••••••"
+            onChange={(value) => setPassword(value)}
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
+            className="w-full rounded-lg bg-indigo-600 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:bg-gray-400"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600">
-          Don’t have an account?{" "}
-          <Link to="/signup" className="text-indigo-600 font-medium hover:underline">
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-indigo-600 hover:underline">
             Sign up here
           </Link>
         </p>
 
-        <p className="mt-2 text-center text-sm text-gray-600">
-          <Link to="/forgot-password" className="text-indigo-600 font-medium hover:underline">
+        <p className="mt-2 text-center text-sm">
+          <Link
+            to="/forgot-password"
+            className="text-indigo-600 hover:underline"
+          >
             Forgot password?
           </Link>
         </p>

@@ -90,18 +90,29 @@ export const loginUser = asyncHandler(async (req, res) => {
     if (!isMatch)
         return res.status(401).json({ message: "Invalid email or password" });
     const tokens = await generateToken(res, user.id, user.role);
+    // ✅ Return the same user data structure as getMe
     return res.status(200).json({
         message: "Login successful",
         accessToken: tokens.accessToken,
-        user: { id: user.id, email: user.email, role: user.role },
+        user: {
+            id: user.id,
+            email: user.email,
+            phone: user.phone,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            avatar: user.avatar,
+            role: user.role,
+            isActive: user.isActive,
+            isVerified: user.isVerified,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+        },
     });
 });
 export const getMe = asyncHandler(async (req, res) => {
-    // console.log("🔥 getMe endpoint hit");
     if (!req.user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    // Fetch the user from DB to get the latest info
     const { rows } = await pool.query(`SELECT id, email, phone, "firstName", "lastName", avatar, role, "isActive", "isVerified", "createdAt", "updatedAt"
      FROM users
      WHERE id = $1`, [req.user.id]);

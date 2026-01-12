@@ -89,8 +89,8 @@ export const createUser = asyncHandler(async (req:Request, res:Response) => {
 });
 
 /** Login user and return JWT */
-export const loginUser = asyncHandler(async (req:Request, res:Response) => {
-  console.log("login hit")
+export const loginUser = asyncHandler(async (req: Request, res: Response) => {
+  console.log("login hit");
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -113,20 +113,31 @@ export const loginUser = asyncHandler(async (req:Request, res:Response) => {
 
   const tokens = await generateToken(res, user.id, user.role);
 
+  // ✅ Return the same user data structure as getMe
   return res.status(200).json({
     message: "Login successful",
     accessToken: tokens.accessToken,
-    user: { id: user.id, email: user.email, role: user.role },
+    user: {
+      id: user.id,
+      email: user.email,
+      phone: user.phone,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      avatar: user.avatar,
+      role: user.role,
+      isActive: user.isActive,
+      isVerified: user.isVerified,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    },
   });
 });
 
 export const getMe = asyncHandler(async (req: UserRequest, res: Response) => {
-  // console.log("🔥 getMe endpoint hit");
   if (!req.user) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  // Fetch the user from DB to get the latest info
   const { rows } = await pool.query(
     `SELECT id, email, phone, "firstName", "lastName", avatar, role, "isActive", "isVerified", "createdAt", "updatedAt"
      FROM users
