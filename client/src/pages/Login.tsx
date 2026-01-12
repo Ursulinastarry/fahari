@@ -26,7 +26,7 @@ const Login = () => {
       );
 
       // 2️⃣ Small delay to ensure token is set
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 300));
 
       // 3️⃣ Sync user context from backend
       const user = await refreshUser();
