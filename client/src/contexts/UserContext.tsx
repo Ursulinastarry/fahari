@@ -49,7 +49,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    fetchUser();
+    if (document.cookie.includes('access_token')) {
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   return (
