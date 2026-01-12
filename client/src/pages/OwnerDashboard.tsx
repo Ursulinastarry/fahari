@@ -19,6 +19,8 @@ const OwnerDashboard: React.FC = () => {
   const [hasSalon, setHasSalon] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     // Check if owner has a salon
     const checkSalon = async () => {
@@ -37,7 +39,6 @@ const OwnerDashboard: React.FC = () => {
   // No salon found, user is still authenticated
   setHasSalon(false);
 } else if (response.status === 401) {
-  const navigate = useNavigate();
   // User is actually not logged in
   navigate("/login"); // or your logic
 } else {
