@@ -22,13 +22,13 @@ const generateToken = async (res, id, role) => {
         const refreshToken = jwt.sign({ id }, refreshSecret, { expiresIn: "30d" });
         res.cookie("access_token", accessToken, {
             httpOnly: true,
-            secure: true,
+            secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
             maxAge: 24 * 60 * 60 * 1000 // 1 day in ms
         });
         res.cookie("refresh_token", refreshToken, {
             httpOnly: true,
-            secure: true,
+            secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
@@ -115,13 +115,13 @@ export const logoutUser = asyncHandler(async (req, res, next) => {
     console.log("logout endpoint hit");
     res.cookie("access_token", "", {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "production",
+        secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         expires: new Date(0) // Expire immediately
     });
     res.cookie("refresh_token", "", {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "production",
+        secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         expires: new Date(0) // Expire immediately
     });
