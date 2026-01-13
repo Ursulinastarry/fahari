@@ -73,7 +73,15 @@ const DashboardLayout: React.FC<Props> = ({ title, logo, children }) => {
       .get(`${baseUrl}/api/notifications`, { withCredentials: true })
       .then(res => setNotifications(res.data));
 
-    socket = io(baseUrl, { withCredentials: true });
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift();
+    };
+
+    const token = getCookie('access_token');
+
+    socket = io(baseUrl, { auth: { token }, withCredentials: true });
 
     socket.on("notification", notif =>
       setNotifications(prev => [notif, ...prev])

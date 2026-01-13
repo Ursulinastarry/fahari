@@ -5,11 +5,11 @@ export let io;
 export function initSocket(server) {
     io = new Server(server, {
         cors: {
-            origin: "https://faharibeauty.com",
+            origin: ["https://faharibeauty.com", "http://localhost:5173", "http://localhost:3000"],
             methods: ["GET", "POST"],
             credentials: true,
         },
-        transports: ["websocket"], // force WebSocket, skip polling
+        transports: ["polling", "websocket"], // allow polling and websocket
     });
     io.use((socket, next) => {
         try {

@@ -2,6 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+dotenv.config();
 import pkg from 'pg';
 import userRoutes from './routes/userRoutes';
 import salonRoutes from './routes/salonRoutes';
@@ -35,7 +36,6 @@ const __dirname = path.dirname(__filename);
 
 
 
-dotenv.config();
 const app = express();
 const allowedOrigins = [
   "https://faharibeauty.com",
