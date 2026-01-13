@@ -51,13 +51,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
   };
 
-  // useEffect(() => {
-  //   if (document.cookie.includes('access_token')) {
-  //     fetchUser();
-  //   } else {
-  //     setLoading(false);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (document.cookie.includes('access_token')) {
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ 
