@@ -8,16 +8,16 @@ cron.schedule("* * * * *", async () => {
     try {
         // Get current Nairobi time
         const nairobiNow = new Date(new Date().toLocaleString("en-US", { timeZone: "Africa/Nairobi" }));
-        const fiveHoursFromNow = new Date(nairobiNow.getTime() + 5 * 60 * 60 * 1000);
-        const oneMinuteWindow = new Date(fiveHoursFromNow.getTime() + 1 * 60 * 1000);
+        const twoHoursFromNow = new Date(nairobiNow.getTime() + 2 * 60 * 60 * 1000);
+        const oneMinuteWindow = new Date(twoHoursFromNow.getTime() + 1 * 60 * 1000);
         // console.log("Nairobi now:", nairobiNow.toISOString());
-        // console.log("Five hours from now:", fiveHoursFromNow.toISOString());
+        // console.log("Two hours from now:", twoHoursFromNow.toISOString());
         // console.log("One minute after that:", oneMinuteWindow.toISOString());
         const bookings = await prisma.booking.findMany({
             where: {
                 slot: {
                     startTime: {
-                        gte: fiveHoursFromNow,
+                        gte: twoHoursFromNow,
                         lt: oneMinuteWindow, // 1-minute window
                     },
                 },
