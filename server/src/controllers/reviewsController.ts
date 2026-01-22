@@ -5,6 +5,7 @@ import { UserRequest } from "../utils/types/userTypes";
 import { pool } from "../index";
 import prisma from "../config/prisma";
 import { uploadReviewImages } from "../middlewares/upload";
+import { storeFileInDatabase } from "../services/fileService";
 import path from 'path';
 import fs from "fs";
 
@@ -30,25 +31,45 @@ export const createReview = asyncHandler(async (req: UserRequest, res: Response)
     if (booking.review)
       return res.status(400).json({ message: "Review already exists for this booking" });
 
-    // Handle uploaded files
-    let images: string[] = [];
-    if (req.files) {
-      const files = req.files as unknown as Express.Multer.File[];
-      console.log("Uploaded files:", files);
-      images = files.map(file => file.filename);
-      console.log("Image filenames:", images);
-    }
-
+    // Create review first
     const review = await prisma.review.create({
       data: {
         rating: Number(rating),
         comment,
-        images,
+        images: [],
         clientId: userId,
         salonId: booking.salonId,
         bookingId,
       },
     });
+
+    // Handle uploaded files - store in database
+    let fileIds: string[] = [];
+    if (req.files) {
+      const files = req.files as unknown as Express.Multer.File[];
+      console.log("Uploaded files:", files);
+      
+      for (const file of files) {
+        try {
+          const storedFile = await storeFileInDatabase(
+            file.buffer,
+            file.originalname,
+            file.mimetype,
+            "review",
+            review.id
+          );
+          fileIds.push(storedFile.id);
+        } catch (err) {
+          console.error("Error storing review file:", err);
+        }
+      }
+
+      // Update review with file IDs
+      await prisma.review.update({
+        where: { id: review.id },
+        data: { images: fileIds },
+      });
+    }
 
     // Update salon average rating
     const salonReviews = await prisma.review.findMany({ where: { salonId: booking.salonId } });
@@ -65,7 +86,7 @@ export const createReview = asyncHandler(async (req: UserRequest, res: Response)
     // Set booking status to REVIEWED only after successful review creation and salon update
     await prisma.booking.update({ where: { id: bookingId }, data: { status: "REVIEWED" } });
 
-    res.status(201).json(review);
+    res.status(201).json({ ...review, images: fileIds });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

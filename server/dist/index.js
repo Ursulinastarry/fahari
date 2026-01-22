@@ -22,6 +22,7 @@ import contactRoutes from './routes/contactRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
 import authRoutes from './routes/auth.js';
 import pushRoutes from './routes/pushRoutes.js';
+import fileRoutes from './routes/fileRoutes.js';
 import http from "http";
 import { initSocket } from "./realtime/socket.js";
 import cookieParser from 'cookie-parser';
@@ -98,6 +99,7 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/ai-chat', aiRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/push', pushRoutes);
+app.use('/api/files', fileRoutes);
 // Serve static files from uploads directory (after all routes)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.get('/', (_, res) => res.send('Fahari AI Backend is Live 🚀'));

@@ -14,7 +14,7 @@ model User {
   password        String
   firstName       String
   lastName        String
-  avatar          String?
+  avatar          String?            // Now stores file ID or URL
   role            UserRole           @default(CLIENT)
   resetPasswordToken   String?
   resetPasswordExpiry  DateTime?
@@ -32,7 +32,21 @@ model User {
   waitlistEntries WaitlistEntry[]
   salonOwnerBalance SalonOwnerBalance?
   pushSubscriptions PushSubscription[]
+  avatarFile      UserFile?
   @@map("users")
+}
+
+model UserFile {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  data      Bytes    // Store actual file binary data
+  mimetype  String   // e.g., "image/png"
+  filename  String
+  size      Int
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("user_files")
 }
 
 model ClientProfile {
@@ -83,9 +97,9 @@ model Salon {
   isVerified      Boolean          @default(false)
   averageRating   Float            @default(0)
   totalReviews    Int              @default(0)
-  profileImage    String?
-  coverImage      String?
-  gallery         String[]
+  profileImage    String?          // Now stores file ID
+  coverImage      String?          // Now stores file ID
+  gallery         String[]         // Now stores file IDs
   ownerId         String
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @default(now()) @updatedAt
@@ -97,8 +111,23 @@ model Salon {
   owner           User             @relation(fields: [ownerId], references: [id])
   slots           Slot[]
   waitlistEntries WaitlistEntry[]
+  salonFiles      SalonFile[]
 
   @@map("salons")
+}
+
+model SalonFile {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  data      Bytes    // Store actual file binary data
+  mimetype  String   // e.g., "image/png"
+  filename  String
+  size      Int
+  type      String   // "profile", "cover", or "gallery"
+  salonId   String
+  salon     Salon    @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("salon_files")
 }
 
 model Service {
@@ -244,7 +273,7 @@ model Review {
   id        String   @id @default(dbgenerated("gen_random_uuid()"))
   rating    Float
   comment   String?
-  images    String[]
+  images    String[] // Keep for backward compatibility, now contains file IDs
   clientId  String
   salonId   String
   bookingId String   @unique
@@ -253,8 +282,22 @@ model Review {
   booking   Booking  @relation(fields: [bookingId], references: [id])
   client    User     @relation(fields: [clientId], references: [id])
   salon     Salon    @relation(fields: [salonId], references: [id])
+  reviewFiles ReviewFile[]
 
   @@map("reviews")
+}
+
+model ReviewFile {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  data      Bytes    // Store actual file binary data
+  mimetype  String   // e.g., "image/png"
+  filename  String
+  size      Int
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("review_files")
 }
 
 model Reminder {

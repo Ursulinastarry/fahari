@@ -126,14 +126,14 @@ export const logoutUser = asyncHandler(async (req, res, next) => {
     console.log("logout endpoint hit");
     res.cookie("access_token", "", {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "production",
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         expires: new Date(0) // Expire immediately
     });
     res.cookie("refresh_token", "", {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "production",
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         expires: new Date(0) // Expire immediately
     });
     res.status(200).json({ message: "User logged out successfully" });

@@ -1,5 +1,6 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import prisma from "../config/prisma.js";
+import { storeFileInDatabase } from "../services/fileService.js";
 export const createReview = asyncHandler(async (req, res) => {
     try {
         console.log("---- Incoming Review Request ----");
@@ -20,24 +21,37 @@ export const createReview = asyncHandler(async (req, res) => {
             return res.status(403).json({ message: "Not authorized to review this booking" });
         if (booking.review)
             return res.status(400).json({ message: "Review already exists for this booking" });
-        // Handle uploaded files
-        let images = [];
-        if (req.files) {
-            const files = req.files;
-            console.log("Uploaded files:", files);
-            images = files.map(file => file.filename);
-            console.log("Image filenames:", images);
-        }
+        // Create review first
         const review = await prisma.review.create({
             data: {
                 rating: Number(rating),
                 comment,
-                images,
+                images: [],
                 clientId: userId,
                 salonId: booking.salonId,
                 bookingId,
             },
         });
+        // Handle uploaded files - store in database
+        let fileIds = [];
+        if (req.files) {
+            const files = req.files;
+            console.log("Uploaded files:", files);
+            for (const file of files) {
+                try {
+                    const storedFile = await storeFileInDatabase(file.buffer, file.originalname, file.mimetype, "review", review.id);
+                    fileIds.push(storedFile.id);
+                }
+                catch (err) {
+                    console.error("Error storing review file:", err);
+                }
+            }
+            // Update review with file IDs
+            await prisma.review.update({
+                where: { id: review.id },
+                data: { images: fileIds },
+            });
+        }
         // Update salon average rating
         const salonReviews = await prisma.review.findMany({ where: { salonId: booking.salonId } });
         const averageRating = salonReviews.length > 0
@@ -49,7 +63,7 @@ export const createReview = asyncHandler(async (req, res) => {
         });
         // Set booking status to REVIEWED only after successful review creation and salon update
         await prisma.booking.update({ where: { id: bookingId }, data: { status: "REVIEWED" } });
-        res.status(201).json(review);
+        res.status(201).json({ ...review, images: fileIds });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
