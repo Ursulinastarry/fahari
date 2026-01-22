@@ -1,42 +1,5 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import prisma from "../config/prisma.js";
-// import { FileUploadUserRequest } from "../utils/types/userTypes.js";
-import path from 'path';
-import fs from "fs";
-import multer from "multer";
-// Review image upload setup
-const reviewUploadDir = 'uploads/reviews';
-if (!fs.existsSync(reviewUploadDir)) {
-    fs.mkdirSync(reviewUploadDir, { recursive: true });
-}
-const reviewStorage = multer.diskStorage({
-    destination: (_req, _file, cb) => {
-        cb(null, reviewUploadDir);
-    },
-    filename: (_req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const extension = path.extname(file.originalname);
-        const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
-        cb(null, filename);
-    }
-});
-const fileFilter = (_req, file, cb) => {
-    // Accept only image files
-    if (file.mimetype.startsWith('image/')) {
-        cb(null, true);
-    }
-    else {
-        cb(new Error('Only image files are allowed!'));
-    }
-};
-export const uploadReviewImages = multer({
-    storage: reviewStorage,
-    limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB per file
-        files: 5 // Max 5 images per review
-    },
-    fileFilter
-}).array('reviewImages', 5);
 export const createReview = asyncHandler(async (req, res) => {
     try {
         console.log("---- Incoming Review Request ----");

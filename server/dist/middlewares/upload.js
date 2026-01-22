@@ -1,8 +1,11 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // Ensure upload directories exist
-const uploadDir = 'uploads/salons';
+const uploadDir = path.join(__dirname, '../../uploads/salons');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -62,7 +65,7 @@ export const handleUploadError = (err, _req, res, next) => {
     next(err);
 };
 // Middleware for uploading review images
-const reviewUploadDir = 'uploads/reviews';
+const reviewUploadDir = path.join(__dirname, '../../uploads/reviews');
 if (!fs.existsSync(reviewUploadDir)) {
     fs.mkdirSync(reviewUploadDir, { recursive: true });
 }
@@ -85,7 +88,7 @@ export const uploadReviewImages = multer({
     },
     fileFilter
 }).array('reviewImages', 5);
-const uploadDirUser = "uploads/users";
+const uploadDirUser = path.join(__dirname, '../../uploads/users');
 if (!fs.existsSync(uploadDirUser)) {
     fs.mkdirSync(uploadDirUser, { recursive: true });
 }

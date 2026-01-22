@@ -2,8 +2,7 @@ import express from 'express';
 import { Request, Response } from 'express';
 import { getSalons, getSalon,  createSalon, updateSalon, deleteSalon, getMySalon, approveSalon, suspendSalon } from '../controllers/salonController';
 import { protect } from '../middlewares/protect';
-import { uploadSalonImages, handleUploadError }  from '../middlewares/upload'; // Add this line to import the upload middleware
-import { uploadSalonMedia } from '../controllers/salonController';
+import { uploadSalonImages, handleUploadError }  from '../middlewares/upload';
 const router = express.Router();
 
 router.get('/', getSalons);
@@ -32,13 +31,11 @@ router.put('/:id/approve', protect, approveSalon);
 router.put('/:id/suspend', protect, suspendSalon);
 router.put(
   "/:id",protect,
-  uploadSalonMedia.fields([
-    { name: "profileImage", maxCount: 1 },
-    { name: "coverImage", maxCount: 1 },
-    { name: "gallery", maxCount: 10 },
-  ]),
+  uploadSalonImages,
+  handleUploadError,
   updateSalon
-);router.delete('/:id', protect, deleteSalon);
+);
+router.delete('/:id', protect, deleteSalon);
 
 export default router;
 

@@ -98,6 +98,7 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/ai-chat', aiRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/push', pushRoutes);
+// Serve static files from uploads directory (after all routes)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.get('/', (_, res) => res.send('Fahari AI Backend is Live 🚀'));
 server.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));

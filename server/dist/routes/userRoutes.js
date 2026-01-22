@@ -1,7 +1,7 @@
 import express from "express";
 import { createUser, getAllUsers, getUserById, updateUser, deleteUser, loginUser, logoutUser, approveUser, getMe, suspendUser } from "../controllers/userController.js";
 import { protect } from "../middlewares/protect.js";
-import { uploadUserAvatar } from "../middlewares/upload.js";
+import { uploadUserAvatar, handleUploadError } from "../middlewares/upload.js";
 const router = express.Router();
 router.post("/register", createUser);
 router.post("/login", loginUser);
@@ -11,7 +11,6 @@ router.put("/:id/approve", protect, approveUser);
 router.put("/:id/suspend", protect, suspendUser);
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
-router.put("/:id", protect, uploadUserAvatar.single("avatar"), // Handle file upload
-updateUser);
+router.put("/:id", protect, uploadUserAvatar.single("avatar"), handleUploadError, updateUser);
 router.delete("/:id", protect, deleteUser);
 export default router;

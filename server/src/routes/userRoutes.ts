@@ -1,7 +1,7 @@
 import express from "express";
 import { createUser, getAllUsers, getUserById, updateUser, deleteUser, loginUser,logoutUser,approveUser, getMe, suspendUser} from "../controllers/userController";
 import { protect } from "../middlewares/protect";
-import { uploadUserAvatar } from "../middlewares/upload";
+import { uploadUserAvatar, handleUploadError } from "../middlewares/upload";
 const router = express.Router();
 
 router.post("/register", createUser);
@@ -14,7 +14,8 @@ router.get("/",  getAllUsers);
 router.get("/:id", getUserById);
 router.put(
   "/:id",protect,
-  uploadUserAvatar.single("avatar"), // Handle file upload
+  uploadUserAvatar.single("avatar"),
+  handleUploadError,
   updateUser
 );
 
