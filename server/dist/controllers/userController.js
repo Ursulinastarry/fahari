@@ -61,7 +61,7 @@ export const createUser = asyncHandler(async (req, res) => {
     // Notify the user
     await createAndSendNotification({
         userId: user.id,
-        title: "Account pending approval",
+        title: "Welcome to Fahari Beauty!",
         message: "Thanks for signing up! Log in to continue.",
         type: "GENERAL",
     });
