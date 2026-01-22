@@ -52,11 +52,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    if (document.cookie.includes('access_token')) {
-      fetchUser();
-    } else {
-      setLoading(false);
-    }
+    // Always try to fetch user on mount - the API will handle missing/invalid tokens
+    fetchUser();
   }, []);
 
   return (
